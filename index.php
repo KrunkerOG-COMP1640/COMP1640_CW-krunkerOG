@@ -348,6 +348,14 @@
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
                   <a href="#" class="btn btn-primary">See more</a>
+                  <form method="POST">
+						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
+						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
+						        <br/><?php echo $_SESSION['counter']; ?>
+                    <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
+						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
+						        <br/><?php echo $_SESSION['counter']; ?>
+				          </form>
                 </div>
               </div>
             
