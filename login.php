@@ -7,30 +7,29 @@
     <link rel="stylesheet" href="style_login.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <title>KrunkerIdeaPortal | Login</title>
+    <title>Krunker Idea Portal | Login</title>
 
 </head>
 <body>
    <div class="box">
     <div class="container">
 
-        <div class="top">
-            <span>Have an account?</span>
-            <header>Login</header>
+        <div>
+            <header>Krunker Idea Portal</header><br><br>
         </div>
 
         <div class="input-field">
-            <input type="text" class="input" placeholder="Username" id="username">
+            <input type="text" class="input" placeholder="Username" id="">
             <i class='bx bx-user' ></i>
         </div>
 
         <div class="input-field">
-            <input type="Password" class="input" placeholder="Password" id="Password">
+            <input type="Password" class="input" placeholder="Password" id="">
             <i class='bx bx-lock-alt'></i>
         </div>
 
         <div class="input-field">
-            <input type="submit" class="submit" value="Login" id="btnSubmit">
+            <input type="submit" class="submit" value="Login" id=""><br>
         </div>
 
         <div class="two-col">

@@ -279,7 +279,7 @@
         </a>
         <ul id="dashboard-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="list_of_category.html">
+            <a href="#">
               <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
             </a>
           </li>
@@ -328,76 +328,15 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Idea</h1>
+      <h1>List of Category</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Idea</a></li>
+          <li class="breadcrumb-item active">List of Category</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
-
-        <!-- Left side columns -->
-          <div class="row">
-            <div class="card-body">
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-            
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-        <!-- End Left side columns -->
-      </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
 
   </main><!-- End #main -->
 
