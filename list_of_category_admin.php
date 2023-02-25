@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Krunker Idea Portal 2023 | Manager</title>
+  <title>Krunker Idea Portal 2023</title>
   <meta content="" name="description">
-  <meta content="" name="keywords">
+  <meta content="" name="keywords"> 
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -24,11 +24,17 @@
   <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="assets/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.5.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body>
@@ -37,7 +43,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_manager.html" class="logo d-flex align-items-center">
+      <a href="index_admin.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -262,24 +268,23 @@
 
   </header><!-- End Header -->
 
-
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_manager.html">
+        <a class="nav-link collapsed" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="index_admin.html">
           <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="dashboard-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="list_of_category_manager.html">
+            <a href="#">
               <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
             </a>
           </li>
         </ul>
-      </li><!-- End Idea Nav -->
+      </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
@@ -297,25 +302,25 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Staff Details</span>
-        </a>
-      </li><!-- End Tables Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="users-profile.html">
           <i class="bi bi-person"></i>
-          <span>Add a new Category</span>
+          <span>Profile</span>
         </a>
-      </li><!-- End Category Page Nav -->
+      </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="report_manager.html">
-          <i class="bi bi-bar-chart-line"></i>
-          <span>Reports</span>
+        <a class="nav-link collapsed" href="pages-faq.html">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
         </a>
-      </li><!-- End Report Page Nav -->
+      </li><!-- End F.A.Q Page Nav -->
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-contact.html">
+          <i class="bi bi-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -323,92 +328,15 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Idea</h1>
+      <h1>List of Category</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_manager.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
+          <li class="breadcrumb-item active">List of Category</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
-
-        <!-- Left side columns -->
-          <div class="row">
-            <div class="card-body">
-
-            <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col">
-                    <a href="#" class="btn btn-primary">Most Popular</a>
-                    <a href="#" class="btn btn-primary">Most Viewed</a>
-                    <a href="#" class="btn btn-primary">Latest Ideas</a>
-                    <a href="#" class="btn btn-primary">Latest Comments</a>
-                  </div>
-                  <div class="col">
-                    <div class="text-right">
-                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-            
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-        <!-- End Left side columns -->
-      </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
 
   </main><!-- End #main -->
 
