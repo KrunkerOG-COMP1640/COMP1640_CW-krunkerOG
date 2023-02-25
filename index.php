@@ -343,6 +343,22 @@
           <div class="row">
             <div class="card-body">
 
+            <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <a href="#" class="btn btn-primary">Most Popular</a>
+                    <a href="#" class="btn btn-primary">Most Viewed</a>
+                    <a href="#" class="btn btn-primary">Latest Ideas</a>
+                    <a href="#" class="btn btn-primary">Latest Comments</a>
+                  </div>
+                  <div class="col">
+                    <div class="text-right">
+                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
