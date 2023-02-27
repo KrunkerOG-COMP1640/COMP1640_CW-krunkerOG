@@ -1,3 +1,49 @@
+<?php
+
+session_start();
+
+if(isset($_SESSION["username"])) {
+    header("Location: index.php");
+    exit;
+}
+
+$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
+if(isset($_POST["userlogin"])){
+
+    $myemail = $_POST["useremail"];
+    $mypassword = $_POST["userpassword"];
+
+    $checkaccount = mysqli_query($dbconn, "SELECT Username, UserEmail, UserPassword FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'");
+    $userrow = mysqli_fetch_array($checkaccount);
+    
+    if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {
+
+        header("Location: login.php");
+
+        echo '<script>';
+        echo 'alert("Do Not Insert Special Character")';
+        echo '</script>';
+    }
+    else{
+        if(is_array($userrow)) {
+        $_SESSION["username"] = $userrow["Username"];
+        $_SESSION["useremail"] = $userrow["UserEmail"];
+        $_SESSION["userpassword"] = $userrow["UserPassword"];
+        }
+        else{
+            header("Location: login.php");
+        }
+        if(isset($_SESSION["username"])) {
+            header("Location: index.php");
+        }
+    }
+    
+
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,29 +64,33 @@
             <header>Krunker Idea Portal</header><br><br>
         </div>
 
-        <div class="input-field">
-            <input type="text" class="input" placeholder="Username" id="">
-            <i class='bx bx-user' ></i>
-        </div>
+        <form action="" method="post">
+            <div class="input-field">
+                <input type="email" class="input" placeholder="Username"  name="useremail" id="">
 
-        <div class="input-field">
-            <input type="Password" class="input" placeholder="Password" id="">
-            <i class='bx bx-lock-alt'></i>
-        </div>
 
-        <div class="input-field">
-            <input type="submit" class="submit" value="Login" id=""><br>
-        </div>
-
-        <div class="two-col">
-            <div class="one">
-               <input type="checkbox" name="" id="check">
-               <label for="check"> Remember Me</label>
+                <i class='bx bx-user' ></i>
             </div>
+
+            <div class="input-field">
+                <input type="Password" class="input" placeholder="Password" name="userpassword" id="">
+                <i class='bx bx-lock-alt'></i>
+            </div>
+
+            <div class="input-field">
+                <input type="submit" class="submit" value="Login" name="userlogin" id=""><br>  
+            </div>
+
+            <div class="two-col">
+                <div class="one">
+                    <input type="checkbox" name="" id="check">
+                    <label for="check"> Remember Me</label>
+                </div>
             <div class="two">
                 <label><a href="#">Forgot password?</a></label>
             </div>
-        </div>
+        </form>
+        
     </div>
 </div>  
 </body>
