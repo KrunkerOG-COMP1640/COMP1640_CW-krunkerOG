@@ -341,15 +341,11 @@
             <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col">
-                    <a href="#" class="btn btn-primary">Most Popular</a>
-                    <a href="#" class="btn btn-primary">Most Viewed</a>
-                    <a href="#" class="btn btn-primary">Latest Ideas</a>
-                    <a href="#" class="btn btn-primary">Latest Comments</a>
-                  </div>
-                  <div class="col">
-                    <div class="text-right">
-                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
-                    </div>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i> Most Popular</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</a>
+                    <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
                   </div>
                 </div>
               </div>
