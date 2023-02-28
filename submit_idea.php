@@ -1,3 +1,29 @@
+<?php
+	session_start();
+	
+	// Check if user is logged in
+if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
+    header("Location: login.php");// Redirect to login page if not logged in
+    exit;
+}
+// Connect to MySQL database
+$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
+// Insert new post into database
+if(isset($_POST["submit_post"])){
+	$title = mysqli_real_escape_string($dbconn, $_POST["title"]);
+	$desc = mysqli_real_escape_string($dbconn, $_POST["description"]);
+	$category = mysqli_real_escape_string($dbconn, $_POST["category"]);
+	$anon = isset($_POST["anonymous"]);
+	$user_id = $_SESSION["userid"];
+	mysqli_query($dbconn, "INSERT INTO idea_tbl (CategoryId, UserId, IdeaTitle, IdeaDescription,IdeaAnonymous) 
+							VALUES ('$category','$user_id','$title', '$desc','$anon')");
+	header("Location: index.php");
+	exit();
+
+}	
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -187,7 +213,7 @@
       Submit Idea
     </div>
     <div class="card-body">
-      <form action="submit-idea.php" method="post" enctype="multipart/form-data">
+      <form action="" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="title" class="form-label">Title:</label>
           <input type="text" id="title" name="title" class="form-control" required>
@@ -200,10 +226,10 @@
           <label for="category" class="form-label">Choose category:</label>
           <select id="category" name="category" class="form-control" required>
             <option value="">--Please select--</option>
-            <option value="technology">Technology</option>
-            <option value="education">Education</option>
-            <option value="health">Health</option>
-            <option value="business">Business</option>
+            <option value="1">Technology</option>
+            <option value="2">Education</option>
+            <option value="3">Health</option>
+            <option value="4">Business</option>
           </select>
         </div>
         <div class="mb-3">
@@ -211,7 +237,7 @@
           <input type="file" id="file" name="file" class="form-control" accept="image/*">
         </div>
         <div class="mb-3 form-check">
-          <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input">
+          <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value= 1>
           <label for="anonymous" class="form-check-label">Post anonymously</label>
         </div>
         <div class="mb-3 form-check">
@@ -219,7 +245,7 @@
           <label for="terms" class="form-check-label">I agree to the terms and conditions</label>
         </div>
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" name="submit_post" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>

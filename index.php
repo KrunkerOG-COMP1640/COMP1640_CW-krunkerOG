@@ -353,7 +353,7 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
                     <a href="#" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</a>
-                    <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
+                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
                   </div>
                 </div>
               </div>
