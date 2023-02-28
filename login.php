@@ -66,7 +66,7 @@ if(isset($_POST["userlogin"])){
 
         <form action="" method="post">
             <div class="input-field">
-                <input type="email" class="input" placeholder="Username"  name="useremail" id="">
+                <input type="email" class="input" placeholder="Email"  name="useremail" id="">
 
 
                 <i class='bx bx-user' ></i>
