@@ -379,6 +379,8 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
                 </div>
               </div>
 
@@ -387,6 +389,8 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
                 </div>
               </div>
 
@@ -395,6 +399,8 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
                 </div>
               </div>
 
@@ -403,6 +409,8 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
                 </div>
               </div>
         <!-- End Left side columns -->
