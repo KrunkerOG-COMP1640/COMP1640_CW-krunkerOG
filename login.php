@@ -1,19 +1,18 @@
 <?php
-
+require("krunkerideaconn.php");
 session_start();
 
-if(isset($_SESSION["username"])) {
+if(isset($_SESSION["username"]) && isset($_SESSION["userid"])) {
     header("Location: index.php");
     exit;
 }
 
-$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 if(isset($_POST["userlogin"])){
 
     $myemail = $_POST["useremail"];
     $mypassword = $_POST["userpassword"];
 
-    $checkaccount = mysqli_query($dbconn, "SELECT Username, UserEmail, UserPassword FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'");
+    $checkaccount = mysqli_query($dbconn, "SELECT UserId, Username, UserPassword FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'");
     $userrow = mysqli_fetch_array($checkaccount);
     
     if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {
@@ -26,9 +25,10 @@ if(isset($_POST["userlogin"])){
     }
     else{
         if(is_array($userrow)) {
-        $_SESSION["username"] = $userrow["Username"];
-        $_SESSION["useremail"] = $userrow["UserEmail"];
-        $_SESSION["userpassword"] = $userrow["UserPassword"];
+            $_SESSION["userid"] = $userrow["UserId"];
+            $_SESSION["username"] = $userrow["Username"];
+            $_SESSION["useremail"] = $userrow["UserEmail"];
+            $_SESSION["userpassword"] = $userrow["UserPassword"];
         }
         else{
             header("Location: login.php");
