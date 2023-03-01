@@ -322,100 +322,54 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Idea</h1>
+      <h1>Manage Idea</h1>
       <nav>
         <ol class="breadcrumb">
+          <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="ManageIdea_admin.html">Manage Idea</a></li>
         </ol>
+
+        </ol>
+        
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
       <div class="row">
-
-        <!-- Left side columns -->
-          <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Uploaded Idea</h4>
+            </div>
+            <!-- End Header Name -->
             <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Idea Description</th>
+                    <th>Anonymous</th>
+                    <th>Date Post</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td><a href="#" class="btn btn-success">Edit</a></td>
+                    <td><button type="button" class="btn btn-danger">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
 
-            <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col">
-                    <a href="#" class="btn btn-primary">Most Popular</a>
-                    <a href="#" class="btn btn-primary">Most Viewed</a>
-                    <a href="#" class="btn btn-primary">Latest Ideas</a>
-                    <a href="#" class="btn btn-primary">Latest Comments</a>
-                  </div>
-                  <div class="col">
-                    <div class="text-right">
-                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                  <form method="POST">
-						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
-						        <br/><?php echo $_SESSION['counter']; ?>
-                    <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
-						        <br/><?php echo $_SESSION['counter']; ?>
-				          </form>
-                </div>
-              </div>
-            
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-        <!-- End Left side columns -->
+            </div>
+          </div>
+        </div>
       </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+    </section>
 
   </main><!-- End #main -->
 

@@ -304,14 +304,14 @@
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="ManageUser_admin.html">
-            <i class="bi bi-people"></i>
+            <i class="bi bi-bar-chart-line"></i>
           <span>Manage User</span>
         </a>
-      </li><!-- End Manage User Page Nav -->
+      </li><!-- End Reports Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="ManageIdea_admin.html">
-            <i class="bi bi-chat-left-text"></i>
+            <i class="bi bi-bar-chart-line"></i>
           <span>Manage Idea</span>
         </a>
       </li><!-- End Manage Idea Page Nav -->
@@ -322,100 +322,72 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Idea</h1>
+      <h1>Edit User</h1>
       <nav>
         <ol class="breadcrumb">
+          <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="EditUser_admin.html">Edit User</a></li>
         </ol>
+
+        </ol>
+        
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
       <div class="row">
-
-        <!-- Left side columns -->
-          <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Edit User</h4>
+            </div>
+            <!-- End Header Name -->
             <div class="card-body">
 
-            <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col">
-                    <a href="#" class="btn btn-primary">Most Popular</a>
-                    <a href="#" class="btn btn-primary">Most Viewed</a>
-                    <a href="#" class="btn btn-primary">Latest Ideas</a>
-                    <a href="#" class="btn btn-primary">Latest Comments</a>
-                  </div>
-                  <div class="col">
-                    <div class="text-right">
-                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
+
+              <form action="">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="">Username</label>
+                        <input type="text" name="Username" class="form-control">
                     </div>
-                  </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="">Password</label>
+                        <input type="text" name="Password" class="form-control">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="">Gender</label>
+                        <select name="UserGebder" id="" required class="form-control">
+                          <option value="">--Select Gender--</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="">Email</label>
+                        <input type="text" name="UserEmail" class="form-control">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="">Role Name</label>
+                        <select name="UserRoleName" id="" required class="form-control">
+                          <option value="">--Select Role--</option>
+                          <option value="manager">QA Manager</option>
+                          <option value="coordinator">QA Coordinator</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                      <button type="submit" class="btn btn-primary">Update User</button>
+                    </div>
                 </div>
-              </div>
+              </form>
 
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                  <form method="POST">
-						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
-						        <br/><?php echo $_SESSION['counter']; ?>
-                    <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
-						        <br/><?php echo $_SESSION['counter']; ?>
-				          </form>
-                </div>
-              </div>
-            
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-        <!-- End Left side columns -->
+            </div>
+          </div>
+        </div>
       </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+    </section>
 
   </main><!-- End #main -->
 
