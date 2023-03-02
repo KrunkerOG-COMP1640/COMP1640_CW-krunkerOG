@@ -4,6 +4,19 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
   header("Location: login.php");
   exit;
 }
+
+$dbconn = mysqli_connect("localhost", "root", "", "krunkerdb","3307");
+//determine current page
+$page = isset($_GET['page'])?$_GET['page']:1;
+//determine the number of data per page
+$rows_per_page = 5;
+
+$start= 
+
+$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription from idea_tbl 
+INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
+INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId;";
+$result= mysqli_query($dbconn, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -358,11 +371,24 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
                 </div>
               </div>
 
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+   
+<?php
+      //displaying every ideas from database
+    while ($row = mysqli_fetch_assoc($result)){
+      echo'<div class="card">';
+                echo'<div class="card-body">';
+                  echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
+                  echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>';
+                  echo '<h5 class="card-author">'.$row['Username'].'</h5>';
+                  echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
+                  
+                 echo'<a href="#" class="btn btn-primary">See more</a>';
+                echo'</div>';
+              echo'</div>';
+    }
+ ?>                    
+
+
                   <form method="POST">
 						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
 						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
