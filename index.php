@@ -5,7 +5,7 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
   exit;
 }
 
-$dbconn = mysqli_connect("localhost", "root", "", "krunkerdb","3307");
+$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 //determine current page
 $page = isset($_GET['page'])?$_GET['page']:1;
 //determine the number of data per page
