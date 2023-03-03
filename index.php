@@ -15,9 +15,9 @@ $rows_per_page = 5;
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription from idea_tbl LIMIT $start
+$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription from idea_tbl 
 INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId,$rows_per_page";
+INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId LIMIT $start,$rows_per_page";
 $result= mysqli_query($dbconn, $sql);
 ?>
 
