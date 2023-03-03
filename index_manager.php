@@ -28,7 +28,6 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <script src="https://use.fontawesome.com/fe459689b4.js"></script>
 
 </head>
 
@@ -304,8 +303,8 @@
       </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="bi bi-person"></i>
+        <a class="nav-link collapsed" href="ManageCategory_manager.html">
+          <i class="bi bi-grid"></i>
           <span>Add a new Category</span>
         </a>
       </li><!-- End Category Page Nav -->
@@ -342,11 +341,15 @@
             <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col">
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i> Most Popular</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</a>
-                    <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
+                    <a href="#" class="btn btn-primary">Most Popular</a>
+                    <a href="#" class="btn btn-primary">Most Viewed</a>
+                    <a href="#" class="btn btn-primary">Latest Ideas</a>
+                    <a href="#" class="btn btn-primary">Latest Comments</a>
+                  </div>
+                  <div class="col">
+                    <div class="text-right">
+                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -355,7 +358,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary">See more</a>
                 </div>
               </div>
             
@@ -363,7 +366,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary">See more</a>
                 </div>
               </div>
 
@@ -371,7 +374,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary">See more</a>
                 </div>
               </div>
 
@@ -379,7 +382,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary">See more</a>
                 </div>
               </div>
 
@@ -387,7 +390,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary">See more</a>
                 </div>
               </div>
         <!-- End Left side columns -->
@@ -414,66 +417,14 @@
     <div class="copyright">
       &copy; Copyright <strong><span>Krunker Idea Portal 2023</span></strong>. All Rights Reserved
     </div>
-  </footer>
-  <!-- End Footer -->
-
-  <!-- Start View Idea Modal -->
-  <div class="modal fade" id="viewUserIdea" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Username/ Anonymously</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- Body -->
-            <div class="modal-body">
-                <!-- Nav Scroller -->
-                <div class="js-nav-scroller hs-nav-scroller-horizontal">
-                    <span class="hs-nav-scroller-arrow-prev" style="display: none;">
-                        <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-                            <i class="bi-chevron-left"></i>
-                        </a>
-                    </span>
-
-                    <span class="hs-nav-scroller-arrow-next" style="display: none;">
-                        <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-                            <i class="bi-chevron-right"></i>
-                        </a>
-                    </span>
-                </div>
-                <!-- End Nav Scroller -->
-
-                <!-- Modal PopUp Content -->
-                <div class="tab-content" id="editUserModalTabContent">
-                    <div class="row">
-                        <h4 class="modal-title text-cap">Idea Title</h4>
-                        <div class="flex-grow-1">
-                          Idea description
-                      </div>
-                      <div class="d-flex justify-content-start">
-                        <button class="btn"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                        <button class="btn"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="row mb-6">
-                        <textarea id="freeform" name="freeform" rows="4" cols="50">Enter comment here...</textarea>
-                        <div class="d-flex justify-content-end">
-                          <div class="d-flex gap-3">
-                              <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                              <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clientAdviceModal">Submit</button>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-                <!-- End Modal PopUp Content -->
-            </div>
-            <!-- End Body -->
-        </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
-  </div>
-  <!-- End View Idea Modal -->
+  </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

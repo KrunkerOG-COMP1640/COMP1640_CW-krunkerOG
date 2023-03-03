@@ -301,20 +301,26 @@
 
       <li class="nav-heading">Pages</li>
 
-      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
-            <i class="bi bi-bar-chart-line"></i>
-          <span>Manage User</span>
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Staff Details</span>
         </a>
-      </li><!-- End Reports Page Nav -->
+      </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
-            <i class="bi bi-bar-chart-line"></i>
-          <span>Manage Idea</span>
+        <a class="nav-link collapsed" href="ManageCategory_manager.html">
+          <i class="bi bi-grid"></i>
+          <span>Add a new Category</span>
         </a>
-      </li><!-- End Manage Idea Page Nav -->
+      </li><!-- End Category Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="report_manager.html">
+          <i class="bi bi-bar-chart-line"></i>
+          <span>Reports</span>
+        </a>
+      </li><!-- End Report Page Nav -->
+
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -322,17 +328,13 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit User</h1>
+      <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageUser_admin.html">Manage User</a></li>
-          <li class="breadcrumb-item"><a href="EditUser_admin.html">Edit User</a></li>
+          <li class="breadcrumb-item"><a href="index_manager.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="ManageCategory_manager.html">Manage Category</a></li>
+          <li class="breadcrumb-item"><a href="EditCategory_manager.html">Edit Category</a></li>
         </ol>
-
-        </ol>
-        
       </nav>
     </div><!-- End Page Title -->
 
@@ -341,7 +343,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h4>Edit User</h4>
+              <h4>Edit Category</h4>
             </div>
             <!-- End Header Name -->
             <div class="card-body">
@@ -350,34 +352,23 @@
               <form action="">
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label for="">Username</label>
-                        <input type="text" name="Username" class="form-control">
+                        <label for="">Category Title</label>
+                        <input type="text" name="CategoryTitle" class="form-control">
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="">Password</label>
-                        <input type="text" name="Password" class="form-control">
+                        <label for="">Date Closure</label>
+                        <br>
+                        <input type="date" class="form-control" name="begin" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31">
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="">Gender</label>
-                        <select name="UserGebder" id="" required class="form-control">
-                          <option value="">--Select Gender--</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                        </select>
+                        <label for="">Date Final</label>
+                        <br>
+                        <input type="date" class="form-control" name="begin" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31">
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="">Email</label>
-                        <input type="text" name="UserEmail" class="form-control">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Role Name</label>
-                        <select name="UserRoleName" id="" required class="form-control">
-                          <option value="">--Select Role--</option>
-                          <option value="manager">QA Manager</option>
-                          <option value="coordinator">QA Coordinator</option>
-                          <option value="admin">Admin</option>
-                        </select>
-                    </div>
+                      <label for="">Date Created</label>
+                      <input type="text" name="DateCreated" class="form-control">
+                  </div>
                     <div class="col-md-12 mb-3">
                       <button type="submit" class="btn btn-primary">Update User</button>
                     </div>

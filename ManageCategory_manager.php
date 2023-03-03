@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Krunker Idea Portal 2023</title>
+  <title>Krunker Idea Portal 2023 | Manager</title>
   <meta content="" name="description">
-  <meta content="" name="keywords"> 
+  <meta content="" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -24,17 +24,11 @@
   <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/style.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -43,7 +37,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.html" class="logo d-flex align-items-center">
+      <a href="index_manager.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -268,18 +262,19 @@
 
   </header><!-- End Header -->
 
+
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
+        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_manager.html">
           <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="list_of_category_admin.html">
+            <a href="list_of_category_manager.html">
               <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
             </a>
           </li>
@@ -301,20 +296,26 @@
 
       <li class="nav-heading">Pages</li>
 
-      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
-            <i class="bi bi-bar-chart-line"></i>
-          <span>Manage User</span>
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Staff Details</span>
         </a>
-      </li><!-- End Reports Page Nav -->
+      </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
-            <i class="bi bi-bar-chart-line"></i>
-          <span>Manage Idea</span>
+        <a class="nav-link collapsed" href="ManageCategory_manager.html">
+          <i class="bi bi-grid"></i>
+          <span>Add a new Category</span>
         </a>
-      </li><!-- End Manage Idea Page Nav -->
+      </li><!-- End Category Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="report_manager.html">
+          <i class="bi bi-bar-chart-line"></i>
+          <span>Reports</span>
+        </a>
+      </li><!-- End Report Page Nav -->
+
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -322,73 +323,53 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit User</h1>
+      <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageUser_admin.html">Manage User</a></li>
-          <li class="breadcrumb-item"><a href="EditUser_admin.html">Edit User</a></li>
+          <li class="breadcrumb-item"><a href="index_manager.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="ManageCategory_manager.html">Manage Category</a></li>
         </ol>
-
-        </ol>
-        
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <h4>Edit User</h4>
-            </div>
-            <!-- End Header Name -->
-            <div class="card-body">
-
-
-              <form action="">
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <label for="">Username</label>
-                        <input type="text" name="Username" class="form-control">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Password</label>
-                        <input type="text" name="Password" class="form-control">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Gender</label>
-                        <select name="UserGebder" id="" required class="form-control">
-                          <option value="">--Select Gender--</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Email</label>
-                        <input type="text" name="UserEmail" class="form-control">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Role Name</label>
-                        <select name="UserRoleName" id="" required class="form-control">
-                          <option value="">--Select Role--</option>
-                          <option value="manager">QA Manager</option>
-                          <option value="coordinator">QA Coordinator</option>
-                          <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                      <button type="submit" class="btn btn-primary">Update User</button>
-                    </div>
-                </div>
-              </form>
-
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4>Manage Category</h4>
+                <button type="button" class="btn btn-primary">Add a new Category</button>
+              </div>
+              <!-- End Header Name -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Category Title</th>
+                      <th>Date Closure</th>
+                      <th>Date Final</th>
+                      <th>Date Created</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>1</td>
+                      <td>1</td>
+                      <td>1</td>
+                      <td><a href="EditCategory_manager.html" class="btn btn-success">Edit</a></td>
+                      <td><button type="button" class="btn btn-danger">Delete</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+  
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
   </main><!-- End #main -->
 
