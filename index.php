@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Kuala Lumpur');
 session_start();
 if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
   header("Location: login.php");
@@ -11,11 +12,12 @@ $page = isset($_GET['page'])?$_GET['page']:1;
 //determine the number of data per page
 $rows_per_page = 5;
 
-$start= 
+// Determine the starting row number for the current page
+$start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription from idea_tbl 
+$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription from idea_tbl LIMIT $start
 INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId;";
+INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId,$rows_per_page";
 $result= mysqli_query($dbconn, $sql);
 ?>
 
@@ -371,24 +373,24 @@ $result= mysqli_query($dbconn, $sql);
                 </div>
               </div>
 
-   
 <?php
       //displaying every ideas from database
     while ($row = mysqli_fetch_assoc($result)){
       echo'<div class="card">';
-                echo'<div class="card-body">';
-                  echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
-                  echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>';
-                  echo '<h5 class="card-author">'.$row['Username'].'</h5>';
-                  echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
+          echo'<div class="card-body">';
+            echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
+            echo '<span class="card-author">'.$row['Username'].'</span>';
+				    echo '<span class="card-category">'.$row['CategoryTitle'].'</span>';
+            echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
                   
-                 echo'<a href="#" class="btn btn-primary">See more</a>';
-                echo'</div>';
-              echo'</div>';
+            echo'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
+				    echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
+            echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
+          echo'</div>';
+      echo'</div>';
     }
  ?>                    
-
-
+                <!--
                   <form method="POST">
 						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
 						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
@@ -396,51 +398,32 @@ $result= mysqli_query($dbconn, $sql);
                     <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
 						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
 						        <br/><?php echo $_SESSION['counter']; ?>
-				          </form>
-                </div>
-              </div>
-            
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
-                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
-                </div>
-              </div>
+				          </form>  
+  -->
         <!-- End Left side columns -->
       </div>
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+			
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>
+      <!--
+
+      <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Idea title</h5>
+                  <p class="card-text">Created by: unknown</p>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>
+                  <a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>
+                </div>
+              </div>
 
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -455,6 +438,7 @@ $result= mysqli_query($dbconn, $sql);
           </li>
         </ul>
       </nav>
+  -->
 
   </main><!-- End #main -->
 
