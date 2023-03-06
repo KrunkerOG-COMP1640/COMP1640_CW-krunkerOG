@@ -53,6 +53,13 @@ $result= mysqli_query($dbconn, $sql);
   <link href="assets/css/style.css" rel="stylesheet">
   <script src="https://use.fontawesome.com/fe459689b4.js"></script>
 
+  <style>
+    .pagination{
+        text-align:center;
+        display: inline;
+        letter-spacing:10px;
+    }
+</style>
 </head>
 
 <body>
@@ -409,6 +416,8 @@ $result= mysqli_query($dbconn, $sql);
   -->
         <!-- End Left side columns -->
       </div>
+
+      <div class="pagination">
       <?php
 			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
 			$page_count = mysqli_query($dbconn, $sql_page);
@@ -420,9 +429,9 @@ $result= mysqli_query($dbconn, $sql);
 				echo'<a href="?page='.$i.'">'.$i.'</a>';
 			}
 		?>
-      <!--
-
-      <div class="card">
+    </div>
+<!--     
+            <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
@@ -444,8 +453,8 @@ $result= mysqli_query($dbconn, $sql);
             <a class="page-link" href="#">Next</a>
           </li>
         </ul>
-      </nav>
-  -->
+      </nav> -->
+
 
   </main><!-- End #main -->
 
