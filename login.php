@@ -29,6 +29,7 @@ if(isset($_POST["userlogin"])){
             $_SESSION["username"] = $userrow["Username"];
             $_SESSION["useremail"] = $userrow["UserEmail"];
             $_SESSION["userpassword"] = $userrow["UserPassword"];
+            $_SESSION["role"] = $userrow["UserRoleName"];
         }
         else{
             header("Location: login.php");
@@ -37,7 +38,12 @@ if(isset($_POST["userlogin"])){
             header("Location: index.php");
         }
     }
-    
+    if($_SESSION["role"] == "Admin"){
+        header("Location: index_admin.php");
+    }
+    if($_SESSION["role"] == "Staff"){
+        header("Location: index.php");
+    }
 
 }
 
