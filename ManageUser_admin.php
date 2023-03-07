@@ -1,3 +1,29 @@
+<?php
+session_start();
+
+require("krunkerideaconn.php");
+if(!isset($_SESSION['role'])){
+  header("Location: index.php");
+  exit;
+  
+}
+else{
+  if($_SESSION['role'] != "Admin"){ //staff cannot access admin page
+      header("Location: index.php");
+      // exit;
+  }
+
+}
+
+$page = isset($_GET['page'])?$_GET['page']:1;
+//determine the number of data per page
+$rows_per_page = 4;
+
+// Determine the starting row number for the current page
+$start= ($page-1)*$rows_per_page;
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +61,12 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <style>
+    .pagination{
+      justify-content: center;
+        display: flex;
+        letter-spacing:10px;
+    }
 </head>
 
 <body>
@@ -274,7 +306,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
+        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.php">
           <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -303,14 +335,14 @@
 
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
+        <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-people"></i>
           <span>Manage User</span>
         </a>
       </li><!-- End Manage User Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
+        <a class="nav-link collapsed" href="ManageIdea_admin.php">
             <i class="bi bi-chat-left-text"></i>
           <span>Manage Idea</span>
         </a>
@@ -326,8 +358,8 @@
       <nav>
         <ol class="breadcrumb">
           <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageUser_admin.html">Manage User</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.php">Idea</a></li>
+          <li class="breadcrumb-item"><a href="ManageUser_admin.php">Manage User</a></li>
         </ol>
 
         </ol>
@@ -358,15 +390,33 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td><a href="EditUser_admin.html" class="btn btn-success">Edit</a></td>
-                    <td><button type="button" class="btn btn-danger">Delete</button></td>
-                  </tr>
+                  <?php
+                    $query = "SELECT * FROM user_tbl LIMIT $start,$rows_per_page";
+                    $query_no = mysqli_query($dbconn,$query);
+                    if(mysqli_num_rows($query_no) >0){
+                      foreach($query_no as $row){
+                        ?>
+                        <tr>
+                        <td><?= $row['Username'];?></td>
+                        <td><?= $row['UserPassword'];?></td>
+                        <td><?= $row['UserContactNo'];?></td>
+                        <td><?= $row['UserEmail'];?></td>
+                        <td><?= $row['UserRoleName'];?></td>
+                        <td><a href="EditUser_admin.php" class="btn btn-success">Edit</a></td>
+                        <td><button type="button" class="btn btn-danger">Delete</button></td>
+                      </tr>
+                      <?php
+                      }
+                    }
+                    else{
+                      ?>
+                      <tr>
+                        <td colspan="6">No record found</td>
+                    
+                    <?php
+                    }
+                    ?>
+    
                 </tbody>
               </table>
 
@@ -374,6 +424,19 @@
           </div>
         </div>
       </div>
+    <div class = "pagination">
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+   
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>
+    </div>
     </section>
 
   </main><!-- End #main -->
