@@ -2,10 +2,9 @@
 session_start();
 require("krunkerideaconn.php");
 
-if(!isset($_SESSION['role'])){
-    header("Location: index.php");
-    exit;
-    
+if($_SESSION["role"] != "Admin") {
+  header("Location: index.php");
+  exit;
 }
 
 
@@ -335,7 +334,37 @@ $result= mysqli_query($dbconn, $sql);
 
       <li class="nav-heading">Pages</li>
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="users-profile.html">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-faq.html">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-contact.html">
+          <i class="bi bi-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+
+      <?php
+      if($_SESSION["role"] == "Admin") {
+
       
+      ?>
+      <li class="nav-heading">
+        <a href="index_admin.php">Admin</a>
+
+      </li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-people"></i>
@@ -349,6 +378,9 @@ $result= mysqli_query($dbconn, $sql);
           <span>Manage Idea</span>
         </a>
       </li><!-- End Manage Idea Page Nav -->
+      <?php
+      }
+      ?>
     </ul>
 
   </aside><!-- End Sidebar-->
