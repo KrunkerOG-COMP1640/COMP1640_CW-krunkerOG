@@ -1,3 +1,29 @@
+<?php
+session_start();
+require("krunkerideaconn.php");
+
+if(!isset($_SESSION['role'])){
+    header("Location: index.php");
+    exit;
+    
+}
+
+
+$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
+//determine current page
+$page = isset($_GET['page'])?$_GET['page']:1;
+//determine the number of data per page
+$rows_per_page = 5;
+
+// Determine the starting row number for the current page
+$start= ($page-1)*$rows_per_page;
+
+$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
+INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
+INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId LIMIT $start,$rows_per_page";
+$result= mysqli_query($dbconn, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +61,14 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+	 <style>
+    .pagination{
+        text-align:center;
+        display: inline;
+        letter-spacing:10px;
+    }
+   
+</style>
 </head>
 
 <body>
@@ -211,12 +245,12 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["userid"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION["username"];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -303,14 +337,14 @@
 
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
+        <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-people"></i>
           <span>Manage User</span>
         </a>
       </li><!-- End Manage User Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
+        <a class="nav-link collapsed" href="ManageIdea_admin.php">
             <i class="bi bi-chat-left-text"></i>
           <span>Manage Idea</span>
         </a>
@@ -340,82 +374,75 @@
             <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col">
-                    <a href="#" class="btn btn-primary">Most Popular</a>
-                    <a href="#" class="btn btn-primary">Most Viewed</a>
-                    <a href="#" class="btn btn-primary">Latest Ideas</a>
-                    <a href="#" class="btn btn-primary">Latest Comments</a>
-                  </div>
-                  <div class="col">
-                    <div class="text-right">
-                      <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50;">Submit Idea</a>
-                    </div>
+                <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Popular</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Viewed</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Ideas</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Comments</a>
+                    <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</a>
                   </div>
                 </div>
               </div>
 
-              <div class="card">
+<!--      
+<?php
+      //displaying every ideas from database
+    while ($row = mysqli_fetch_assoc($result)){
+      echo'<div class="card">';
+          echo'<div class="card-body">';
+            echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
+            echo '<span class="card-author">'.$row['Username'].'</span>';
+				    echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>';
+                  if($row['IdeaAnonymous'] == 0) {
+                    echo '<h5 class="card-author">'.$row['Username'].'</h5>';
+                  }
+                  else if($row['IdeaAnonymous'] == 1){
+                    echo '<h5 class="card-author">Anonymous</h5>';
+                  }
+                  
+                  echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
+                  
+                 echo'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
+                 echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
+                 echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
+                echo'</div>';
+              echo'</div>';
+    }
+ ?>                    
+	 
+
+
+
+
+
+
+<div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Idea title</h5>
                   <p class="card-text">Created by: unknown</p>
                   <a href="#" class="btn btn-primary">See more</a>
-                  <form method="POST">
-						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
-						        <br/><?php echo $_SESSION['counter']; ?>
+                  <form method="POST"> -->
+<!-- 						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
+						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" /> -->
+<!-- 						        <br/><?php echo $_SESSION['counter']; ?>
                     <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
+						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" /> -->
 						        <br/><?php echo $_SESSION['counter']; ?>
-				          </form>
-                </div>
+<!-- 				          </form>
+                </div> -->
               </div>
             
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-        <!-- End Left side columns -->
-      </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+  <div class = "pagination">
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+   
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>            
 
   </main><!-- End #main -->
 
