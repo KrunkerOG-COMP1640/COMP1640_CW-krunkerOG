@@ -29,7 +29,7 @@ if(isset($_POST["userlogin"])){
         else{
             header("Location: login.php");
         }
-        //////////////////////////////////////////////Modified-->
+   
         if(isset($_SESSION["username"]) 
         && isset($_SESSION["userid"]) 
         && isset($_SESSION["role"])) {
