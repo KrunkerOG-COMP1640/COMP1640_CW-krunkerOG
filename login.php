@@ -2,6 +2,17 @@
 require("krunkerideaconn.php");
 session_start();
 
+if(isset($_SESSION["username"])) {
+    if($_SESSION["role"] == "Admin") {
+        header("Location: index_admin.php");
+        exit;
+    }
+    else if($_SESSION["role"] != "Admin") {
+        header("Location: index.php");
+        exit;
+    }
+}
+
 if(isset($_POST["userlogin"])){
 
     $myemail = $_POST["useremail"];
@@ -33,8 +44,15 @@ if(isset($_POST["userlogin"])){
         if(isset($_SESSION["username"]) 
         && isset($_SESSION["userid"]) 
         && isset($_SESSION["role"])) {
-            header("Location: index.php");
-            exit;
+            if($_SESSION["role"] == "Admin") {
+                header("Location: index_admin.php");
+                exit;
+            }
+            else if($_SESSION["role"] != "Admin") {
+                header("Location: index.php");
+                exit;
+            }
+            
         }
     }
 

@@ -67,6 +67,7 @@ $start= ($page-1)*$rows_per_page;
         display: flex;
         letter-spacing:10px;
     }
+  </style>
 </head>
 
 <body>

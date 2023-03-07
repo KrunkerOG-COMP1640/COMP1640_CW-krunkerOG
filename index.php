@@ -346,32 +346,7 @@ $result= mysqli_query($dbconn, $sql);
           <span>Contact</span>
         </a>
       </li><!-- End Contact Page Nav -->
-
-      <?php
-      if($_SESSION["role"] == "Admin") {
-
       
-      ?>
-      <li class="nav-heading">
-        <a href="index_admin.php">Admin</a>
-
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.php">
-            <i class="bi bi-people"></i>
-          <span>Manage User</span>
-        </a>
-      </li><!-- End Manage User Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.php">
-            <i class="bi bi-chat-left-text"></i>
-          <span>Manage Idea</span>
-        </a>
-      </li><!-- End Manage Idea Page Nav -->
-      <?php
-      }
-      ?>
       
     </ul>
 
