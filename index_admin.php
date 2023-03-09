@@ -2,9 +2,10 @@
 session_start();
 require("krunkerideaconn.php");
 
-if($_SESSION["role"] != "Admin") {
-  header("Location: login.php");
-  exit;
+if(!isset($_SESSION['role'])){
+    header("Location: index.php");
+    exit;
+    
 }
 
 
@@ -22,6 +23,8 @@ INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
 INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId LIMIT $start,$rows_per_page";
 $result= mysqli_query($dbconn, $sql);
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +63,7 @@ $result= mysqli_query($dbconn, $sql);
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-	 <style>
+  <style>
     .pagination{
         text-align:center;
         display: inline;
@@ -332,10 +335,9 @@ $result= mysqli_query($dbconn, $sql);
         </ul>
       </li><!-- End Statistics Nav -->
 
-      <li class="nav-heading">
-        <a href="index_admin.php">Admin</a>
+      <li class="nav-heading">Pages</li>
 
-      </li>
+      
       <li class="nav-item">
         <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-people"></i>
@@ -374,7 +376,7 @@ $result= mysqli_query($dbconn, $sql);
             <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col">
-                <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Popular</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Popular</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Viewed</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Ideas</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Comments</a>
@@ -383,7 +385,6 @@ $result= mysqli_query($dbconn, $sql);
                 </div>
               </div>
 
-<!--      
 <?php
       //displaying every ideas from database
     while ($row = mysqli_fetch_assoc($result)){
@@ -408,30 +409,22 @@ $result= mysqli_query($dbconn, $sql);
               echo'</div>';
     }
  ?>                    
-	 
 
-
-
-
-
-
-<div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                  <form method="POST"> -->
-<!-- 						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" /> -->
-<!-- 						        <br/><?php echo $_SESSION['counter']; ?>
-                    <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
-						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" /> -->
+         
+                <!--
+                  <form method="POST">
+						        <input type="submit" class="like_btn" name="like_btn" value="Like" />
+						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
 						        <br/><?php echo $_SESSION['counter']; ?>
-<!-- 				          </form>
-                </div> -->
-              </div>
-            
-  <div class = "pagination">
+                    <input type="submit" class="dislike_btn" name="dislike_btn" value="Dislike" />
+						        <input type="hidden" name="counter" value="<?php echo $_SESSION['counter']; ?>" />
+						        <br/><?php echo $_SESSION['counter']; ?>
+				          </form>  
+  -->
+        <!-- End Left side columns -->
+  </div>
+                
+      <div class = "pagination">
       <?php
 			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
 			$page_count = mysqli_query($dbconn, $sql_page);
@@ -442,9 +435,9 @@ $result= mysqli_query($dbconn, $sql);
 			for ($i = 1; $i <= $total_pages; $i++){
 				echo'<a href="?page='.$i.'">'.$i.'</a>';
 			}
-		?>            
-</div>
-
+		?>
+    </div>
+            
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
@@ -460,6 +453,65 @@ $result= mysqli_query($dbconn, $sql);
      
     </div>
   </footer><!-- End Footer -->
+
+  
+  <!-- Start View Idea Modal -->
+  <div class="modal fade" id="viewUserIdea" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Username/ Anonymously</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Nav Scroller -->
+                <div class="js-nav-scroller hs-nav-scroller-horizontal">
+                    <span class="hs-nav-scroller-arrow-prev" style="display: none;">
+                        <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                            <i class="bi-chevron-left"></i>
+                        </a>
+                    </span>
+
+                    <span class="hs-nav-scroller-arrow-next" style="display: none;">
+                        <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                            <i class="bi-chevron-right"></i>
+                        </a>
+                    </span>
+                </div>
+                <!-- End Nav Scroller -->
+
+                <!-- Modal PopUp Content -->
+                <div class="tab-content" id="editUserModalTabContent">
+                    <div class="row">
+                        <h4 class="modal-title text-cap">Idea Title</h4>
+                        <div class="flex-grow-1">
+                          Idea description
+                      </div>
+                      <div class="d-flex justify-content-start">
+                        <button class="btn"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                        <button class="btn"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row mb-6">
+                        <textarea id="freeform" name="freeform" rows="4" cols="50">Enter comment here...</textarea>
+                        <div class="d-flex justify-content-end">
+                          <div class="d-flex gap-3">
+                              <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                              <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clientAdviceModal">Submit</button>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- End Modal PopUp Content -->
+            </div>
+            <!-- End Body -->
+        </div>
+    </div>
+  </div>
+  <!-- End View Idea Modal -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

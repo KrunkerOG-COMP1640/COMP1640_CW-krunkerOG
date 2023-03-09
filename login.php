@@ -1,26 +1,23 @@
 <?php
 require("krunkerideaconn.php");
+
 session_start();
 
-if(isset($_SESSION["username"])) {
-    if($_SESSION["role"] == "Admin") {
-        header("Location: index_admin.php");
-        exit;
-    }
-    else if($_SESSION["role"] != "Admin") {
-        header("Location: index.php");
-        exit;
-    }
+if(isset($_SESSION["username"]) && isset($_SESSION["userid"])) {
+    header("Location: index.php");
+    exit;
 }
 
 if(isset($_POST["userlogin"])){
 
     $myemail = $_POST["useremail"];
     $mypassword = $_POST["userpassword"];
-
     $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'";
     $checkaccount = mysqli_query($dbconn,$sql );
     
+    
+    if(mysqli_num_rows($checkaccount) > 0){
+        $userrow = mysqli_fetch_array($checkaccount);
     
     if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {
 
@@ -39,11 +36,11 @@ if(isset($_POST["userlogin"])){
             $_SESSION["role"] = $userrow["UserRoleName"];
             $_SESSION["useraddress"] = $userrow["UserAddress"];
             $_SESSION["usercontactno"] = $userrow["UserContactNo"];
+
         }
         else{
             header("Location: login.php");
         }
-   
         if(isset($_SESSION["username"]) 
         && isset($_SESSION["userid"]) 
         && isset($_SESSION["role"])) {
@@ -58,9 +55,8 @@ if(isset($_POST["userlogin"])){
             
         }
     }
-
 }
-
+}
 ?>
 
 
@@ -93,7 +89,7 @@ if(isset($_POST["userlogin"])){
             </div>
 
             <div class="input-field">
-                <input type="Password" class="input" placeholder="Password" name="userpassword" id="">
+                <input type="password" class="input" placeholder="Password" name="userpassword" id="">
                 <i class='bx bx-lock-alt'></i>
             </div>
 

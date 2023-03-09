@@ -1,3 +1,45 @@
+<?php
+session_start();
+
+require("krunkerideaconn.php");
+
+if(!isset($_SESSION['role'])){
+  header("Location: index.php");
+  exit;
+  
+}
+else{
+  if($_SESSION['role'] != "Admin"){ //staff cannot access admin page
+      header("Location: index.php");
+      // exit;
+  }
+}
+$id = $_GET['id'];
+if(isset($_POST['submit'])){
+  $username = $_POST['Username'];
+  $password = $_POST['UserPassword'];
+  $contact = $_POST['UserContactNo'];
+  $address = $_POST['UserAddress'];
+  $email = $_POST['UserEmail'];
+  $role = $_POST['UserRoleName'];
+  $department = $_POST['DepartmentId'];
+
+  $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
+  WHERE UserId = $id";
+  $result =mysqli_query($dbconn, $sql);
+
+  if($result){
+    header("Location: ManageUser_admin.php?msg=Data updated successfully");
+  }
+  else{
+    echo "Failed: " .mysqli_error($dbconn);
+  }
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -303,14 +345,14 @@
 
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
+        <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-bar-chart-line"></i>
           <span>Manage User</span>
         </a>
       </li><!-- End Reports Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
+        <a class="nav-link collapsed" href="ManageIdea_admin.php">
             <i class="bi bi-bar-chart-line"></i>
           <span>Manage Idea</span>
         </a>
@@ -326,9 +368,9 @@
       <nav>
         <ol class="breadcrumb">
           <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageUser_admin.html">Manage User</a></li>
-          <li class="breadcrumb-item"><a href="EditUser_admin.html">Edit User</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.php">Admin</a></li>
+          <li class="breadcrumb-item"><a href="ManageUser_admin.php">Manage User</a></li>
+          <li class="breadcrumb-item"><a href="#">Edit User</a></li>
         </ol>
 
         </ol>
@@ -346,40 +388,61 @@
             <!-- End Header Name -->
             <div class="card-body">
 
+<?php
 
-              <form action="">
+$sql = "SELECT * FROM user_tbl WHERE UserId = $id LIMIT 1";
+$result = mysqli_query($dbconn, $sql);  
+$row = mysqli_fetch_assoc($result);
+
+?>
+              <form action="" method="post">
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="">Username</label>
-                        <input type="text" name="Username" class="form-control">
+                        <input type="text" name="Username" value ="<?php echo $row['Username'] ?>"  class="form-control">
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Password</label>
-                        <input type="text" name="Password" class="form-control">
+                        <input type="text" name="UserPassword" value ="<?php echo $row['UserPassword'] ?>" class="form-control">
                     </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Gender</label>
-                        <select name="UserGebder" id="" required class="form-control">
-                          <option value="">--Select Gender--</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                        </select>
-                    </div>
+                    
                     <div class="col-md-12 mb-3">
                         <label for="">Email</label>
-                        <input type="text" name="UserEmail" class="form-control">
+                        <input type="email" name="UserEmail" value ="<?php echo $row['UserEmail'] ?>" class="form-control">
                     </div>
+      
+                    <div class="col-md-12 mb-3">
+                        <label for="">Contact No</label>
+                        <input type="text" name="UserContactNo" value ="<?php echo $row['UserContactNo'] ?>" class="form-control">
+                    </div>
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="">Address</label>
+                        <input type="text" name="UserAddress" value ="<?php echo $row['UserAddress'] ?>" class="form-control">
+                    </div>
+
                     <div class="col-md-12 mb-3">
                         <label for="">Role Name</label>
-                        <select name="UserRoleName" id="" required class="form-control">
-                          <option value="">--Select Role--</option>
-                          <option value="manager">QA Manager</option>
-                          <option value="coordinator">QA Coordinator</option>
-                          <option value="admin">Admin</option>
+                        <select name="UserRoleName" id="" value ="<?php echo $row['UserRoleName'] ?>" required class="form-control">
+                          
+                          <option value="Staff">Staff</option>
+                          <option value="QA Manager">QA Manager</option>
+                          <option value="QA Coordinator">QA Coordinator</option>
+                          <option value="Admin">Admin</option>
+                        </select>
+                        
+                        <div class="col-md-12 mb-3">
+                        <label for="">Department</label>
+                        <select name="DepartmentId" id="" value ="<?php echo $row['DepartmentId'] ?>" required class="form-control">
+                         
+                          <option value="1">Information Technology</option>
+                        
                         </select>
                     </div>
+                    </div>
                     <div class="col-md-12 mb-3">
-                      <button type="submit" class="btn btn-primary">Update User</button>
+                      <button type="submit" class="btn btn-primary" name="submit">Update User</button>
+                      <a href="ManageUser_admin.php" class="btn btn-danger" >Cancel</a>
                     </div>
                 </div>
               </form>
@@ -402,7 +465,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    
     </div>
   </footer><!-- End Footer -->
 
