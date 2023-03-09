@@ -76,7 +76,7 @@ $result= mysqli_query($dbconn, $sql);
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.html" class="logo d-flex align-items-center">
+      <a href="index_admin.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -244,7 +244,7 @@ $result= mysqli_query($dbconn, $sql);
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["userid"];?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -359,7 +359,7 @@ $result= mysqli_query($dbconn, $sql);
       <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.php">Idea</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -378,7 +378,7 @@ $result= mysqli_query($dbconn, $sql);
                     <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Viewed</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Ideas</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Comments</a>
-                    <a href="#" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</a>
+                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</a>
                   </div>
                 </div>
               </div>
@@ -443,6 +443,7 @@ $result= mysqli_query($dbconn, $sql);
 				echo'<a href="?page='.$i.'">'.$i.'</a>';
 			}
 		?>            
+</div>
 
   </main><!-- End #main -->
 
@@ -456,7 +457,7 @@ $result= mysqli_query($dbconn, $sql);
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+     
     </div>
   </footer><!-- End Footer -->
 
