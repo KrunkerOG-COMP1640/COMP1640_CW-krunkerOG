@@ -18,8 +18,9 @@ if(isset($_POST["userlogin"])){
     $myemail = $_POST["useremail"];
     $mypassword = $_POST["userpassword"];
 
-    $checkaccount = mysqli_query($dbconn, "SELECT UserId, UserRoleName, Username,UserEmail UserPassword FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'");
-    $userrow = mysqli_fetch_array($checkaccount);
+    $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'";
+    $checkaccount = mysqli_query($dbconn,$sql );
+    
     
     if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {
 
@@ -36,6 +37,9 @@ if(isset($_POST["userlogin"])){
             $_SESSION["useremail"] = $userrow["UserEmail"];
             $_SESSION["userpassword"] = $userrow["UserPassword"];
             $_SESSION["role"] = $userrow["UserRoleName"];
+            $_SESSION["role"] = $userrow["UserRoleName"];
+            $_SESSION["useraddress"] = $userrow["UserAddress"];
+            $_SESSION["usercontactno"] = $userrow["UserContactNo"];
         }
         else{
             header("Location: login.php");
