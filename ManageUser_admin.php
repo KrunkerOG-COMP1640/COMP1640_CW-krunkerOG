@@ -17,7 +17,7 @@ else{
 
 $page = isset($_GET['page'])?$_GET['page']:1;
 //determine the number of data per page
-$rows_per_page = 4;
+$rows_per_page = 5;
 
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
@@ -374,26 +374,29 @@ $start= ($page-1)*$rows_per_page;
           <div class="card">
             <div class="card-header">
               <h4>Registered User</h4>
-              <button type="button" class="btn btn-primary">Add a new User</button>
+              <a href="AddUser_admin.php" class="btn btn-primary">Add a new User<a>
             </div>
             <!-- End Header Name -->
             <div class="card-body">
-              <table class="table table-bordered">
+              <table class="table table-bordered text-center">
                 <thead>
                   <tr>
                     <th>Username</th>
                     <th>Password</th>
-                    <th>Gender</th>
+                    <th>Contact No</th>
                     <th>Email</th>
-                    <th>Role Name</th>
+                    <th>Department</th>
+                    <th>Role</th>
                     <th>Edit</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                    $query = "SELECT * FROM user_tbl LIMIT $start,$rows_per_page";
-                    $query_no = mysqli_query($dbconn,$query);
+                <?php
+                    $query = "SELECT user_tbl.Username, user_tbl.UserPassword, user_tbl.UserContactNo, user_tbl.UserRoleName,user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
+                    INNER JOIN department_tbl ON user_tbl.DepartmentId = department_tbl.DepartmentId LIMIT $start,$rows_per_page";
+                    
+                    $query_no = mysqli_query($dbconn,$query);  
                     if(mysqli_num_rows($query_no) >0){
                       foreach($query_no as $row){
                         ?>
@@ -402,6 +405,7 @@ $start= ($page-1)*$rows_per_page;
                         <td><?= $row['UserPassword'];?></td>
                         <td><?= $row['UserContactNo'];?></td>
                         <td><?= $row['UserEmail'];?></td>
+                        <td><?= $row['DepartmentName'];?></td>
                         <td><?= $row['UserRoleName'];?></td>
                         <td><a href="EditUser_admin.php" class="btn btn-success">Edit</a></td>
                         <td><button type="button" class="btn btn-danger">Delete</button></td>
@@ -417,7 +421,6 @@ $start= ($page-1)*$rows_per_page;
                     <?php
                     }
                     ?>
-    
                 </tbody>
               </table>
 
@@ -427,7 +430,7 @@ $start= ($page-1)*$rows_per_page;
       </div>
     <div class = "pagination">
       <?php
-			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+			$sql_page = "SELECT COUNT(*) AS count FROM user_tbl";
 			$page_count = mysqli_query($dbconn, $sql_page);
 			$row_count = mysqli_fetch_assoc($page_count);
 			$total_rows = $row_count['count'];
