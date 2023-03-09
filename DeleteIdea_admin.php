@@ -16,11 +16,11 @@ else{
 }
 $id = $_GET['id'];
 
-$sql = "DELETE FROM `user_tbl` WHERE UserId =$id";
+$sql = "DELETE FROM `idea_tbl` WHERE IdeaId =$id";
 $result =mysqli_query($dbconn, $sql);
 
   if($result){
-    header("Location: ManageUser_admin.php?msg=User deleted successfully");
+    header("Location: ManageIdea_admin.php?msg=Post deleted successfully");
   }
   else{
     echo "Failed: " .mysqli_error($dbconn);

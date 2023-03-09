@@ -1,3 +1,29 @@
+<?php
+session_start();
+
+require("krunkerideaconn.php");
+if(!isset($_SESSION['role'])){
+  header("Location: index.php");
+  exit;
+  
+}
+else{
+  if($_SESSION['role'] != "Admin"){ //staff cannot access admin page
+      header("Location: index.php");
+      // exit;
+  }
+
+}
+
+$page = isset($_GET['page'])?$_GET['page']:1;
+//determine the number of data per page
+$rows_per_page = 5;
+
+// Determine the starting row number for the current page
+$start= ($page-1)*$rows_per_page;
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,15 +61,24 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <style>
+    .pagination{
+      justify-content: center;
+        display: flex;
+        letter-spacing:10px;
+    }
+   
+</style>
 </head>
 
 <body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.html" class="logo d-flex align-items-center">
+      <a href="index_admin.png" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -211,12 +246,12 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION["username"];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -254,7 +289,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.html">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -303,14 +338,14 @@
 
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
+        <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-people"></i>
           <span>Manage User</span>
         </a>
       </li><!-- End Manage User Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
+        <a class="nav-link collapsed" href="ManageIdea_admin.php">
             <i class="bi bi-chat-left-text"></i>
           <span>Manage Idea</span>
         </a>
@@ -326,14 +361,28 @@
       <nav>
         <ol class="breadcrumb">
           <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageIdea_admin.html">Manage Idea</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.php">Admin</a></li>
+          <li class="breadcrumb-item"><a href="ManageIdea_admin.php">Manage Idea</a></li>
         </ol>
 
         </ol>
         
       </nav>
     </div><!-- End Page Title -->
+
+    <div class="container">
+    <?php
+                if(isset($_GET['msg'])){
+                  $msg = $_GET['msg'];
+                  echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  '.$msg.'
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+                  </button>
+                </div>';
+                }
+                ?>
+    </div>
 
     <section class="section dashboard">
       <div class="row">
@@ -344,24 +393,39 @@
             </div>
             <!-- End Header Name -->
             <div class="card-body">
-              <table class="table table-bordered">
+              <table class="table table-bordered text-center">
                 <thead>
-                  <tr>
+                <tr>
+                    <th>Username</th>
+                    <th>Idea Title</th>
                     <th>Idea Description</th>
-                    <th>Anonymous</th>
                     <th>Date Post</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Delete Post</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td><a href="#" class="btn btn-success">Edit</a></td>
-                    <td><button type="button" class="btn btn-danger">Delete</button></td>
-                  </tr>
+                     
+                <?php
+                    include "krunkerideaconn.php";
+
+                    $sql = "SELECT idea_tbl.IdeaTitle, idea_tbl.IdeaDescription, idea_tbl.DatePost, user_tbl.Username, idea_tbl.IdeaId from idea_tbl
+                    INNER JOIN user_tbl ON idea_tbl.UserId = user_tbl.UserId LIMIT $start,$rows_per_page";
+                    
+                    $result = mysqli_query($dbconn,$sql);
+                    while($row = mysqli_fetch_assoc($result)){
+
+                        ?>
+                         <tr>
+                         <td><?php echo $row['Username']?></td>
+                        <td><?php echo $row['IdeaTitle']?></td>
+                        <td><?php echo $row['IdeaDescription']?></td>
+                        <td><?php echo $row['DatePost']?></td>
+                        <td><a href="DeleteIdea_admin.php?id=<?php echo $row['IdeaId'] ?>" class="btn btn-danger">Delete</a></td>
+                </tr>
+                <?php
+                    }
+
+                 ?>
                 </tbody>
               </table>
 
@@ -369,6 +433,20 @@
           </div>
         </div>
       </div>
+      <div class = "pagination">
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+   
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>
+    </div>
+
     </section>
 
   </main><!-- End #main -->
@@ -383,7 +461,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      
     </div>
   </footer><!-- End Footer -->
 
