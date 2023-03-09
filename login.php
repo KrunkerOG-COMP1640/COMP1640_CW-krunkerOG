@@ -37,7 +37,6 @@ if(isset($_POST["userlogin"])){
             $_SESSION["useremail"] = $userrow["UserEmail"];
             $_SESSION["userpassword"] = $userrow["UserPassword"];
             $_SESSION["role"] = $userrow["UserRoleName"];
-            $_SESSION["role"] = $userrow["UserRoleName"];
             $_SESSION["useraddress"] = $userrow["UserAddress"];
             $_SESSION["usercontactno"] = $userrow["UserContactNo"];
         }
