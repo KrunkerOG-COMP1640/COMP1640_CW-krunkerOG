@@ -412,7 +412,7 @@ $start= ($page-1)*$rows_per_page;
                     $sql = "SELECT user_tbl.UserRoleName, user_tbl.UserId, user_tbl.Username, user_tbl.UserPassword, user_tbl.UserContactNo, user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
                     INNER JOIN department_tbl ON user_tbl.DepartmentId = department_tbl.DepartmentId LIMIT $start,$rows_per_page";
 
-                    $query_no = mysqli_query($dbconn,$query);  
+                    $query_no = mysqli_query($dbconn,$sql);  
                     if(mysqli_num_rows($query_no) >0){
                       foreach($query_no as $row){
                         ?>
