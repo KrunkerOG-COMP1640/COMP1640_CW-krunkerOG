@@ -76,7 +76,7 @@ $start= ($page-1)*$rows_per_page;
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.html" class="logo d-flex align-items-center">
+      <a href="index_admin.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -244,12 +244,12 @@ $start= ($page-1)*$rows_per_page;
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION["username"];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -359,7 +359,7 @@ $start= ($page-1)*$rows_per_page;
       <nav>
         <ol class="breadcrumb">
           <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.php">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.php">Admin</a></li>
           <li class="breadcrumb-item"><a href="ManageUser_admin.php">Manage User</a></li>
         </ol>
 
@@ -367,6 +367,20 @@ $start= ($page-1)*$rows_per_page;
         
       </nav>
     </div><!-- End Page Title -->
+
+    <div class="container">
+    <?php
+                if(isset($_GET['msg'])){
+                  $msg = $_GET['msg'];
+                  echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  '.$msg.'
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+                  </button>
+                </div>';
+                }
+                ?>
+    </div>
 
     <section class="section dashboard">
       <div class="row">
@@ -393,22 +407,24 @@ $start= ($page-1)*$rows_per_page;
                 </thead>
                 <tbody>
                 <?php
-                    $query = "SELECT user_tbl.Username, user_tbl.UserPassword, user_tbl.UserContactNo, user_tbl.UserRoleName,user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
+                    include "krunkerideaconn.php";
+
+                    $sql = "SELECT user_tbl.UserRoleName, user_tbl.UserId, user_tbl.Username, user_tbl.UserPassword, user_tbl.UserContactNo, user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
                     INNER JOIN department_tbl ON user_tbl.DepartmentId = department_tbl.DepartmentId LIMIT $start,$rows_per_page";
-                    
+
                     $query_no = mysqli_query($dbconn,$query);  
                     if(mysqli_num_rows($query_no) >0){
                       foreach($query_no as $row){
                         ?>
                         <tr>
-                        <td><?= $row['Username'];?></td>
-                        <td><?= $row['UserPassword'];?></td>
-                        <td><?= $row['UserContactNo'];?></td>
-                        <td><?= $row['UserEmail'];?></td>
-                        <td><?= $row['DepartmentName'];?></td>
-                        <td><?= $row['UserRoleName'];?></td>
-                        <td><a href="EditUser_admin.php" class="btn btn-success">Edit</a></td>
-                        <td><button type="button" class="btn btn-danger">Delete</button></td>
+                        <td><?php echo $row['Username']?></td>
+                        <td><?php echo $row['UserPassword']?></td>
+                        <td><?php echo $row['UserContactNo']?></td>
+                        <td><?php echo $row['UserEmail']?></td>
+                        <td><?php echo $row['DepartmentName']?></td>
+                        <td><?php echo $row['UserRoleName']?></td> 
+                        <td><a href="EditUser_admin.php?id=<?php echo $row['UserId'] ?>"  class="btn btn-success">Edit</a></td>
+                        <td><a href="DeleteUser_admin.php?id=<?php echo $row['UserId'] ?>" class="btn btn-danger">Delete</a></td>
                       </tr>
                       <?php
                       }
@@ -455,7 +471,7 @@ $start= ($page-1)*$rows_per_page;
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+   
     </div>
   </footer><!-- End Footer -->
 
