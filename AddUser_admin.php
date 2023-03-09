@@ -94,7 +94,7 @@ if(isset($_POST['submit'])){
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.html" class="logo d-flex align-items-center">
+      <a href="index_admin.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -262,12 +262,12 @@ if(isset($_POST['submit'])){
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION["username"];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -330,7 +330,7 @@ if(isset($_POST['submit'])){
         </a>
         <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="list_of_category_admin.html">
+            <a href="list_of_category_admin.php">
               <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
             </a>
           </li>
@@ -354,14 +354,14 @@ if(isset($_POST['submit'])){
 
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.html">
+        <a class="nav-link collapsed" href="ManageUser_admin.php">
             <i class="bi bi-bar-chart-line"></i>
           <span>Manage User</span>
         </a>
       </li><!-- End Reports Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.html">
+        <a class="nav-link collapsed" href="ManageIdea_admin.php">
             <i class="bi bi-bar-chart-line"></i>
           <span>Manage Idea</span>
         </a>
@@ -377,9 +377,9 @@ if(isset($_POST['submit'])){
       <nav>
         <ol class="breadcrumb">
           <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_admin.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageUser_admin.html">Manage User</a></li>
-          <li class="breadcrumb-item"><a href="EditUser_admin.html">Add User</a></li>
+          <li class="breadcrumb-item"><a href="index_admin.php">Admin</a></li>
+          <li class="breadcrumb-item"><a href="ManageUser_admin.php">Manage User</a></li>
+          <li class="breadcrumb-item"><a href="#">Add User</a></li>
         </ol>
 
         </ol>
@@ -425,17 +425,15 @@ if(isset($_POST['submit'])){
                     <div class="col-md-12 mb-3">
                         <label for="">Role Name</label>
                         <select name="UserRoleName" id="" required class="form-control">
-                          <option value="">--Select Role--</option>
-                          <option value="QA Manager">QA Manager</option>
-                          <option value="QA Coordinator">QA Coordinator</option>
                           <option value="Staff">Staff</option>
+                          <option value="QA Coordinator">QA Coordinator</option>
+                          <option value="QA Manager">QA Manager</option>
                           <option value="Admin">Admin</option>
                         </select>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Department</label>
                         <select name="DepartmentId" id="" required class="form-control">
-                          <option value="">--Select Department--</option>
                           <option value="1">Information Technology</option>
                         
                         </select>
@@ -468,7 +466,7 @@ if(isset($_POST['submit'])){
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+
     </div>
   </footer><!-- End Footer -->
 
