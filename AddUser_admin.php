@@ -25,15 +25,20 @@ if(isset($_POST['submit'])){
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];
   
-  $sql = "INSERT INTO `user_tbl`(`UserId`, `DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
-  VALUES (NULL, '$department','$role','$username',' $password','$email','$contact',' $address')";
-
-  $result = mysqli_query($dbconn,$sql);
-  if($result){
-    header("Location: ManageUser_admin.php?msg = New user added successfully");
+  if (strpos($password, ' ') !== false) {
+    echo '<script>alert("Password cannot have spaces");</script>';
   }
   else{
-    echo "Failed: " .mysqli_error($dbconn);
+    $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
+    VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
+
+    $result = mysqli_query($dbconn,$sql);
+    if($result){
+      header("Location: ManageUser_admin.php?msg = New user added successfully");
+    }
+    else{
+      echo "Failed: " .mysqli_error($dbconn);
+    }
   }
   }
 
