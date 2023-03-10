@@ -16,9 +16,11 @@ $rows_per_page = 5;
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
+$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
 INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId LIMIT $start,$rows_per_page";
+INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId
+DESC
+LIMIT $start,$rows_per_page";
 $result= mysqli_query($dbconn, $sql);
 ?>
 
@@ -390,6 +392,7 @@ $result= mysqli_query($dbconn, $sql);
           echo'<div class="card-body">';
             echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
             echo '<span class="card-author">'.$row['Username'].'</span>';
+            echo '<span class="card-date">'.$row['DatePost'].'</span>';
 				    echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>';
                   if($row['IdeaAnonymous'] == 0) {
                     echo '<h5 class="card-author">'.$row['Username'].'</h5>';
