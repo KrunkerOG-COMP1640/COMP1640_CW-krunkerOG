@@ -254,7 +254,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.html">
+              <a class="dropdown-item d-flex align-items-center" href="login.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -274,7 +274,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="index.html">
+        <a class="nav-link collapsed" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="index.php">
           <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="dashboard-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -331,7 +331,7 @@
       <h1>List of Category</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_manager.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index_manager.php">Idea</a></li>
           <li class="breadcrumb-item active">List of Category</li>
         </ol>
       </nav>

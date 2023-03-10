@@ -37,7 +37,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_manager.html" class="logo d-flex align-items-center">
+      <a href="index_manager.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -248,7 +248,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.html">
+              <a class="dropdown-item d-flex align-items-center" href="login.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -269,12 +269,12 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_manager.html">
+        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_manager.php">
           <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="list_of_category_manager.html">
+            <a href="list_of_category_manager.php">
               <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
             </a>
           </li>
@@ -303,14 +303,14 @@
       </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageCategory_manager.html">
+        <a class="nav-link collapsed" href="ManageCategory_manager.php">
           <i class="bi bi-grid"></i>
           <span>Add a new Category</span>
         </a>
       </li><!-- End Category Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="report_manager.html">
+        <a class="nav-link collapsed" href="report_manager.php">
           <i class="bi bi-bar-chart-line"></i>
           <span>Reports</span>
         </a>
@@ -326,8 +326,8 @@
       <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_manager.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageCategory_manager.html">Manage Category</a></li>
+          <li class="breadcrumb-item"><a href="index_manager.php">Idea</a></li>
+          <li class="breadcrumb-item"><a href="ManageCategory_manager.php">Manage Category</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -338,7 +338,7 @@
             <div class="card">
               <div class="card-header">
                 <h4>Manage Category</h4>
-                <button type="button" class="btn btn-primary">Add a new Category</button>
+                <span class="btn btn-primary" href="#">Add a new Category</span>
               </div>
               <!-- End Header Name -->
               <div class="card-body">
@@ -359,7 +359,7 @@
                       <td>1</td>
                       <td>1</td>
                       <td>1</td>
-                      <td><a href="EditCategory_manager.html" class="btn btn-success">Edit</a></td>
+                      <td><a href="EditCategory_manager.php" class="btn btn-success">Edit</a></td>
                       <td><button type="button" class="btn btn-danger">Delete</button></td>
                     </tr>
                   </tbody>
