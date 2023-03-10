@@ -435,7 +435,10 @@ if(isset($_POST['submit'])){
                         <label for="">Department</label>
                         <select name="DepartmentId" id="" required class="form-control">
                           <option value="1">Information Technology</option>
-                        
+                          <option value="2">Human Resource</option>
+                          <option value="3">Business & Marketing</option>
+                          <option value="4">Accounting</option>
+
                         </select>
                     </div>
                     <div>
