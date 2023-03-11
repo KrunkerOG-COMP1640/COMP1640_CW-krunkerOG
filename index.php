@@ -22,6 +22,17 @@ INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId
 ORDER BY idea_tbl.IdeaId DESC 
 LIMIT $start,$rows_per_page";
 $result= mysqli_query($dbconn, $sql);
+
+// Insert new commant into database
+if(isset($_POST["submit_comment_post"])){
+  $user_id = $_SESSION["userid"];
+	$comment = mysqli_real_escape_string($dbconn, $_POST["comment"]);
+  $anonymous = isset($_POST["anonymous"]);
+	mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous) 
+							VALUES ('$user_id','$comment','$anonymous')");
+  header("Location: index.php");
+	exit();
+}	
 ?>
 
 <!DOCTYPE html>
@@ -500,27 +511,33 @@ $result= mysqli_query($dbconn, $sql);
                 <!-- End Nav Scroller -->
 
                 <!-- Modal PopUp Content -->
-                <div class="tab-content" id="editUserModalTabContent">
-                    <div class="row">
-                        <h4 class="modal-title text-cap">Idea Title</h4>
-                        <div class="flex-grow-1">
-                          Idea description
+                <div class="tab-content">
+                  <form action="" method="post" enctype="multipart/form-data">
+                      <div class="row">
+                          <h4 class="modal-title text-cap">Idea Title</h4>
+                          <div class="flex-grow-1">
+                            Idea description
+                        </div>
+                        <div class="d-flex justify-content-start">
+                          <button class="btn"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                          <button class="btn"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                        </div>
                       </div>
-                      <div class="d-flex justify-content-start">
-                        <button class="btn"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                        <button class="btn"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="row mb-6">
-                        <textarea id="freeform" name="freeform" rows="4" cols="50">Enter comment here...</textarea>
-                        <div class="d-flex justify-content-end">
-                          <div class="d-flex gap-3">
-                              <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                              <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clientAdviceModal">Submit</button>
+                      <br>
+                      <div class="row mb-4">
+                          <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Enter comment here..."></textarea>
+                          <div class="mb-3 form-check">
+                            <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value= 1>
+                            <label for="anonymous" class="form-check-label">Post anonymously</label>
                           </div>
+                          <div class="d-flex justify-content-end">
+                            <div class="d-flex gap-3">
+                                <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                <button type="submit" name="submit_comment_post" class="btn btn-primary" data-bs-toggle="modal">Submit</button>
+                            </div>
+                        </div>
                       </div>
-                    </div>
+                  </form>
                 </div>
                 <!-- End Modal PopUp Content -->
             </div>
