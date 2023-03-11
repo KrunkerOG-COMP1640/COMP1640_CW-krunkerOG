@@ -78,7 +78,7 @@ $start= ($page-1)*$rows_per_page;
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.png" class="logo d-flex align-items-center">
+      <a href="index_admin.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -399,8 +399,11 @@ $start= ($page-1)*$rows_per_page;
                     <th>Username</th>
                     <th>Idea Title</th>
                     <th>Idea Description</th>
+                    <th>Category</th>
                     <th>Date Post</th>
-                    <th>Delete Post</th>
+                    <th>Status</th>
+                    <th>Hide Post</th>
+                    <th>Show Post</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -408,8 +411,9 @@ $start= ($page-1)*$rows_per_page;
                 <?php
                     include "krunkerideaconn.php";
 
-                    $sql = "SELECT idea_tbl.IdeaTitle, idea_tbl.IdeaDescription, idea_tbl.DatePost, user_tbl.Username, idea_tbl.IdeaId from idea_tbl
-                    INNER JOIN user_tbl ON idea_tbl.UserId = user_tbl.UserId LIMIT $start,$rows_per_page";
+                    $sql = "SELECT idea_tbl.IdeaTitle, idea_tbl.IdeaDescription, idea_tbl.DatePost, user_tbl.Username, idea_tbl.IdeaId, category_tbl.CategoryTitle, idea_tbl.is_hidden from idea_tbl
+                    INNER JOIN user_tbl ON idea_tbl.UserId = user_tbl.UserId 
+                    INNER JOIN category_tbl ON idea_tbl.CategoryId = category_tbl.CategoryId LIMIT $start,$rows_per_page";
                     
                     $result = mysqli_query($dbconn,$sql);
                     while($row = mysqli_fetch_assoc($result)){
@@ -419,8 +423,20 @@ $start= ($page-1)*$rows_per_page;
                          <td><?php echo $row['Username']?></td>
                         <td><?php echo $row['IdeaTitle']?></td>
                         <td><?php echo $row['IdeaDescription']?></td>
+                        <td><?php echo $row['CategoryTitle']?></td>
                         <td><?php echo $row['DatePost']?></td>
-                        <td><a href="DeleteIdea_admin.php?id=<?php echo $row['IdeaId'] ?>" class="btn btn-danger">Delete</a></td>
+                        <td>
+                          <?php if($row['is_hidden']== 0 ){
+                          echo "Visible";
+                          
+                        }
+                        elseif ($row['is_hidden']== 1 ){
+                          echo "Hidden";
+                        }
+                        ?>
+                        </td>
+                        <td><a href="HideIdea_admin.php?id=<?php echo $row['IdeaId'] ?>" class="btn btn-danger">Hide Post</a></td>
+                        <td><a href="ShowIdea_admin.php?id=<?php echo $row['IdeaId'] ?>" class="btn btn-success">Show Post</a></td>
                 </tr>
                 <?php
                     }

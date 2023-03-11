@@ -13,9 +13,8 @@ else{
       // exit;
   }
 
-
-
 }
+$output = "";
 if(isset($_POST['submit'])){
   $username = $_POST['Username'];
   $password = $_POST['UserPassword'];
@@ -25,12 +24,31 @@ if(isset($_POST['submit'])){
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];
   
-  if (strpos($password, ' ') !== false) {
-    echo '<script>alert("Password cannot have spaces");</script>';
+  $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
+  $error = array();
+  
+  if(empty($username)){
+    $error['1'] = "Enter Username";
+  }else if(empty($password)){
+    $error['1'] = "Enter Password";
+  }else if(empty($role)){
+    $error['1'] = "Enter Role";
+  }else if(empty($department)){
+    $error['1'] = "Enter department";
+  }else if(mysqli_num_rows($check_email) > 0){
+    $error['1'] = "Email address already exist";
   }
-  else{
-    $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
-    VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
+
+
+  if(isset($error['1'])){
+    $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>".$error['1'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+  }else{
+    $output .= "";
+  }
+
+  if(count($error) < 1 ){
+       $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
+              VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
 
     $result = mysqli_query($dbconn,$sql);
     if($result){
@@ -40,8 +58,8 @@ if(isset($_POST['submit'])){
       echo "Failed: " .mysqli_error($dbconn);
     }
   }
-  }
 
+  }
 
 ?>
 
@@ -410,7 +428,7 @@ if(isset($_POST['submit'])){
                  
                     <div class="col-md-12 mb-3">
                         <label for="">Email</label>
-                        <input type="text" name="UserEmail" class="form-control" placeholder="name@example.com">
+                        <input type="email" name="UserEmail" class="form-control" placeholder="name@example.com">
                     </div>
  
                     <div class="col-md-12 mb-3">
