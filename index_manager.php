@@ -1,3 +1,31 @@
+<?php
+session_start();
+require("krunkerideaconn.php");
+
+if(!isset($_SESSION['role'])){
+    header("Location: index.php");
+    exit;
+    
+}
+
+
+$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
+//determine current page
+$page = isset($_GET['page'])?$_GET['page']:1;
+//determine the number of data per page
+$rows_per_page = 5;
+
+// Determine the starting row number for the current page
+$start= ($page-1)*$rows_per_page;
+
+$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
+INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
+INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
+WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
+$result= mysqli_query($dbconn, $sql);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +56,14 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
+  <style>
+    .pagination{
+        text-align:center;
+        display: inline;
+        letter-spacing:10px;
+    }
+   
+</style>
 </head>
 
 <body>
@@ -248,7 +283,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.php">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -341,70 +376,54 @@
             <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col">
-                    <span class="btn btn-primary" href = "#"><i class="bi bi-star"></i>Most Popular</span>
-                    <span class="btn btn-primary" href = "#"><i class="bi bi-star"></i>Most Viewed</span>
-                    <span class="btn btn-primary" href = "#"><i class="bi bi-star"></i>Latest Ideas</span>
-                    <span class="btn btn-primary" href = "#"><i class="bi bi-star"></i>Latest Comments</span>
-                    <span class="btn btn-primary" href = "submit_idea.php" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</span>
+                  <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Popular</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Viewed</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Ideas</a>
+                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Comments</a>
+                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</a>
                   </div>
                 </div>
               </div>
 
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-            
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Idea title</h5>
-                  <p class="card-text">Created by: unknown</p>
-                  <a href="#" class="btn btn-primary">See more</a>
-                </div>
-              </div>
+      <?php
+      //displaying every ideas from database
+      while ($row = mysqli_fetch_assoc($result)){
+        echo'<div class="card">';
+        echo'<div class="card-body">';  
+          echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
+          if($row['IdeaAnonymous'] == 0) {
+            echo '<h5 class="card-author">'.$row['Username'].'</h5>';
+          }
+          else if($row['IdeaAnonymous'] == 1){
+            echo '<h5 class="card-author">Anonymous</h5>';
+          }
+  
+          echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>'; 
+                echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
+                
+               echo'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
+               echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
+               echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
+              echo'</div>';
+            echo'</div>';
+    }
+ ?>
+ </div>                
+<div class = "pagination">
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+   
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>
+    </div>
         <!-- End Left side columns -->
-      </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+      </div>    
 
   </main><!-- End #main -->
 
@@ -418,7 +437,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+     
     </div>
   </footer><!-- End Footer -->
 

@@ -17,8 +17,28 @@ if(isset($_POST["submit_post"])){
 	$user_id = $_SESSION["userid"];
 	mysqli_query($dbconn, "INSERT INTO idea_tbl (CategoryId, UserId, IdeaTitle, IdeaDescription,IdeaAnonymous) 
 							VALUES ('$category','$user_id','$title', '$desc','$anon')");
-	header("Location: index.php");
-	exit();
+	
+if(isset($_SESSION["username"]) 
+&& isset($_SESSION["userid"]) 
+&& isset($_SESSION["role"])) {
+    if($_SESSION["role"] == "Admin") {
+        header("Location: index_admin.php");
+        exit;
+    }
+    else if($_SESSION["role"] == "Staff"){
+      header("Location: index.php");
+      exit();
+    }
+    else if($_SESSION["role"] == "QA Manager"){
+      header("Location: index_manager.php");
+      exit();
+    }
+    else if($_SESSION["role"] == "QA Coordinator"){
+      header("Location: index_coordinator.php");
+      exit();
+    }
+
+  }
 
 }	
 

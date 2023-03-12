@@ -48,8 +48,16 @@ if(isset($_POST["userlogin"])){
                 header("Location: index_admin.php");
                 exit;
             }
-            else if($_SESSION["role"] != "Admin") {
+            else if($_SESSION["role"] == "Staff") {
                 header("Location: index.php");
+                exit;
+            }
+            else if($_SESSION["role"] == "QA Manager") {
+                header("Location: index_manager.php");
+                exit;
+            }
+            else if($_SESSION["role"] == "QA Manager") {
+                header("Location: index_coordinator.php");
                 exit;
             }
             

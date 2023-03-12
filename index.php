@@ -341,7 +341,7 @@ if(isset($_POST["submit_comment_post"])){
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="staff_profile.php">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -372,7 +372,7 @@ if(isset($_POST["submit_comment_post"])){
       <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index.php">Idea</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
