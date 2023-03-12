@@ -15,31 +15,60 @@ if(isset($_POST["submit_post"])){
 	$category = mysqli_real_escape_string($dbconn, $_POST["category"]);
 	$anon = isset($_POST["anonymous"]);
 	$user_id = $_SESSION["userid"];
-	mysqli_query($dbconn, "INSERT INTO idea_tbl (CategoryId, UserId, IdeaTitle, IdeaDescription,IdeaAnonymous) 
-							VALUES ('$category','$user_id','$title', '$desc','$anon')");
-	
-if(isset($_SESSION["username"]) 
-&& isset($_SESSION["userid"]) 
-&& isset($_SESSION["role"])) {
-    if($_SESSION["role"] == "Admin") {
-        header("Location: index_admin.php");
-        exit;
-    }
-    else if($_SESSION["role"] == "Staff"){
-      header("Location: index.php");
-      exit();
-    }
-    else if($_SESSION["role"] == "QA Manager"){
-      header("Location: index_manager.php");
-      exit();
-    }
-    else if($_SESSION["role"] == "QA Coordinator"){
-      header("Location: index_coordinator.php");
-      exit();
-    }
+  $sql_insertpost = "INSERT INTO idea_tbl (CategoryId, UserId, IdeaTitle, IdeaDescription,IdeaAnonymous) 
+  VALUES ('$category','$user_id','$title', '$desc','$anon')";
+	mysqli_query($dbconn, $sql_insertpost);
+  $ideaid = mysqli_insert_id($dbconn);
 
+  //upload image
+  $imagefiles = $_FILES['ideaimage'];
+  $max_image_size = 2 * 1024 * 1024 * 1024; // 2 GB
+  $max_image_count = 5;
+  $uploaded_image_count = 0;
+  $image_error = false;
+  foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
+    if ($uploaded_image_count < $max_image_count) {
+      $ideaimage = $imagefiles['name'][$key];
+      $ideaimage_tmp = $imagefiles['tmp_name'][$key];
+      $ideaimage_size = $imagefiles['size'][$key];
+      $ideaimage_type = $imagefiles['type'][$key];
+      $ideaimage_error = $imagefiles['error'][$key];
+
+      // Check if file type is allowed
+      $allowed_image_types = array('png', 'jpg', 'jpeg');
+      $image_ext_arr = explode('.', $ideaimage);
+      $image_ext = strtolower(end($image_ext_arr));
+      if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
+        // Move uploaded file to a permanent location
+        $image_target_dir = "assets/img/";
+        $image_target_file = $image_target_dir .uniqid()."_". basename($ideaimage);
+        move_uploaded_file($ideaimage_tmp, $image_target_file);
+
+        // Insert image details
+        $sql_insertimage = "INSERT INTO ideamedia_tbl (IdeaId, IdeaImage) VALUES ('$ideaid', '$image_target_file')";
+        mysqli_query($dbconn, $sql_insertimage);
+        $uploaded_image_count++;
+      }else {
+        $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
+        echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+        $image_error = true;
+        
+        break; // stop processing additional files
+      }
+    } else {
+      $errormsg = "Only 5 Image can be upload"; // error message to display
+      echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+      $image_error = true;
+      
+      break; // stop processing additional files
+    }
   }
 
+  // Redirect to the homepage
+  if (!$image_error) {
+    header("Location: index.php");
+    exit();
+  }
 }	
 
 ?>
@@ -254,7 +283,7 @@ if(isset($_SESSION["username"])
         </div>
         <div class="mb-3">
           <label for="file" class="form-label">Upload file:</label>
-          <input type="file" id="file" name="file" class="form-control" accept="image/*">
+          <input type="file" id="file" name="ideaimage[]" class="form-control" accept="image/jpeg, image/png, image/jpg" multiple>
         </div>
         <div class="mb-3 form-check">
           <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value= 1>

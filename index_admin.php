@@ -2,10 +2,9 @@
 session_start();
 require("krunkerideaconn.php");
 
-if(!isset($_SESSION['role'])){
-    header("Location: index.php");
-    exit;
-    
+if($_SESSION["role"] != "Admin") {
+  header("Location: login.php");
+  exit;
 }
 
 
