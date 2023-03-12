@@ -384,7 +384,7 @@ if(isset($_POST["submit_new_password"])){
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2>Kevin Anderson</h2>
+              <h2><?php echo $_SESSION["username"];?></h2>
               <h3>Web Designer</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -425,7 +425,7 @@ if(isset($_POST["submit_new_password"])){
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Username</div>
-                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                    <div class="col-lg-9 col-md-8"><span><?php echo $_SESSION["username"];?></span></div>
                   </div>
 
                   <div class="row">
