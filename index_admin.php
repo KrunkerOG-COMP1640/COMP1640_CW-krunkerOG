@@ -403,8 +403,8 @@ $result= mysqli_query($dbconn, $sql);
               echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
               
              echo'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
-             echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
-             echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
+             echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-left: 5px;"><i class="bi bi-hand-thumbs-up"></i></a>';
+             echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-left: 5px;"><i class="bi bi-hand-thumbs-down"></i></a>';
             echo'</div>';
           echo'</div>';
       }
