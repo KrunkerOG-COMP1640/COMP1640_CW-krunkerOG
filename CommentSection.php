@@ -424,23 +424,30 @@ $result = mysqli_query($dbconn, $sql);
                                     </div>
                                 </div>
                                 <p class="text-secondary">Question / Idea</p>
+                                
                                 <!-- Gallery -->
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
+                                <section class="pb-4">
+                                    <div class="bg-white border rounded-5">
 
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
+                                        <section class="p-4 d-flex justify-content-center text-center w-100">
+                                            <div class="lightbox" data-mdb-zoom-level="0.25" data-id="lightbox-8e0in48hs">
+                                                <div class="row">
+                                                    <div class="col-lg-4 mb-4">
+                                                        <img src="assets/img/slides-1.jpg" data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Slides/1.webp" alt="Table Full of Spices" class="w-100 shadow-1-strong rounded mb-4">
+                                                    </div>
+                                                    <div class="col-lg-4 mb-4">
+                                                        <img src="assets/img/slides-1.jpg" data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Slides/2.webp" alt="Winter Landscape" class="w-100 shadow-1-strong rounded mb-4">
+                                                    </div>
+                                                    <div class="col-lg-4 mb-4">
+                                                        <img src="assets/img/slides-1.jpg" data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Slides/3.webp" alt="View of the City in the Mountains" class="w-100 shadow-1-strong rounded mb-4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
                                     </div>
-
-                                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
-
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
-                                    </div>
-
-                                </div>
+                                </section>
                                 <!-- Gallery -->
-                                <br>
+                                
                                 <p>
                                     <span class="btn btn-primary rounded-pill">Support</span>
                                 </p>
