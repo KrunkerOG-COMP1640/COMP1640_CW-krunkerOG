@@ -424,79 +424,83 @@ $result = mysqli_query($dbconn, $sql);
                                     </div>
                                 </div>
                                 <p class="text-secondary">Question / Idea</p>
-                                
                                 <!-- Gallery -->
-                                <section class="pb-4">
-                                    <div class="bg-white border rounded-5">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
 
-                                        <section class="p-4 d-flex justify-content-center text-center w-100">
-                                            <div class="lightbox" data-mdb-zoom-level="0.25" data-id="lightbox-8e0in48hs">
-                                                <div class="row">
-                                                    <div class="col-lg-4 mb-4">
-                                                        <img src="assets/img/slides-1.jpg" data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Slides/1.webp" alt="Table Full of Spices" class="w-100 shadow-1-strong rounded mb-4">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-4">
-                                                        <img src="assets/img/slides-1.jpg" data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Slides/2.webp" alt="Winter Landscape" class="w-100 shadow-1-strong rounded mb-4">
-                                                    </div>
-                                                    <div class="col-lg-4 mb-4">
-                                                        <img src="assets/img/slides-1.jpg" data-mdb-img="https://mdbcdn.b-cdn.net/img/Photos/Slides/3.webp" alt="View of the City in the Mountains" class="w-100 shadow-1-strong rounded mb-4">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </section>
+                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
                                     </div>
-                                </section>
+
+                                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
+
+                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
+                                    </div>
+
+                                </div>
                                 <!-- Gallery -->
-                                
                                 <p>
                                     <span class="btn btn-primary rounded-pill">Support</span>
                                 </p>
                             </div>
+                            <div class="card-footer">
+                                <div class="input-group">
+                                    <input type="text" class="form-control border" placeholder="Your comment here...">
+                                    <button class="btn btn-light border" type="button">Comment</button>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- posted comment -->
-                        <h5 class="title">Comments</h5>
-                        <div class="card border-0 mb-4">
-                            <div class="card-body">
-                                <br>
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <figure class="rounded pill">
-                                            <img src="assets/img/profile-img-64x64.jpg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="col px-0">
-                                        <p class="small text-secondary mb-0">Commented by</p>
-                                        <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
-                                    </div>
-                                    <div class="col-auto text-end">
-                                        <p class="small text-secondary mb-0">Modified</p>
-                                        <p class="mb-0">8 min ago</p>
-                                    </div>
+                    </div>
+
+                    <!-- posted comment -->
+                    <h5 class="title">Comments</h5>
+                    <div class="col-12 col-md-8 col-lg-9 col-xl-9">
+                    <div class="card border-0 mb-4">
+                        <div class="card-body">
+                            <br>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-auto">
+                                    <figure class="rounded pill">
+                                        <img src="assets/img/profile-img-64x64.jpg" alt="">
+                                    </figure>
                                 </div>
-                                <p class="text-secondary">User's Comments</p>
+                                <div class="col px-0">
+                                    <p class="small text-secondary mb-0">Commented by</p>
+                                    <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
+                                </div>
+                                <div class="col-auto text-end">
+                                    <p class="small text-secondary mb-0">Modified</p>
+                                    <p class="mb-0">8 min ago</p>
+                                </div>
                             </div>
+                            <p class="text-secondary">User's Comments</p>
                         </div>
-                        <div class="card border-0 mb-4">
-                            <div class="card-body">
-                                <br>
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <figure class="rounded pill">
-                                            <img src="assets/img/profile-img-64x64.jpg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="col px-0">
-                                        <p class="small text-secondary mb-0">Commented by</p>
-                                        <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
-                                    </div>
-                                    <div class="col-auto text-end">
-                                        <p class="small text-secondary mb-0">Modified</p>
-                                        <p class="mb-0">8 min ago</p>
-                                    </div>
+                    </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-9 col-xl-9">
+                    <div class="card border-0 mb-4">
+                        <div class="card-body">
+                            <br>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-auto">
+                                    <figure class="rounded pill">
+                                        <img src="assets/img/profile-img-64x64.jpg" alt="">
+                                    </figure>
                                 </div>
-                                <p class="text-secondary">User's Comments</p>
+                                <div class="col px-0">
+                                    <p class="small text-secondary mb-0">Commented by</p>
+                                    <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
+                                </div>
+                                <div class="col-auto text-end">
+                                    <p class="small text-secondary mb-0">Modified</p>
+                                    <p class="mb-0">8 min ago</p>
+                                </div>
                             </div>
+                            <p class="text-secondary">User's Comments</p>
+                        </div>
+    </div>
         </section>
 
     </main><!-- End #main -->
