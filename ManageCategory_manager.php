@@ -1,3 +1,28 @@
+<?php
+session_start();
+
+require("krunkerideaconn.php");
+if(!isset($_SESSION['role'])){
+  header("Location: index.php");
+  exit;
+  
+}
+else{
+  if($_SESSION['role'] != "QA Manager"){ //staff cannot access admin page
+      header("Location: index.php");
+      // exit;
+  }
+
+}
+
+$page = isset($_GET['page'])?$_GET['page']:1;
+//determine the number of data per page
+$rows_per_page = 5;
+
+// Determine the starting row number for the current page
+$start= ($page-1)*$rows_per_page;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +53,13 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
+  <style>
+    .pagination{
+      justify-content: center;
+        display: flex;
+        letter-spacing:10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -205,12 +236,12 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION["username"];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -238,17 +269,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.php">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -323,14 +344,28 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Idea</h1>
+      <h1>Category</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_manager.php">Idea</a></li>
+          
           <li class="breadcrumb-item"><a href="ManageCategory_manager.php">Manage Category</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
+
+    <div class="container">
+    <?php
+                if(isset($_GET['msg'])){
+                  $msg = $_GET['msg'];
+                  echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  '.$msg.'
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+                  </button>
+                </div>';
+                }
+                ?>
+    </div>
 
     <section class="section dashboard">
         <div class="row">
@@ -338,11 +373,11 @@
             <div class="card">
               <div class="card-header">
                 <h4>Manage Category</h4>
-                <span class="btn btn-primary" href="#">Add a new Category</span>
+                <a href="AddCategory_manager.php" class="btn btn-primary">Add a new category<a>
               </div>
               <!-- End Header Name -->
               <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered text-center">
                   <thead>
                     <tr>
                       <th>Category Title</th>
@@ -354,14 +389,35 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>1</td>
-                      <td>1</td>
-                      <td><a href="EditCategory_manager.php" class="btn btn-success">Edit</a></td>
-                      <td><button type="button" class="btn btn-danger">Delete</button></td>
-                    </tr>
+                  <?php
+                    include "krunkerideaconn.php";
+
+                    $sql = "SELECT * from category_tbl
+                             LIMIT $start,$rows_per_page";
+
+                    $query_no = mysqli_query($dbconn,$sql);  
+                    if(mysqli_num_rows($query_no) >0){
+                      foreach($query_no as $row){
+                        ?>
+                        <tr>
+                        <td><?php echo $row['CategoryTitle']?></td>
+                        <td><?php echo $row['DateClosure']?></td>
+                        <td><?php echo $row['DateFinal']?></td>
+                        <td><?php echo $row['DateCreated']?></td>
+                        <td><a href="EditCategory_manager.php?id=<?php echo $row['CategoryId'] ?>"  class="btn btn-success">Edit</a></td>
+                        <td><a href="DeleteCategory_manager?id=<?php echo $row['CategoryId'] ?>" class="btn btn-danger">Delete</a></td>
+                      </tr>
+                      <?php
+                      }
+                    }
+                    else{
+                      ?>
+                      <tr>
+                        <td colspan="6">No record found</td>
+                    
+                    <?php
+                    }
+                    ?>
                   </tbody>
                 </table>
   
@@ -369,6 +425,19 @@
             </div>
           </div>
         </div>
+        <div class = "pagination">
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM category_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+   
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>
+    </div>
       </section>
 
   </main><!-- End #main -->
@@ -383,7 +452,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+
     </div>
   </footer><!-- End Footer -->
 

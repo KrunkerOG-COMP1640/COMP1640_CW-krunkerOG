@@ -436,6 +436,9 @@ $row = mysqli_fetch_assoc($result);
                         <select name="DepartmentId" id="" value ="<?php echo $row['DepartmentId'] ?>" required class="form-control">
                          
                           <option value="1">Information Technology</option>
+                          <option value="2">Human Resource</option>
+                          <option value="3">Business & Marketing</option>
+                          <option value="4">Accounting</option>
                         
                         </select>
                     </div>

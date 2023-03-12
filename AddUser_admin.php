@@ -389,7 +389,7 @@ if(isset($_POST['submit'])){
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-
+  <div><?php echo $output; ?></div>
     <div class="pagetitle">
       <h1>Add User</h1>
       <nav>
@@ -419,16 +419,16 @@ if(isset($_POST['submit'])){
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="">Username</label>
-                        <input type="text" name="Username" class="form-control">
+                        <input type="text" name="Username" class="form-control" autofocus>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Password</label>
-                        <input type="password" name="UserPassword" class="form-control">
+                        <input type="password" name="UserPassword" class="form-control" required>
                     </div>
                  
                     <div class="col-md-12 mb-3">
                         <label for="">Email</label>
-                        <input type="email" name="UserEmail" class="form-control" placeholder="name@example.com">
+                        <input type="email" name="UserEmail" class="form-control" placeholder="name@example.com" required>
                     </div>
  
                     <div class="col-md-12 mb-3">

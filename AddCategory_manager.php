@@ -1,28 +1,39 @@
 <?php
 session_start();
-require("krunkerideaconn.php");
 
+require("krunkerideaconn.php");
 if(!isset($_SESSION['role'])){
-    header("Location: index.php");
-    exit;
-    
+  header("Location: index.php");
+  exit;
+  
+}
+else{
+  if($_SESSION['role'] != "QA Manager"){ //staff cannot access manager page
+      header("Location: index.php");
+      // exit;
+  }
+
 }
 
+if(isset($_POST['submit'])){
+$title= $_POST['CategoryTitle'];
+$dateclosure= $_POST['DateClosure'];
+$datefinal= $_POST['DateFinal'];
 
-$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
-//determine current page
-$page = isset($_GET['page'])?$_GET['page']:1;
-//determine the number of data per page
-$rows_per_page = 5;
 
-// Determine the starting row number for the current page
-$start= ($page-1)*$rows_per_page;
+$sql = "INSERT INTO `category_tbl`(`CategoryTitle`, `DateClosure`, `DateFinal`) 
+        VALUES ('$title','$dateclosure','$datefinal')";
 
-$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
-$result= mysqli_query($dbconn, $sql);
+$result = mysqli_query($dbconn,$sql);
+
+if($result){
+    header("Location: ManageCategory_manager.php?msg = New category added");
+
+}
+else{
+    echo "Failed: " .mysqli_error($dbconn);
+  }
+}
 ?>
 
 
@@ -33,9 +44,9 @@ $result= mysqli_query($dbconn, $sql);
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Krunker Idea Portal 2023 | Manager</title>
+  <title>Krunker Idea Portal 2023</title>
   <meta content="" name="description">
-  <meta content="" name="keywords">
+  <meta content="" name="keywords"> 
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -52,18 +63,17 @@ $result= mysqli_query($dbconn, $sql);
   <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="assets/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <style>
-    .pagination{
-        text-align:center;
-        display: inline;
-        letter-spacing:10px;
-    }
-   
-</style>
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.5.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body>
@@ -272,15 +282,6 @@ $result= mysqli_query($dbconn, $sql);
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -297,19 +298,18 @@ $result= mysqli_query($dbconn, $sql);
 
   </header><!-- End Header -->
 
-
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_manager.php">
+        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
           <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="list_of_category_manager.php">
+            <a href="list_of_category_admin.html">
               <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
             </a>
           </li>
@@ -345,7 +345,7 @@ $result= mysqli_query($dbconn, $sql);
       </li><!-- End Category Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="report_manager.php">
+        <a class="nav-link collapsed" href="report_manager.html">
           <i class="bi bi-bar-chart-line"></i>
           <span>Reports</span>
         </a>
@@ -361,69 +361,53 @@ $result= mysqli_query($dbconn, $sql);
       <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_manager.php">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index_manager.php">Category</a></li>
+          <li class="breadcrumb-item"><a href="ManageCategory_manager.php">Manage Category</a></li>
+          <li class="breadcrumb-item"><a href="AddCategory_manager.php">Add Category</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
       <div class="row">
-
-        <!-- Left side columns -->
-          <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Add Category</h4>
+            </div>
+            <!-- End Header Name -->
             <div class="card-body">
 
-            <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col">
-                  <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Popular</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Viewed</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Ideas</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Comments</a>
-                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</a>
-                  </div>
+
+              <form action="" method="post">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="">Category Title</label>
+                        <input type="text" name="CategoryTitle" class="form-control" required autofocus>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="">Date Closure</label>
+                        <br>
+                        <input type="date" class="form-control" name="DateClosure" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="">Date Final</label>
+                        <br>
+                        <input type="date" class="form-control" name="DateFinal" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" required>
+                    </div>
+                 
+                    <div class="col-md-12 mb-3">
+                      <button type="submit" class="btn btn-primary" name="submit">Add Category</button>
+                      <a href="ManageCategory_manager.php" class="btn btn-danger">Cancel</a>
+                    </div>
                 </div>
-              </div>
+              </form>
 
-      <?php
-      //displaying every ideas from database
-      while ($row = mysqli_fetch_assoc($result)){
-        echo'<div class="card">';
-        echo'<div class="card-body">';  
-          echo'<h1 class="card-title">'.$row['IdeaTitle'].'</h1>';
-          if($row['IdeaAnonymous'] == 0) {
-            echo '<h5 class="card-author">'.$row['Username'].'</h5>';
-          }
-          else if($row['IdeaAnonymous'] == 1){
-            echo '<h5 class="card-author">Anonymous</h5>';
-          }
-  
-          echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>'; 
-                echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
-                
-               echo'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
-               echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
-               echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
-              echo'</div>';
-            echo'</div>';
-    }
- ?>
- </div>                
-<div class = "pagination">
-      <?php
-			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
-			$page_count = mysqli_query($dbconn, $sql_page);
-			$row_count = mysqli_fetch_assoc($page_count);
-			$total_rows = $row_count['count'];
-			$total_pages = ceil($total_rows / $rows_per_page);
-   
-			for ($i = 1; $i <= $total_pages; $i++){
-				echo'<a href="?page='.$i.'">'.$i.'</a>';
-			}
-		?>
-    </div>
-        <!-- End Left side columns -->
-      </div>    
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </main><!-- End #main -->
 
@@ -437,7 +421,7 @@ $result= mysqli_query($dbconn, $sql);
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-     
+    
     </div>
   </footer><!-- End Footer -->
 

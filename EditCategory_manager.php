@@ -1,3 +1,42 @@
+<?php
+session_start();
+
+require("krunkerideaconn.php");
+if(!isset($_SESSION['role'])){
+  header("Location: index.php");
+  exit;
+  
+}
+else{
+  if($_SESSION['role'] != "QA Manager"){ //staff cannot access admin page
+      header("Location: index.php");
+      // exit;
+  }
+
+}
+$id = $_GET['id'];
+if(isset($_POST['submit'])){
+  $title= $_POST['CategoryTitle'];
+  $dateclosure= $_POST['DateClosure'];
+  $datefinal= $_POST['DateFinal'];
+  
+  
+  $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title',`DateClosure`='$dateclosure',`DateFinal`='$datefinal' 
+          WHERE CategoryId = $id";
+  
+  $result = mysqli_query($dbconn,$sql);
+  
+  if($result){
+      header("Location: ManageCategory_manager.php?msg = Category Updated");
+  
+  }
+  else{
+      echo "Failed: " .mysqli_error($dbconn);
+    }
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +82,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.html" class="logo d-flex align-items-center">
+      <a href="index_manager.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
@@ -211,12 +250,12 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
+              <h6><?php echo $_SESSION["username"];?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -243,18 +282,12 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
+            
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.html">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -331,9 +364,9 @@
       <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_manager.html">Idea</a></li>
-          <li class="breadcrumb-item"><a href="ManageCategory_manager.html">Manage Category</a></li>
-          <li class="breadcrumb-item"><a href="EditCategory_manager.html">Edit Category</a></li>
+          <li class="breadcrumb-item"><a href="index_manager.php">Idea</a></li>
+          <li class="breadcrumb-item"><a href="ManageCategory_manager.php">Manage Category</a></li>
+          <li class="breadcrumb-item"><a href="EditCategory_manager.php">Edit Category</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -348,29 +381,31 @@
             <!-- End Header Name -->
             <div class="card-body">
 
-
-              <form action="">
+<?php
+$sql = "SELECT * FROM category_tbl WHERE CategoryId = $id LIMIT 1";
+$result = mysqli_query($dbconn, $sql);  
+$row = mysqli_fetch_assoc($result);
+?>
+              <form action="" method="post">
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="">Category Title</label>
-                        <input type="text" name="CategoryTitle" class="form-control">
+                        <input type="text" name="CategoryTitle" class="form-control"  value ="<?php echo $row['CategoryTitle'] ?>" required autofocus>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Date Closure</label>
                         <br>
-                        <input type="date" class="form-control" name="begin" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31">
+                        <input type="date" class="form-control" name="DateClosure"  min="1997-01-01" max="2030-12-31"  value ="<?php echo $row['DateClosure'] ?>" >
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Date Final</label>
                         <br>
-                        <input type="date" class="form-control" name="begin" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31">
+                        <input type="date" class="form-control" name="DateFinal"  min="1997-01-01" max="2030-12-31"  value ="<?php echo $row['DateFinal'] ?>" >
                     </div>
+                   
                     <div class="col-md-12 mb-3">
-                      <label for="">Date Created</label>
-                      <input type="text" name="DateCreated" class="form-control">
-                  </div>
-                    <div class="col-md-12 mb-3">
-                      <button type="submit" class="btn btn-primary">Update User</button>
+                      <button type="submit" class="btn btn-primary" name="submit">Update category</button>
+                      <a href="ManageCategory_manager.php" class="btn btn-danger" >Cancel</a>
                     </div>
                 </div>
               </form>
@@ -393,7 +428,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+ 
     </div>
   </footer><!-- End Footer -->
 
