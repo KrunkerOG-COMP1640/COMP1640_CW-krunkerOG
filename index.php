@@ -420,7 +420,7 @@ if(isset($_POST["submit_comment_post"])){
               if ($imageidea_count > 0) {
                 echo '<section class="pb-4">';
                 echo '    <div class="bg-white border rounded-5">';
-                echo '        <section class="p-4 d-flex w-100">';
+                echo '        <section class="p-4 d-flex justify-content-center text-center w-100">';
                 echo '            <div class="lightbox" data-mdb-zoom-level="0.25" data-id="lightbox-8e0in48hs">';
                 echo '                <div class="row">';
                 while ($imageidea_row = mysqli_fetch_assoc($imageidea_result)) {
@@ -440,9 +440,9 @@ if(isset($_POST["submit_comment_post"])){
 
 
 
-              echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
-              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
-              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
+              echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea" style="margin-right: 10px;">See more</button>';
+              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></a>';
+              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></a>';
               echo '</div>';
               echo '</div>';
             }
