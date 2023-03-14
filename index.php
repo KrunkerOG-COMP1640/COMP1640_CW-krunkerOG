@@ -256,7 +256,7 @@ if(isset($_POST["submit_comment_post"])){
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6><?php echo $_SESSION["username"];?></h6>
-              <span>Web Designer</span>
+              <span><?php echo $_SESSION["role"];?>r</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -272,25 +272,6 @@ if(isset($_POST["submit_comment_post"])){
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -440,7 +421,7 @@ if(isset($_POST["submit_comment_post"])){
 
 
 
-              echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea" style="margin-right: 10px;">See more</button>';
+              echo '<a href="CommentSection.php?id=' .$ideaid. '" class="btn btn-primary" style="margin-right: 10px;">See More</a>';
               echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></a>';
               echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></a>';
               echo '</div>';
@@ -485,69 +466,7 @@ if(isset($_POST["submit_comment_post"])){
   </footer>
   <!-- End Footer -->
 
-  <!-- Start View Idea Modal -->
-  <div class="modal fade" id="viewUserIdea" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Username/ Anonymously</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- Body -->
-            <div class="modal-body">
-                <!-- Nav Scroller -->
-                <div class="js-nav-scroller hs-nav-scroller-horizontal">
-                    <span class="hs-nav-scroller-arrow-prev" style="display: none;">
-                        <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-                            <i class="bi-chevron-left"></i>
-                        </a>
-                    </span>
-
-                    <span class="hs-nav-scroller-arrow-next" style="display: none;">
-                        <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-                            <i class="bi-chevron-right"></i>
-                        </a>
-                    </span>
-                </div>
-                <!-- End Nav Scroller -->
-
-                <!-- Modal PopUp Content -->
-                <div class="tab-content">
-                  <form action="" method="post" enctype="multipart/form-data">
-                      <div class="row">
-                          <h4 class="modal-title text-cap">Idea Title</h4>
-                          <div class="flex-grow-1">
-                            Idea description
-                        </div>
-                        <div class="d-flex justify-content-start">
-                          <button class="btn"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                          <button class="btn"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                        </div>
-                      </div>
-                      <br>
-                      <div class="row mb-4">
-                          <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Enter comment here..."></textarea>
-                          <div class="mb-3 form-check">
-                            <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value= 1>
-                            <label for="anonymous" class="form-check-label">Post anonymously</label>
-                          </div>
-                          <div class="d-flex justify-content-end">
-                            <div class="d-flex gap-3">
-                                <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                                <button type="submit" name="submit_comment_post" class="btn btn-primary" data-bs-toggle="modal">Submit</button>
-                            </div>
-                        </div>
-                      </div>
-                  </form>
-                </div>
-                <!-- End Modal PopUp Content -->
-            </div>
-            <!-- End Body -->
-        </div>
-    </div>
-  </div>
-  <!-- End View Idea Modal -->
+ 
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
