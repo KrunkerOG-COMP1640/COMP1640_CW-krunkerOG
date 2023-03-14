@@ -45,6 +45,13 @@ if(isset($_POST['submit'])){
 
 ?>
 
+<?php
+  $user_id = $_SESSION["userid"];
+  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+  $result = mysqli_query($dbconn, $select_sql);  
+  $row = mysqli_fetch_assoc($result);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -257,12 +264,6 @@ if(isset($_POST['submit'])){
         </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
-                  <?php
-                  $user_id = $_SESSION["userid"];
-                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-                  $result = mysqli_query($dbconn, $select_sql);  
-                  $row = mysqli_fetch_assoc($result);
-                  ?>
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
@@ -271,7 +272,7 @@ if(isset($_POST['submit'])){
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?php echo $_SESSION["username"];?></h6>
+              <h6><?php echo $row['Username'] ?></h6>
               <span>Web Designer</span>
             </li>
             <li>
@@ -439,13 +440,6 @@ if(isset($_POST['submit'])){
               <div class="tab-content pt-2">
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                  
-                  <?php
-                  $user_id = $_SESSION["userid"];
-                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-                  $result = mysqli_query($dbconn, $select_sql);  
-                  $row = mysqli_fetch_assoc($result);
-                  ?>
 
                   <form action="" method="post">
                     <h5 class="card-title">Profile Details</h5>
@@ -476,12 +470,6 @@ if(isset($_POST['submit'])){
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <?php
-                  $user_id = $_SESSION["userid"];
-                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-                  $result = mysqli_query($dbconn, $select_sql);  
-                  $row = mysqli_fetch_assoc($result);
-                  ?>
 
                   <form action="" method="post">
                     
