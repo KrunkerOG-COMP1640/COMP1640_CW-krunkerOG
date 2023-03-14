@@ -256,7 +256,7 @@ if(isset($_POST["submit_comment_post"])){
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6><?php echo $_SESSION["username"];?></h6>
-              <span><?php echo $_SESSION["role"];?>r</span>
+              <span><?php echo $_SESSION["role"];?></span>
             </li>
             <li>
               <hr class="dropdown-divider">
