@@ -257,10 +257,16 @@ if(isset($_POST['submit'])){
         </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
+                  <?php
+                  $user_id = $_SESSION["userid"];
+                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+                  $result = mysqli_query($dbconn, $select_sql);  
+                  $row = mysqli_fetch_assoc($result);
+                  ?>
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $row['Username'] ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -397,7 +403,7 @@ if(isset($_POST['submit'])){
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2><?php echo $_SESSION["username"];?></h2>
+              <h2><?php echo $row['Username'] ?></h2>
               <h3>Web Designer</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -470,8 +476,6 @@ if(isset($_POST['submit'])){
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-
-                  <!-- Profile Edit Form -->
                   <?php
                   $user_id = $_SESSION["userid"];
                   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
@@ -514,11 +518,20 @@ if(isset($_POST['submit'])){
                       <button type="submit" class="btn btn-primary" name="submit">Save Changes</button>
                       <a href="staff_profile.php" class="btn btn-danger" >Cancel</a>
                     </div>
-                  </form><!-- End Profile Edit Form -->
+                  </form>
+                  <!-- End Profile Edit Form -->
 
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
+
+                  <?php
+                  $user_id = $_SESSION["userid"];
+                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+                  $result = mysqli_query($dbconn, $select_sql);  
+                  $row = mysqli_fetch_assoc($result);
+                  ?>
+                  
                   <!-- Change Password Form -->
                   <form action="" method="post" enctype="multipart/form-data">
 
