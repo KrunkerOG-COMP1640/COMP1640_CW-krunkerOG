@@ -253,7 +253,7 @@ $result= mysqli_query($dbconn, $sql);
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -262,25 +262,6 @@ $result= mysqli_query($dbconn, $sql);
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -401,7 +382,7 @@ $result= mysqli_query($dbconn, $sql);
           echo '<h5 class="card-category">'.$row['CategoryTitle'].'</h5>'; 
                 echo'<p class="card-text">'.$row['IdeaDescription'].'</p>';
                 
-               echo'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewUserIdea">See more</button>';
+                echo '<a href="CommentSection.php?id=' .$ideaid. '" class="btn btn-primary" style="margin-right: 10px;">See More</a>'; 
                echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-up"></i></a>';
                echo'<a href="#" class="btn btn-primary" style="background-color: darkcyan;"><i class="bi bi-hand-thumbs-down"></i></a>';
               echo'</div>';
