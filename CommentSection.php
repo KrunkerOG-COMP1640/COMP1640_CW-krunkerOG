@@ -23,7 +23,7 @@ if(isset($_POST["submit_comment_post"])){
     $anonymous = isset($_POST["anonymous"]);
       mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
                               VALUES ('$user_id','$comment','$anonymous', '$id')");
-    header("Location:CommenSection.php?id=".$id);
+    header("Location:CommentSection.php?id=".$id);
       exit();
   }
   
@@ -408,26 +408,41 @@ $showComment = mysqli_query($dbconn, $show);
                                 </div>
                                 <?= '<p class="card-text">' . $row['IdeaDescription'] . '</p>'; ?>
                                 <!-- Gallery -->
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
+                                <?php
+                                    $ideaid = $row['IdeaId'];
+                                    $imageidea_query = "SELECT IdeaImage FROM ideamedia_tbl WHERE IdeaId=$ideaid";
+                                    $imageidea_result = mysqli_query($dbconn, $imageidea_query);
+                                    $imageidea_count = mysqli_num_rows($imageidea_result);
+                                    if ($imageidea_count > 0) {
+                                        echo '<section class="pb-4">';
+                                        echo '    <div class="bg-white border rounded-5">';
+                                        echo '        <section class="p-4 d-flex justify-content-center text-center w-100">';
+                                        echo '            <div class="lightbox" data-mdb-zoom-level="0.25" data-id="lightbox-8e0in48hs">';
+                                        echo '                <div class="row">';
+                                        while ($imageidea_row = mysqli_fetch_assoc($imageidea_result)) {
+                                            $imageidea_path = '' . $imageidea_row['IdeaImage'];
+                                            if (file_exists($imageidea_path)) {
+                                                echo '   <div class="col-lg-4 mb-4">';
+                                                echo '         <img src="' . $imageidea_path . '"  alt="idea image" class="shadow-1-strong rounded mb-4" style="width: 150px; height: 150px; object-fit: contain;">';
+                                                echo '   </div>';
+                                            }
+                                        }
+                                        echo '               </div>';
+                                        echo '            </div>';
+                                        echo '        </section>';
+                                        echo '    </div>';
+                                        echo '</section>';
+                                    }
 
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
-
-                                        <img src="assets/img/slides-1.jpg" class="w-100 shadow-1-strong rounded mb-4" alt=".." />
-                                    </div>
-
-                                </div>
-                                <form action="" method="post">
-                                <!-- Gallery -->
-                                <p>
-                                    <!-- <span class="btn btn-primary rounded-pill">Support</span> -->
+                                    ?>
                                     <?= '<h5 class="btn btn-primary rounded-pill">' . $row['CategoryTitle'] . '</h5>'; ?>
-                                    <hr>
+                                    
+                                    <form action="" method="post">
+                                        <!-- Gallery -->
+                                        <p>
+                                            <!-- <span class="btn btn-primary rounded-pill">Support</span> -->
+
+                                            <hr>
                                     <div class="mb-3 form-check">
                                     <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value="1">
                                     <label for="anonymous" class="form-check-label">Comment anonymously</label>
