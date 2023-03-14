@@ -9,12 +9,6 @@ if($_SESSION["role"] != "Staff") {
 
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 
-//$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-//INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
-//INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-//WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
-
-
 
 // Insert new commant into database
 if(isset($_POST["submit_new_password"])){
@@ -29,6 +23,25 @@ if(isset($_POST["submit_new_password"])){
     exit();
   }
 }	
+
+$user_id = $_SESSION["userid"];
+if(isset($_POST['submit'])){
+  $username = $_POST['Username'];
+  $email = $_POST['UserEmail'];
+  $address = $_POST['UserAddress'];
+  $contact = $_POST['UserContactNo'];
+
+  $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',`UserAddress`='$address',`UserContactNo`='$contact' 
+  WHERE UserId = $user_id";
+  $result =mysqli_query($dbconn, $sql);
+
+  if($result){
+    header("Location: staff_profile.php?msg=Data updated successfully");
+  }
+  else{
+    echo "Failed: " .mysqli_error($dbconn);
+  }
+}
 
 ?>
 
@@ -425,32 +438,39 @@ if(isset($_POST["submit_new_password"])){
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Username</div>
-                    <div class="col-lg-9 col-md-8"><span><?php echo $_SESSION["username"];?></span></div>
+                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["username"];?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["useremail"];?></div>
                   </div>
-
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["useraddress"];?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["usercontactno"];?></div>
                   </div>
-
 
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+
+                  <!-- Profile Edit Form -->
+                  <?php
+                  $user_id = $_SESSION["userid"];
+                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+                  $result = mysqli_query($dbconn, $select_sql);  
+                  $row = mysqli_fetch_assoc($result);
+                  ?>
+
+                  <form action="" method="post">
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
@@ -465,7 +485,7 @@ if(isset($_POST["submit_new_password"])){
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Username</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                        <input type="text" name="Username" value ="<?php echo $row['Username'] ?>"  class="form-control">
                       </div>
                     </div>
                     
@@ -473,27 +493,27 @@ if(isset($_POST["submit_new_password"])){
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="email" class="form-control" id="fullName" value="Kevin Anderson">
+                        <input type="email" name="UserEmail" value ="<?php echo $row['UserEmail'] ?>" class="form-control">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">Address</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="company" type="text" class="form-control" id="company" value="Lueilwitz, Wisoky and Leuschke">
+                        <input type="text" name="UserAddress" value ="<?php echo $row['UserAddress'] ?>" class="form-control">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Job" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
+                        <input type="text" name="UserContactNo" value ="<?php echo $row['UserContactNo'] ?>" class="form-control">
                       </div>
                     </div>
 
-
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <button type="submit" class="btn btn-primary" name="submit">Save Changes</button>
+                      <a href="staff_profile.php" class="btn btn-danger" >Cancel</a>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -551,13 +571,6 @@ if(isset($_POST["submit_new_password"])){
   <footer id="footer" class="footer">
     <div class="copyright">
       &copy; Copyright <strong><span>Krunker Idea Portal 2023</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
 
