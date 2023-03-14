@@ -433,28 +433,37 @@ if(isset($_POST['submit'])){
               <div class="tab-content pt-2">
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  
+                  <?php
+                  $user_id = $_SESSION["userid"];
+                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+                  $result = mysqli_query($dbconn, $select_sql);  
+                  $row = mysqli_fetch_assoc($result);
+                  ?>
 
-                  <h5 class="card-title">Profile Details</h5>
+                  <form action="" method="post">
+                    <h5 class="card-title">Profile Details</h5>
 
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label ">Username</div>
-                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["username"];?></div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">Username</div>
+                      <div class="col-lg-9 col-md-8" name="Username"><?php echo $row['Username'] ?></div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["useremail"];?></div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Email</div>
+                      <div class="col-lg-9 col-md-8" name="UserEmail"><?php echo $row['UserEmail'] ?></div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["useraddress"];?></div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Address</div>
+                      <div class="col-lg-9 col-md-8" name="UserAddress"><?php echo $row['UserAddress'] ?></div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION["usercontactno"];?></div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Phone</div>
+                      <div class="col-lg-9 col-md-8" name="UserContactNo"><?php echo $row['UserContactNo'] ?></div>
+                    </div>
+                  </form>
 
                 </div>
 
@@ -471,17 +480,7 @@ if(isset($_POST['submit'])){
                   ?>
 
                   <form action="" method="post">
-                    <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                      <div class="col-md-8 col-lg-9">
-                        <img src="assets/img/profile-img.jpg" alt="Profile">
-                        <div class="pt-2">
-                          <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                        </div>
-                      </div>
-                    </div>
-
+                    
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Username</label>
                       <div class="col-md-8 col-lg-9">
@@ -517,11 +516,6 @@ if(isset($_POST['submit'])){
                     </div>
                   </form><!-- End Profile Edit Form -->
 
-                </div>
-
-                <div class="tab-pane fade pt-3" id="profile-settings">
-
-                  
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
