@@ -9,21 +9,6 @@ if($_SESSION["role"] != "Staff") {
 
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 
-
-// Insert new commant into database
-if(isset($_POST["submit_new_password"])){
-  $user_id = $_SESSION["userid"];
-  $newPassword = mysqli_real_escape_string($dbconn, $_POST["newPassword"]);
-  $comfirmNewPassword = mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]);
-  if($newPassword == $comfirmNewPassword){
-    mysqli_query($dbconn, "UPDATE user_tbl 
-                              SET UserPassword = '$newPassword' 
-							              WHERE UserId = '$user_id'");
-    header("Location: staff_profile.php");
-    exit();
-  }
-}	
-
 $user_id = $_SESSION["userid"];
 if(isset($_POST['submit'])){
   $username = $_POST['Username'];
@@ -50,6 +35,29 @@ if(isset($_POST['submit'])){
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result = mysqli_query($dbconn, $select_sql);  
   $row = mysqli_fetch_assoc($result);
+?>
+
+<?php
+  $user_id_password = $_SESSION["userid"];
+  $select_sql_password = "SELECT * FROM user_tbl WHERE UserId = $user_id_password";
+  $result_password = mysqli_query($dbconn, $select_sql_password);  
+  $row_password = mysqli_fetch_assoc($result_password);
+
+  if(isset($_POST["submit_new_password"])){
+    $checkCurrentPassword = $row['UserPassword'];
+    $currentPassword = mysqli_real_escape_string($dbconn, $_POST["currentPassword"]);
+    $newPassword = mysqli_real_escape_string($dbconn, $_POST["newPassword"]);
+    $comfirmNewPassword = mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]);
+    if($currentPassword == $checkCurrentPassword){
+      if($newPassword == $comfirmNewPassword){
+        mysqli_query($dbconn, "UPDATE user_tbl 
+                                  SET UserPassword = '$newPassword' 
+                                WHERE UserId = '$user_id'");
+        header("Location: staff_profile.php");
+        exit();
+      }
+    }
+  }	
 ?>
 
 <!DOCTYPE html>
@@ -526,7 +534,7 @@ if(isset($_POST['submit'])){
                     <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
+                        <input name="currentPassword" type="password" class="form-control" id="currentPassword">
                       </div>
                     </div>
 
