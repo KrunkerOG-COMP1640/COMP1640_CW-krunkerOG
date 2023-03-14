@@ -1,28 +1,36 @@
 <?php
 session_start();
 require("krunkerideaconn.php");
-
-if ($_SESSION["role"] != "Admin") {
-    header("Location: login.php");
+if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
+    header("Location: login.php");// Redirect to login page if not logged in
     exit;
+
 }
-
-
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
-//determine current page
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-//determine the number of data per page
-$rows_per_page = 5;
 
-// Determine the starting row number for the current page
-$start = ($page - 1) * $rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
+$id = $_GET['id']; // get ideaID
+$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl  
 INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
 INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
-
+WHERE IdeaId=$id";
 $result = mysqli_query($dbconn, $sql);
+
+if(isset($_POST["submit_comment_post"])){
+
+    $user_id = $_SESSION["userid"];
+      $comment =  $_POST["CommentDetails"];
+    $anonymous = isset($_POST["anonymous"]);
+      mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
+                              VALUES ('$user_id','$comment','$anonymous', '$id')");
+    header("Location:CommenSection.php?id=".$id);
+      exit();
+  }
+  
+$show = "SELECT comment_tbl.IdeaId, comment_tbl.CommentDetails, comment_tbl.DateComment, comment_tbl.CommentAnonymous, user_tbl.Username from comment_tbl
+INNER JOIN user_tbl ON comment_tbl.UserId = user_tbl.UserId
+WHERE IdeaId=$id";
+$showComment = mysqli_query($dbconn, $show);
 ?>
 
 
@@ -37,6 +45,9 @@ $result = mysqli_query($dbconn, $sql);
     <meta content="" name="description">
     <meta content="" name="keywords">
 
+
+<!-- Font Awesome Kit CSS -->
+<link rel="stylesheet" href="https://kit.fontawesome.com/bb8f73d07f.css" crossorigin="anonymous">
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -57,12 +68,6 @@ $result = mysqli_query($dbconn, $sql);
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
     <style>
         .pagination {
             text-align: center;
@@ -78,7 +83,7 @@ $result = mysqli_query($dbconn, $sql);
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index_admin.php" class="logo d-flex align-items-center">
+            <a href="index.php" class="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="">
                 <span class="d-none d-lg-block">Krunker Idea Portal</span>
             </a>
@@ -268,26 +273,7 @@ $result = mysqli_query($dbconn, $sql);
                             <hr class="dropdown-divider">
                         </li>
 
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-gear"></i>
-                                <span>Account Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Need Help?</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
+                      
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="logout.php">
                                 <i class="bi bi-box-arrow-right"></i>
@@ -386,27 +372,23 @@ $result = mysqli_query($dbconn, $sql);
                 </div>
             </div> -->
             <div class="container">
+<?php
+             
+                while ($row = mysqli_fetch_assoc($result)) {
 
-                <!-- questions and answer-->
+                    
+                    ?>
                 <div class="row">
                     <div class="col-12 col-md-8 col-lg-9 col-xl-9">
                         <div class="card border-0 mb-4">
                             <div class="card-body">
                                 <div class="row align-items-center mb-3">
                                     <div class="col">
-                                        <h4 class="display-4">Idea</h4>
+                                      <?= '<h1 class="card-title">' . $row['IdeaTitle'] . '</h1>';?>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="dropdown">
-                                            <button class="btn btn-link text-secondary dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical vm"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end ">
-                                                <li><a class="dropdown-item" href="#">Hide from Timeline</a></li>
-                                                <li><a class="dropdown-item" href="#">Report</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                        <a href="index.php"><i class="fa-regular fa-x fa-2x"></i></a>
+                                    </div> 
                                 </div>
                                 <div class="row align-items-center mb-3">
                                     <div class="col-auto">
@@ -415,15 +397,16 @@ $result = mysqli_query($dbconn, $sql);
                                         </figure>
                                     </div>
                                     <div class="col px-0">
-                                        <p class="small text-secondary mb-0">Asked by</p>
-                                        <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
+                                        <p class="small text-secondary mb-0">Posted by</p>
+                                       <?= '<h5 class="card-author">' . $row['Username'] . '</h5>'; ?>
+                                        <!-- <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p> -->
                                     </div>
                                     <div class="col-auto text-end">
-                                        <p class="small text-secondary mb-0">Modified</p>
-                                        <p class="mb-0">8 min ago</p>
+                                        <p class="small text-secondary mb-0">Posted at</p>
+                                        <?= '<h5 class="card-author">' . $row['DatePost'] . '</h5>'; ?>
                                     </div>
                                 </div>
-                                <p class="text-secondary">Question / Idea</p>
+                                <?= '<p class="card-text">' . $row['IdeaDescription'] . '</p>'; ?>
                                 <!-- Gallery -->
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
@@ -439,23 +422,39 @@ $result = mysqli_query($dbconn, $sql);
                                     </div>
 
                                 </div>
+                                <form action="" method="post">
                                 <!-- Gallery -->
                                 <p>
-                                    <span class="btn btn-primary rounded-pill">Support</span>
+                                    <!-- <span class="btn btn-primary rounded-pill">Support</span> -->
+                                    <?= '<h5 class="btn btn-primary rounded-pill">' . $row['CategoryTitle'] . '</h5>'; ?>
+                                    <hr>
+                                    <div class="mb-3 form-check">
+                                    <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value="1">
+                                    <label for="anonymous" class="form-check-label">Comment anonymously</label>
+                                        </div>
                                 </p>
                             </div>
+                            
+                     
                             <div class="card-footer">
                                 <div class="input-group">
-                                    <input type="text" class="form-control border" placeholder="Your comment here...">
-                                    <button class="btn btn-light border" type="button">Comment</button>
+                                    <input type="text" required name ="CommentDetails" class="form-control border" placeholder="Your comment here..." >
+                                    <button class="btn btn-light border" type="submit" name ="submit_comment_post">Comment</button>
+                
                                 </div>
                             </div>
                         </div>
-
+                </form>
                     </div>
+            
+<?php
+                }
+?>
 
-                    <!-- posted comment -->
                     <h5 class="title">Comments</h5>
+                    <?php
+                    while ($shoCom = mysqli_fetch_assoc($showComment)) {
+                        ?>
                     <div class="col-12 col-md-8 col-lg-9 col-xl-9">
                     <div class="card border-0 mb-4">
                         <div class="card-body">
@@ -468,39 +467,31 @@ $result = mysqli_query($dbconn, $sql);
                                 </div>
                                 <div class="col px-0">
                                     <p class="small text-secondary mb-0">Commented by</p>
-                                    <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
+                                   <?php if($shoCom['CommentAnonymous'] == 0){
+                                    
+                                        echo '<p class="mb-0">' .$shoCom['Username'].'</p>'; 
+                                    }
+                                    
+                                    else if($shoCom['CommentAnonymous'] == 1){
+                                        echo '<p class="mb-0">Anonymous</h5>';
+                                    }
+?>
+
                                 </div>
                                 <div class="col-auto text-end">
-                                    <p class="small text-secondary mb-0">Modified</p>
-                                    <p class="mb-0">8 min ago</p>
+                                    <p class="small text-secondary mb-0">Commented on</p>
+                                    <?= '<p class="mb-0">'.$shoCom['DateComment'].'</p>'; ?>
                                 </div>
                             </div>
-                            <p class="text-secondary">User's Comments</p>
+                            <?= '<p class="text-secondary">'.$shoCom['CommentDetails'].'</p>'; ?>
                         </div>
                     </div>
                     </div>
-                    <div class="col-12 col-md-8 col-lg-9 col-xl-9">
-                    <div class="card border-0 mb-4">
-                        <div class="card-body">
-                            <br>
-                            <div class="row align-items-center mb-3">
-                                <div class="col-auto">
-                                    <figure class="rounded pill">
-                                        <img src="assets/img/profile-img-64x64.jpg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="col px-0">
-                                    <p class="small text-secondary mb-0">Commented by</p>
-                                    <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p>
-                                </div>
-                                <div class="col-auto text-end">
-                                    <p class="small text-secondary mb-0">Modified</p>
-                                    <p class="mb-0">8 min ago</p>
-                                </div>
-                            </div>
-                            <p class="text-secondary">User's Comments</p>
-                        </div>
-    </div>
+                    
+                    <?php
+                }
+?>
+                 
         </section>
 
     </main><!-- End #main -->
@@ -511,72 +502,12 @@ $result = mysqli_query($dbconn, $sql);
             &copy; Copyright <strong><span>Krunker Idea Portal 2023</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-
+ 
         </div>
     </footer><!-- End Footer -->
 
 
-    <!-- Start View Idea Modal -->
-    <div class="modal fade" id="viewUserIdea" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Username/ Anonymously</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body">
-                    <!-- Nav Scroller -->
-                    <div class="js-nav-scroller hs-nav-scroller-horizontal">
-                        <span class="hs-nav-scroller-arrow-prev" style="display: none;">
-                            <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-                                <i class="bi-chevron-left"></i>
-                            </a>
-                        </span>
-
-                        <span class="hs-nav-scroller-arrow-next" style="display: none;">
-                            <a class="hs-nav-scroller-arrow-link" href="javascript:;">
-                                <i class="bi-chevron-right"></i>
-                            </a>
-                        </span>
-                    </div>
-                    <!-- End Nav Scroller -->
-
-                    <!-- Modal PopUp Content -->
-                    <div class="tab-content" id="editUserModalTabContent">
-                        <div class="row">
-                            <h4 class="modal-title text-cap">Idea Title</h4>
-                            <div class="flex-grow-1">
-                                Idea description
-                            </div>
-                            <div class="d-flex justify-content-start">
-                                <button class="btn"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                                <button class="btn"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row mb-6">
-                            <textarea id="freeform" name="freeform" rows="4" cols="50">Enter comment here...</textarea>
-                            <div class="d-flex justify-content-end">
-                                <div class="d-flex gap-3">
-                                    <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clientAdviceModal">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Modal PopUp Content -->
-                </div>
-                <!-- End Body -->
-            </div>
-        </div>
-    </div>
-    <!-- End View Idea Modal -->
+    
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -592,6 +523,8 @@ $result = mysqli_query($dbconn, $sql);
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+<!-- Font Awesome Kit script -->
+<script src="https://kit.fontawesome.com/bb8f73d07f.js" crossorigin="anonymous"></script>
 
 </body>
 
