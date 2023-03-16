@@ -499,13 +499,6 @@ if(isset($_POST['submit'])){
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
-
-                  <?php
-                  $user_id = $_SESSION["userid"];
-                  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-                  $result = mysqli_query($dbconn, $select_sql);  
-                  $row = mysqli_fetch_assoc($result);
-                  ?>
                   
                   <!-- Change Password Form -->
                   <form action="" method="post" enctype="multipart/form-data">
