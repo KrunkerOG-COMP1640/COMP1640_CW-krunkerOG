@@ -16,24 +16,38 @@ else{
 }
 
 if(isset($_POST['submit'])){
-$title= $_POST['CategoryTitle'];
-$dateclosure= $_POST['DateClosure'];
-$datefinal= $_POST['DateFinal'];
-
-
-$sql = "INSERT INTO `category_tbl`(`CategoryTitle`, `DateClosure`, `DateFinal`) 
-        VALUES ('$title','$dateclosure','$datefinal')";
-
-$result = mysqli_query($dbconn,$sql);
-
-if($result){
-    header("Location: ManageCategory_manager.php?msg = New category added");
-
-}
-else{
-    echo "Failed: " .mysqli_error($dbconn);
+  $title= $_POST['CategoryTitle'];
+  $dateclosure= $_POST['DateClosure'];
+  $datefinal= $_POST['DateFinal'];
+  $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
+  $error = array();
+   if(mysqli_num_rows($checkcat) > 0){
+    $error['1'] = "Cannot add existed category";
   }
-}
+  
+  
+  if(isset($error['1'])){
+    $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>".$error['1'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+  }else{
+      $output .= "";
+    }
+  
+  
+  if(count($error) < 1 ){
+  $sql = "INSERT INTO `category_tbl`(`CategoryTitle`, `DateClosure`, `DateFinal`) 
+          VALUES ('$title','$dateclosure','$datefinal')";
+  
+  $result = mysqli_query($dbconn,$sql);
+  
+  if($result){
+      header("Location: ManageCategory_manager.php?msg = New category added");
+  
+  }
+  else{
+      echo "Failed: " .mysqli_error($dbconn);
+    }
+  }
+  }
 ?>
 
 
