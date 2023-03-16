@@ -274,11 +274,15 @@ if(isset($_POST["submit_post"])){
         <div class="mb-3">
           <label for="category" class="form-label">Choose category:</label>
           <select id="category" name="category" class="form-control" required>
-            <option value="">--Please select--</option>
-            <option value="1">Technology</option>
-            <option value="2">Education</option>
-            <option value="3">Health</option>
-            <option value="4">Business</option>
+          <?php
+           $sql = "SELECT CategoryId, CategoryTitle FROM category_tbl";
+           $result = mysqli_query($dbconn, $sql); 
+           while ($row = mysqli_fetch_assoc($result)) {
+
+           echo '<option value="'. $row['CategoryId'].'">'. $row['CategoryTitle']. '</option>';
+        
+            }
+          ?>
           </select>
         </div>
         <div class="mb-3">
@@ -291,7 +295,7 @@ if(isset($_POST["submit_post"])){
         </div>
         <div class="mb-3 form-check">
           <input type="checkbox" id="terms" name="terms" class="form-check-input" required>
-          <label for="terms" class="form-check-label">I agree to the terms and conditions</label>
+          <label for="terms" class="form-check-label">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#viewUserIdea"> terms and conditions</a></label>
         </div>
         <div class="d-grid">
           <button type="submit" name="submit_post" class="btn btn-primary">Submit</button>
