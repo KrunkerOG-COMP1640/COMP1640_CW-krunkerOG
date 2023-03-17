@@ -19,7 +19,8 @@ $result = mysqli_query($dbconn, $sql);
 if(isset($_POST["submit_comment_post"])){
 
     $user_id = $_SESSION["userid"];
-      $comment =  $_POST["CommentDetails"];
+    $usercomment = strip_tags($_POST["CommentDetails"]);
+    $comment = $usercomment ;
     $anonymous = isset($_POST["anonymous"]);
       mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
                               VALUES ('$user_id','$comment','$anonymous', '$id')");
