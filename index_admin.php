@@ -76,7 +76,7 @@ $result= mysqli_query($dbconn, $sql);
         letter-spacing:10px;
     }
    
-</style>
+  </style>
 </head>
 
 <body>
@@ -85,30 +85,16 @@ $result= mysqli_query($dbconn, $sql);
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_admin.php" class="logo d-flex align-items-center">
+      <a href="index.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -124,7 +110,21 @@ $result= mysqli_query($dbconn, $sql);
             <li>
               <hr class="dropdown-divider">
             </li>
-          
+
+            <?php
+                if($_SESSION['role'] == "Staff"){ //staff cannot see this
+                    echo'<li>';
+                        echo'<a class="dropdown-item d-flex align-items-center" href="staff_profile.php">';
+                            echo'<i class="bi bi-person"></i>';
+                            echo'<span>My Profile</span>';
+                        echo'</a>';
+                    echo'</li>';
+                    echo'<li>';
+                        echo'<hr class="dropdown-divider">';
+                    echo'</li>';
+                }
+            ?>
+
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
@@ -140,56 +140,60 @@ $result= mysqli_query($dbconn, $sql);
 
   </header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+        <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-          <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="list_of_category_admin.html">
-              <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
-            </a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
+                    <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="list_of_category_admin.html">
+                            <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Idea Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>Charts</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Statistics Nav -->
+
+            <?php
+                if($_SESSION['role'] == "Admin"){ //staff cannot see this
+                echo'<li class="nav-heading">Pages</li>';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
+                        echo '<i class="bi bi-people"></i>';
+                        echo '<span>Manage User</span>';
+                    echo '</a>';
+                echo '</li><!-- End Manage User Page Nav -->';
+
+                echo '<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
+                        echo '<i class="bi bi-chat-left-text"></i>';
+                        echo '<span>Manage Idea</span>';
+                    echo '</a>';
+                echo '</li><!-- End Manage Idea Page Nav -->';
+                }
+            ?>
+            
         </ul>
-      </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
-
-      <li class="nav-heading">Pages</li>
-
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.php">
-            <i class="bi bi-people"></i>
-          <span>Manage User</span>
-        </a>
-      </li><!-- End Manage User Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.php">
-            <i class="bi bi-chat-left-text"></i>
-          <span>Manage Idea</span>
-        </a>
-      </li><!-- End Manage Idea Page Nav -->
-    </ul>
-
-  </aside><!-- End Sidebar-->
+    </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
@@ -283,21 +287,21 @@ $result= mysqli_query($dbconn, $sql);
 				          </form>  
   -->
         <!-- End Left side columns -->
-  </div>
+    </div>
                 
       <div class = "pagination">
-      <?php
-			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
-			$page_count = mysqli_query($dbconn, $sql_page);
-			$row_count = mysqli_fetch_assoc($page_count);
-			$total_rows = $row_count['count'];
-			$total_pages = ceil($total_rows / $rows_per_page);
-   
-			for ($i = 1; $i <= $total_pages; $i++){
-				echo'<a href="?page='.$i.'">'.$i.'</a>';
-			}
-		?>
-    </div>
+        <?php
+          $sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
+          $page_count = mysqli_query($dbconn, $sql_page);
+          $row_count = mysqli_fetch_assoc($page_count);
+          $total_rows = $row_count['count'];
+          $total_pages = ceil($total_rows / $rows_per_page);
+      
+          for ($i = 1; $i <= $total_pages; $i++){
+            echo'<a href="?page='.$i.'">'.$i.'</a>';
+          }
+        ?>
+      </div>
             
   </main><!-- End #main -->
 

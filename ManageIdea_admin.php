@@ -78,7 +78,7 @@ $start= ($page-1)*$rows_per_page;
 </head>
 
 <body>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
@@ -91,23 +91,9 @@ $start= ($page-1)*$rows_per_page;
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -123,7 +109,21 @@ $start= ($page-1)*$rows_per_page;
             <li>
               <hr class="dropdown-divider">
             </li>
-          
+
+            <?php
+                if($_SESSION['role'] == "Staff"){ //staff cannot see this
+                    echo'<li>';
+                        echo'<a class="dropdown-item d-flex align-items-center" href="staff_profile.php">';
+                            echo'<i class="bi bi-person"></i>';
+                            echo'<span>My Profile</span>';
+                        echo'</a>';
+                    echo'</li>';
+                    echo'<li>';
+                        echo'<hr class="dropdown-divider">';
+                    echo'</li>';
+                }
+            ?>
+
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
@@ -139,56 +139,60 @@ $start= ($page-1)*$rows_per_page;
 
   </header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+        <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-          <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="list_of_category_admin.html">
-              <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
-            </a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.php">
+                    <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="list_of_category_admin.html">
+                            <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Idea Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>Charts</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Statistics Nav -->
+
+            <?php
+                if($_SESSION['role'] == "Admin"){ //staff cannot see this
+                echo'<li class="nav-heading">Pages</li>';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
+                        echo '<i class="bi bi-people"></i>';
+                        echo '<span>Manage User</span>';
+                    echo '</a>';
+                echo '</li><!-- End Manage User Page Nav -->';
+
+                echo '<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
+                        echo '<i class="bi bi-chat-left-text"></i>';
+                        echo '<span>Manage Idea</span>';
+                    echo '</a>';
+                echo '</li><!-- End Manage Idea Page Nav -->';
+                }
+            ?>
+            
         </ul>
-      </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
-
-      <li class="nav-heading">Pages</li>
-
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.php">
-            <i class="bi bi-people"></i>
-          <span>Manage User</span>
-        </a>
-      </li><!-- End Manage User Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.php">
-            <i class="bi bi-chat-left-text"></i>
-          <span>Manage Idea</span>
-        </a>
-      </li><!-- End Manage Idea Page Nav -->
-    </ul>
-
-  </aside><!-- End Sidebar-->
+    </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
