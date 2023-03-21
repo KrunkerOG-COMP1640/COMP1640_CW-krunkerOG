@@ -242,13 +242,21 @@ if(isset($_POST["submit_post"])){
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>Terms and Conditions</strong></h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+      <h5>1. Users must ensure that their idea is original and not copied or stolen from any other source.</h5>
+      </br>
+      <h5>2. Users must conduct themselves in a respectful and professional manner when submitting and discussing their ideas.</h5>
+      </br>
+      <h5>3. By submitting an idea, users acknowledge that they own the rights to the idea and agree to grant the portal the non-exclusive right to use, modify, and distribute the idea.</h5>
+      </br>
+      <h5>4. Users must not submit any confidential or proprietary information as part of their idea.</h5>
+      </br>
+      <h5>5. The portal does not guarantee that any idea submitted will be reviewed or acted upon, and is not responsible for any loss or damage resulting from the submission or use of any idea.</h5>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
