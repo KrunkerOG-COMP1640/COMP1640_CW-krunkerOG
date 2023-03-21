@@ -51,10 +51,10 @@ $user_id = $_SESSION["userid"];
   <style>
     .pagination{
       position: sticky;
-        left: 50%;
-        bottom: 1%;
-        display: inline;
-        letter-spacing:10px;
+      left: 50%;
+      bottom: 1%;
+      display: inline;
+      letter-spacing:10px;
     }
   </style>
 </head>
@@ -202,7 +202,6 @@ $user_id = $_SESSION["userid"];
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
 
         <!-- Left side columns -->
           <div class="row">
@@ -211,7 +210,7 @@ $user_id = $_SESSION["userid"];
             <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col" id="sorting-btn">
-                  <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
+                    <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
                     <button id="most_popular" data-sorting="most_popular" class="btn btn-primary"><i class="bi bi-star"></i> Most Popular</button>
                     <button id="most_viewed" data-sorting="most_viewed" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</button>
                     <button id="latest_comment" data-sorting="latest_comment" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</button>
@@ -222,10 +221,7 @@ $user_id = $_SESSION["userid"];
               
               <div id="posts-container">
 
-              </div>
-
-            
-                           
+              </div>      
                 <!--
                   <form method="POST">
 						        <input type="submit" class="like_btn" name="like_btn" value="Like" />

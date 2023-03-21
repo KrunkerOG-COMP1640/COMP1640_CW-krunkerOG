@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Kuala_Lumpur');
 session_start();
 require("krunkerideaconn.php");
 
@@ -8,25 +9,8 @@ if(!isset($_SESSION['role'])){
     
 }
 
-
-$dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
-//determine current page
-$page = isset($_GET['page'])?$_GET['page']:1;
-//determine the number of data per page
-$rows_per_page = 5;
 $user_id = $_SESSION["userid"];
 
-// Determine the starting row number for the current page
-$start= ($page-1)*$rows_per_page;
-
-$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
-$result= mysqli_query($dbconn, $sql);
-?>
-
-<?php
   $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result_User = mysqli_query($dbconn, $select_sql);  
@@ -43,7 +27,8 @@ $result= mysqli_query($dbconn, $sql);
   <title>Krunker Idea Portal 2023 | Manager</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <!--JQuery Library-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -65,11 +50,12 @@ $result= mysqli_query($dbconn, $sql);
   <link href="assets/css/style.css" rel="stylesheet">
   <style>
     .pagination{
-        text-align:center;
-        display: inline;
-        letter-spacing:10px;
+      position: sticky;
+      left: 50%;
+      bottom: 1%;
+      display: inline;
+      letter-spacing:10px;
     }
-   
 </style>
 </head>
 
@@ -316,6 +302,14 @@ $result= mysqli_query($dbconn, $sql);
           </li>
         </ul>
       </li><!-- End Statistics Nav -->
+      <!--Category filter-->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#category-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        </ul>
+      </li>
 
       <li class="nav-heading">Pages</li>
 
@@ -363,90 +357,27 @@ $result= mysqli_query($dbconn, $sql);
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
 
         <!-- Left side columns -->
           <div class="row">
             <div class="card-body">
-
-            <div class="card-body">
                 <div class="row align-items-center">
-                  <div class="col">
-                  <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Popular</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Most Viewed</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Ideas</a>
-                    <a href="#" class="btn btn-primary"><i class="bi bi-star"></i>Latest Comments</a>
-                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i>Submit Idea</a>
+                <div class="col" id="sorting-btn">
+                    <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
+                    <button id="most_popular" data-sorting="most_popular" class="btn btn-primary"><i class="bi bi-star"></i> Most Popular</button>
+                    <button id="most_viewed" data-sorting="most_viewed" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</button>
+                    <button id="latest_comment" data-sorting="latest_comment" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</button>
+                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
                   </div>
                 </div>
               </div>
 
-              <?php
-            //displaying every ideas from database
-            while ($row = mysqli_fetch_assoc($result)) {
-              echo '<div class="card">';
-              echo '<div class="card-body">';
-              echo '<h1 class="card-title">' . $row['IdeaTitle'] . '</h1>';
-              if ($row['IdeaAnonymous'] == 0) {
-                echo '<h5 class="card-author">' . $row['Username'] . '</h5>';
-              } else if ($row['IdeaAnonymous'] == 1) {
-                echo '<h5 class="card-author">Anonymous</h5>';
-              }
+              <div id="posts-container">
 
-              echo '<h5 class="card-category">' . $row['CategoryTitle'] . '</h5>';
-              echo '<p class="card-text">' . $row['IdeaDescription'] . '</p>';
-
-
-              $ideaid = $row['IdeaId'];
-              $imageidea_query = "SELECT IdeaImage FROM ideamedia_tbl WHERE IdeaId=$ideaid";
-              $imageidea_result = mysqli_query($dbconn, $imageidea_query);
-              $imageidea_count = mysqli_num_rows($imageidea_result);
-              if ($imageidea_count > 0) {
-                echo '<section class="pb-4">';
-                echo '    <div class="bg-white border rounded-5">';
-                echo '        <section class="p-4 d-flex justify-content-center text-center w-100">';
-                echo '            <div class="lightbox" data-mdb-zoom-level="0.25" data-id="lightbox-8e0in48hs">';
-                echo '                <div class="row">';
-                while ($imageidea_row = mysqli_fetch_assoc($imageidea_result)) {
-                  $imageidea_path = '' . $imageidea_row['IdeaImage'];
-                  if (file_exists($imageidea_path)) {
-                    echo '   <div class="col-lg-4 mb-4">';
-                    echo '         <img src="' . $imageidea_path . '"  alt="idea image" class="shadow-1-strong rounded mb-4" style="width: 150px; height: 150px; object-fit: contain;">';
-                    echo '   </div>';
-                  }
-                }
-                echo '               </div>';
-                echo '            </div>';
-                echo '        </section>';
-                echo '    </div>';
-                echo '</section>';
-              }
-
-
-
-              echo '<a href="CommentSection.php?id=' .$ideaid. '" class="btn btn-primary" style="margin-right: 10px;">See More</a>';
-              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></a>';
-              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></a>';
-              echo '</div>';
-              echo '</div>';
-            }
-            ?> 
- </div>                
-<div class = "pagination">
-      <?php
-			$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
-			$page_count = mysqli_query($dbconn, $sql_page);
-			$row_count = mysqli_fetch_assoc($page_count);
-			$total_rows = $row_count['count'];
-			$total_pages = ceil($total_rows / $rows_per_page);
-   
-			for ($i = 1; $i <= $total_pages; $i++){
-				echo'<a href="?page='.$i.'">'.$i.'</a>';
-			}
-		?>
-    </div>
+              </div>  
+          </div>                
         <!-- End Left side columns -->
-      </div>    
+  </section>    
 
   </main><!-- End #main -->
 
@@ -478,7 +409,71 @@ $result= mysqli_query($dbconn, $sql);
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+    $(document).ready(function(){
+      updateCategoryFilter();
 
+      function updateCategoryFilter(){
+          $.ajax({
+              url : 'get_categories.php',
+              type : 'GET',
+              success : function(response){
+                  $('#category-nav').html(response);
+              }
+          });
+      }
+    });
+  </script>
+  <script>
+  $(document).ready(function(){
+    //get default options
+    var currentCategory = 'All';
+    var currentSorting = 'latest_ideas';
+
+    //handle category click event
+    $('#category-nav').on('click', '.category-link', function(e){
+      e.preventDefault();
+      //get option
+      var category = $(this).data('category');
+      //update posts
+      currentCategory = category;
+      loadPosts(currentCategory, currentSorting);
+    });
+
+    //handle sorting click event
+    $('#sorting-btn').on('click', 'button.btn-primary', function(e){
+      e.preventDefault();
+      //get option
+      var sorting = $(this).data('sorting');
+      //update posts
+      currentSorting = sorting;
+      loadPosts(currentCategory, currentSorting);
+    });
+
+    //function to load posts using AJAX
+    function loadPosts(category, sorting){
+      console.log(
+        'category', category
+      );
+      console.log(
+        'sorting', sorting
+      );
+      $.ajax({
+            url : 'filter_sorting_post.php',
+            type : 'GET',
+            data: {category : category, sorting: sorting},
+            success : function(response){
+              $('#posts-container').html(response);
+            }
+           
+      });
+    }
+    //load posts with default options
+    loadPosts(currentCategory, currentSorting);
+  });
+
+
+  </script>
 </body>
 
 </html>
