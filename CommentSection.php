@@ -7,6 +7,7 @@ if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
 
 }
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
+$user_id = $_SESSION["userid"];
 
 
 $id = $_GET['id']; // get ideaID
@@ -175,6 +176,16 @@ $showComment = mysqli_query($dbconn, $show);
                     </li>
                 </ul>
             </li><!-- End Statistics Nav -->
+
+
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+              ?>
+
 
             <?php
                 if($_SESSION['role'] == "Admin"){ //staff cannot see this
