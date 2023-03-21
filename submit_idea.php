@@ -26,41 +26,43 @@ if(isset($_POST["submit_post"])){
   $max_image_count = 5;
   $uploaded_image_count = 0;
   $image_error = false;
-  foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
-    if ($uploaded_image_count < $max_image_count) {
-      $ideaimage = $imagefiles['name'][$key];
-      $ideaimage_tmp = $imagefiles['tmp_name'][$key];
-      $ideaimage_size = $imagefiles['size'][$key];
-      $ideaimage_type = $imagefiles['type'][$key];
-      $ideaimage_error = $imagefiles['error'][$key];
+  if (!empty(array_filter($imagefiles['name']))) {
+    foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
+      if ($uploaded_image_count < $max_image_count) {
+        $ideaimage = $imagefiles['name'][$key];
+        $ideaimage_tmp = $imagefiles['tmp_name'][$key];
+        $ideaimage_size = $imagefiles['size'][$key];
+        $ideaimage_type = $imagefiles['type'][$key];
+        $ideaimage_error = $imagefiles['error'][$key];
 
-      // Check if file type is allowed
-      $allowed_image_types = array('png', 'jpg', 'jpeg');
-      $image_ext_arr = explode('.', $ideaimage);
-      $image_ext = strtolower(end($image_ext_arr));
-      if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
-        // Move uploaded file to a permanent location
-        $image_target_dir = "assets/img/";
-        $image_target_file = $image_target_dir .uniqid()."_". basename($ideaimage);
-        move_uploaded_file($ideaimage_tmp, $image_target_file);
+        // Check if file type is allowed
+        $allowed_image_types = array('png', 'jpg', 'jpeg');
+        $image_ext_arr = explode('.', $ideaimage);
+        $image_ext = strtolower(end($image_ext_arr));
+        if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
+          // Move uploaded file to a permanent location
+          $image_target_dir = "assets/img/";
+          $image_target_file = $image_target_dir . uniqid() . "_" . basename($ideaimage);
+          move_uploaded_file($ideaimage_tmp, $image_target_file);
 
-        // Insert image details
-        $sql_insertimage = "INSERT INTO ideamedia_tbl (IdeaId, IdeaImage) VALUES ('$ideaid', '$image_target_file')";
-        mysqli_query($dbconn, $sql_insertimage);
-        $uploaded_image_count++;
-      }else {
-        $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
+          // Insert image details
+          $sql_insertimage = "INSERT INTO ideamedia_tbl (IdeaId, IdeaImage) VALUES ('$ideaid', '$image_target_file')";
+          mysqli_query($dbconn, $sql_insertimage);
+          $uploaded_image_count++;
+        } else {
+          $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
+          echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+          $image_error = true;
+
+          break; // stop processing additional files
+        }
+      } else {
+        $errormsg = "Only 5 Image can be upload"; // error message to display
         echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
         $image_error = true;
-        
+
         break; // stop processing additional files
       }
-    } else {
-      $errormsg = "Only 5 Image can be upload"; // error message to display
-      echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
-      $image_error = true;
-      
-      break; // stop processing additional files
     }
   }
 
