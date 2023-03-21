@@ -6,23 +6,18 @@ if($_SESSION["role"] != "QA Coordinator") {
   header("Location: login.php");
   exit;
 }
-
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
-//determine current page
 $page = isset($_GET['page'])?$_GET['page']:1;
-//determine the number of data per page
 $rows_per_page = 5;
-
-// Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
+$sql = "SELECT idea_tbl.IdeaId, user_tbl.Username, COUNT(idea_tbl.UserId) AS IdeaPosted, department_tbl.DepartmentName, category_tbl.CategoryTitle, department_tbl.DepartmentId from idea_tbl 
+INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
+INNER JOIN department_tbl ON user_tbl.DepartmentId =department_tbl.DepartmentId 
 INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
+GROUP BY idea_tbl.UserId ORDER BY idea_tbl.UserId DESC";
 
-$result= mysqli_query($dbconn, $sql);
-
+$result = mysqli_query($dbconn,$sql);  
 ?>
 
 <?php
@@ -185,8 +180,69 @@ $result= mysqli_query($dbconn, $sql);
       
       <div class="row">
           <div class="card-body">
+            <section class="section dashboard">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>Number of Idea Posted</h4>
+                    </div>
+                    <!-- End Header Name -->
+                    <div class="card-body">
+                      <table class="table table-bordered text-center">
+                        <thead>
+                          <tr>
+                            <th>Username</th>
+                            <th>Idea Posted</th>
+                            <th>Department Name</th>
+                            <th>Category</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            include "krunkerideaconn.php";
+                           
+                            if(mysqli_num_rows($result) >0){
+                              foreach($result as $row){
+                                ?>
+                                <tr>
+                                <td><?php echo $row['Username']?></td>
+                                <td><?php echo $row['IdeaPosted']?></td>
+                                <td><?php echo $row['DepartmentName']?></td>
+                                <td><?php echo $row['CategoryTitle']?></td>
+                              </tr>
+                              <?php
+                              }
+                            }
+                            else{
+                              ?>
+                              <tr>
+                                <td colspan="6">No record found</td>
+                            
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                      </table>
 
-
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class = "pagination">
+                <?php
+                  $sql_page = "SELECT COUNT(*) AS count FROM user_tbl";
+                  $page_count = mysqli_query($dbconn, $sql_page);
+                  $row_count = mysqli_fetch_assoc($page_count);
+                  $total_rows = $row_count['count'];
+                  $total_pages = ceil($total_rows / $rows_per_page);
+              
+                  for ($i = 1; $i <= $total_pages; $i++){
+                    echo'<a href="?page='.$i.'">'.$i.'</a>';
+                  }
+                ?>
+              </div>
+            </section>
           </div>
       </div>
 
