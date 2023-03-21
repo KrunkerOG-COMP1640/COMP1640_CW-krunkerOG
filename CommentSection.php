@@ -369,7 +369,7 @@ $showComment = mysqli_query($dbconn, $show);
                                     <?= '<p class="mb-0">'.$shoCom['DateComment'].'</p>'; ?>
                                 </div>
                             </div>
-                            <?= '<p class="text-secondary">'.$shoCom['CommentDetails'].'</p>'; ?>
+                            <?= '<p class="mb-0">'.$shoCom['CommentDetails'].'</p>'; ?>
                         </div>
                     </div>
                     </div>
