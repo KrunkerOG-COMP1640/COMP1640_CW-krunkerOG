@@ -2,10 +2,6 @@
 date_default_timezone_set('Asia/Kuala_Lumpur');
 session_start();
 
-if($_SESSION["role"] != "QA Coordinator") {
-  header("Location: login.php");
-  exit;
-}
 
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 //determine current page
@@ -17,10 +13,9 @@ $user_id = $_SESSION["userid"];
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
+$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.UserId  from idea_tbl 
 INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
+WHERE UserId = $user_id ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
 
 $result= mysqli_query($dbconn, $sql);
 
@@ -71,7 +66,7 @@ $result= mysqli_query($dbconn, $sql);
         display: inline;
         letter-spacing:10px;
     }
-  </style>
+</style>
 </head>
 
 <body>
@@ -80,15 +75,169 @@ $result= mysqli_query($dbconn, $sql);
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index_coordinator.php" class="logo d-flex align-items-center">
+      <a href="index.php" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Krunker Idea Portal</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">3</span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              You have 3 new messages
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Maria Hudson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>4 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Anna Nelson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>6 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>David Muldon</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>8 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="dropdown-footer">
+              <a href="#">Show all messages</a>
+            </li>
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
 
@@ -106,19 +255,16 @@ $result= mysqli_query($dbconn, $sql);
               <hr class="dropdown-divider">
             </li>
 
-            <?php
-                if($_SESSION['role'] == "Staff"){ //Only Staff can see this
-                    echo'<li>';
-                        echo'<a class="dropdown-item d-flex align-items-center" href="staff_profile.php">';
-                            echo'<i class="bi bi-person"></i>';
-                            echo'<span>My Profile</span>';
-                        echo'</a>';
-                    echo'</li>';
-                    echo'<li>';
-                        echo'<hr class="dropdown-divider">';
-                    echo'</li>';
-                }
-            ?>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -135,56 +281,47 @@ $result= mysqli_query($dbconn, $sql);
 
   </header><!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
 
-        <ul class="sidebar-nav" id="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav">
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-                  <i class="bi bi-person-check"></i><span>Staff Details</span>
-                </a>
-            </li><!-- End Staff Details Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-                  <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
-                </a>
-            </li><!-- End Closure Date Nav -->
-
- 
-            <?php
-              echo '<li class="nav-item">';
-              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
-              echo '</a>';
-              echo '</li>';
-              ?>
- 
-
-            <?php
-                if($_SESSION['role'] == "Admin"){ //QA Coordinator cannot see this
-                echo'<li class="nav-heading">Pages</li>';
-
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
-                        echo '<i class="bi bi-people"></i>';
-                        echo '<span>Manage User</span>';
-                    echo '</a>';
-                echo '</li><!-- End Manage User Page Nav -->';
-
-                echo '<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
-                        echo '<i class="bi bi-chat-left-text"></i>';
-                        echo '<span>Manage Idea</span>';
-                    echo '</a>';
-                echo '</li><!-- End Manage Idea Page Nav -->';
-                }
-            ?>
-            
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index.html">
+          <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="list_of_category.html">
+              <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
+            </a>
+          </li>
         </ul>
+      </li><!-- End Idea Nav -->
 
-    </aside><!-- End Sidebar-->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Charts</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Statistics Nav -->
+<?php
+      echo '<li class="nav-item">';
+        echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+          echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+        echo '</a>';
+      echo '</li>';
+?>
+     
+    </ul>
+
+  </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
@@ -192,10 +329,24 @@ $result= mysqli_query($dbconn, $sql);
       <h1>Idea</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index_coordinator.php">Idea</a></li>
+          <li class="breadcrumb-item"><a href="index.php">Idea</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
+
+    <div class="container">
+    <?php
+                if(isset($_GET['msg'])){
+                  $msg = $_GET['msg'];
+                  echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  '.$msg.'
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+                  </button>
+                </div>';
+                }
+                ?>
+    </div>
 
     <section class="section dashboard">
       <div class="row">
@@ -211,6 +362,7 @@ $result= mysqli_query($dbconn, $sql);
                     <a href="#" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</a>
                     <a href="#" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</a>
+                    
                     <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
                   </div>
                 </div>
@@ -222,11 +374,7 @@ $result= mysqli_query($dbconn, $sql);
               echo '<div class="card">';
               echo '<div class="card-body">';
               echo '<h1 class="card-title">' . $row['IdeaTitle'] . '</h1>';
-              if ($row['IdeaAnonymous'] == 0) {
-                echo '<h5 class="card-author">' . $row['Username'] . '</h5>';
-              } else if ($row['IdeaAnonymous'] == 1) {
-                echo '<h5 class="card-author">Anonymous</h5>';
-              }
+             
 
               echo '<h5 class="card-category">' . $row['CategoryTitle'] . '</h5>';
               echo '<p class="card-text">' . $row['IdeaDescription'] . '</p>';
@@ -259,11 +407,9 @@ $result= mysqli_query($dbconn, $sql);
 
 
 
-              echo '<a href="CommentSection.php?id=' .$ideaid. '" class="btn btn-primary" style="margin-right: 10px;">See More</a>';
+              echo '<a href="EditIdea_user.php?id=' .$ideaid. '" class="btn btn-primary" style="margin-right: 10px;">Edit Idea</a>';
               echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></a>';
               echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></a>';
-              
-
               echo '</div>';
               echo '</div>';
             }

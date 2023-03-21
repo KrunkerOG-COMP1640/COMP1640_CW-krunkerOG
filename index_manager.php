@@ -14,6 +14,7 @@ $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 $page = isset($_GET['page'])?$_GET['page']:1;
 //determine the number of data per page
 $rows_per_page = 5;
+$user_id = $_SESSION["userid"];
 
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
@@ -337,7 +338,15 @@ $result= mysqli_query($dbconn, $sql);
           <span>Reports</span>
         </a>
       </li><!-- End Report Page Nav -->
-
+     
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+              ?>
+ 
     </ul>
 
   </aside><!-- End Sidebar-->
