@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('Asia/Kuala_Lumpur');
 session_start();
-
+require("krunkerideaconn.php");
 if($_SESSION["role"] != "Staff") {
   header("Location: login.php");
   exit;
