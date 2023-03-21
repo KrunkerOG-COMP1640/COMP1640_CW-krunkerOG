@@ -11,11 +11,11 @@ $page = isset($_GET['page'])?$_GET['page']:1;
 $rows_per_page = 5;
 $start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaId, user_tbl.Username, COUNT(idea_tbl.UserId) AS IdeaPosted, department_tbl.DepartmentName, category_tbl.CategoryTitle, department_tbl.DepartmentId from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
-INNER JOIN department_tbl ON user_tbl.DepartmentId =department_tbl.DepartmentId 
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-GROUP BY idea_tbl.UserId ORDER BY idea_tbl.UserId DESC";
+$user_id = $_SESSION["userid"];
+
+$sqlD = "SELECT DepartmentId from user_tbl WHERE UserId=$user_id";
+$resultD = mysqli_query($dbconn,$sqlD);
+$strD = $resultD->fetch_array()[0] ?? ''; //get single value n convert to string 
 
 $result = mysqli_query($dbconn,$sql);  
 ?>
@@ -62,7 +62,7 @@ $result = mysqli_query($dbconn,$sql);
   <style>
     .pagination{
         text-align:center;
-        display: inline;
+        display: block;
         letter-spacing:10px;
     }
   </style>
@@ -160,6 +160,14 @@ $result = mysqli_query($dbconn,$sql);
                   <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
                 </a>
             </li><!-- End Closure Date Nav -->
+               
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+              ?>
 
         </ul>
 
@@ -201,7 +209,14 @@ $result = mysqli_query($dbconn,$sql);
                         <tbody>
                         <?php
                             include "krunkerideaconn.php";
-                           
+                                                 
+                            $sql = "SELECT idea_tbl.IdeaId, user_tbl.Username, COUNT(idea_tbl.UserId) AS IdeaPosted, department_tbl.DepartmentName, category_tbl.CategoryTitle from idea_tbl 
+                            INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId
+                            INNER JOIN department_tbl ON user_tbl.DepartmentId =department_tbl.DepartmentId 
+                            INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
+                            WHERE department_tbl.DepartmentId = $strD
+                            GROUP BY idea_tbl.UserId ORDER BY idea_tbl.UserId DESC";
+
                             if(mysqli_num_rows($result) >0){
                               foreach($result as $row){
                                 ?>
@@ -231,7 +246,7 @@ $result = mysqli_query($dbconn,$sql);
               </div>
               <div class = "pagination">
                 <?php
-                  $sql_page = "SELECT COUNT(*) AS count FROM user_tbl";
+                  $sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
                   $page_count = mysqli_query($dbconn, $sql_page);
                   $row_count = mysqli_fetch_assoc($page_count);
                   $total_rows = $row_count['count'];
@@ -243,8 +258,7 @@ $result = mysqli_query($dbconn,$sql);
                 ?>
               </div>
             </section>
-          </div>
-      </div>
+        
 
   </main><!-- End #main -->
 

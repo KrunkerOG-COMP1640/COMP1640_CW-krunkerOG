@@ -141,13 +141,13 @@ $result= mysqli_query($dbconn, $sql);
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
+                <a class="nav-link collapsed" href="staff_details.php">
                   <i class="bi bi-person-check"></i><span>Staff Details</span>
                 </a>
             </li><!-- End Staff Details Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
+                <a class="nav-link collapsed" href="closure_date.php">
                   <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
                 </a>
             </li><!-- End Closure Date Nav -->
