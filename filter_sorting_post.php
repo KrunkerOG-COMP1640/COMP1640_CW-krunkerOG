@@ -16,7 +16,7 @@ $category_sql = ' ';
 if ($category != 'All'){
     $category_sql = "WHERE idea_tbl.CategoryId = '$category' AND is_hidden=0 "; 
 }else{
-  $category_sql='';
+  $category_sql='WHERE is_hidden=0';
 }
 
 
