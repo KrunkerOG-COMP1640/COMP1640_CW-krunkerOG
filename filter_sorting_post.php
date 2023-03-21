@@ -36,7 +36,7 @@ else if ($sort_by == 'most_popular'){
 
 
 
-$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username,              idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
+$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
 INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
 INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
         $category_sql
