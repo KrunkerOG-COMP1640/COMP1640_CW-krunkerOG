@@ -15,51 +15,53 @@ else{
 
 }
 $output = "";
-if(isset($_POST['submit'])){
-  $username = $_POST['Username'];
-  $password = $_POST['UserPassword'];
-  $contact = $_POST['UserContactNo'];
-  $address = $_POST['UserAddress'];
-  $email = $_POST['UserEmail'];
+if (isset($_POST['submit'])) {
+  $username = strip_tags($_POST['Username']);
+  $password = strip_tags($_POST['UserPassword']);
+  $contact = strip_tags($_POST['UserContactNo']);
+  $address = strip_tags($_POST['UserAddress']);
+  $email = strip_tags($_POST['UserEmail']);
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];
-  
-  $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
-  $error = array();
-  
-  if(empty($username)){
-    $error['1'] = "Enter Username";
-  }else if(empty($password)){
-    $error['1'] = "Enter Password";
-  }else if(empty($role)){
-    $error['1'] = "Enter Role";
-  }else if(empty($department)){
-    $error['1'] = "Enter department";
-  }else if(mysqli_num_rows($check_email) > 0){
-    $error['1'] = "Email address already exist";
-  }
+
+  if (!empty($email) && !empty($password)) {
+    $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
+    $error = array();
+
+    if (empty($username)) {
+      $error['1'] = "Enter Username";
+    } else if (empty($password)) {
+      $error['1'] = "Enter Password";
+    } else if (empty($role)) {
+      $error['1'] = "Enter Role";
+    } else if (empty($department)) {
+      $error['1'] = "Enter department";
+    } else if (mysqli_num_rows($check_email) > 0) {
+      $error['1'] = "Email address already exist";
+    }
 
 
-  if(isset($error['1'])){
-    $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>".$error['1'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-  }else{
-    $output .= "";
-  }
+    if (isset($error['1'])) {
+      $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>" . $error['1'] . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    } else {
+      $output .= "";
+    }
 
-  if(count($error) < 1 ){
-       $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
+    if (count($error) < 1) {
+      $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
               VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
 
-    $result = mysqli_query($dbconn,$sql);
-    if($result){
-      header("Location: ManageUser_admin.php?msg = New user added successfully");
+      $result = mysqli_query($dbconn, $sql);
+      if ($result) {
+        header("Location: ManageUser_admin.php?msg = New user added successfully");
+      } else {
+        echo "Failed: " . mysqli_error($dbconn);
+      }
     }
-    else{
-      echo "Failed: " .mysqli_error($dbconn);
-    }
+  } else {
+    echo '<script>alert("Error: Invalid Password"); window.location.href = "AddUser_admin.php";</script>';
   }
-
-  }
+}
 
 ?>
 

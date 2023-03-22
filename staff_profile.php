@@ -10,21 +10,20 @@ if($_SESSION["role"] != "Staff") {
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 
 $user_id = $_SESSION["userid"];
-if(isset($_POST['submit'])){
-  $username = $_POST['Username'];
-  $email = $_POST['UserEmail'];
-  $address = $_POST['UserAddress'];
-  $contact = $_POST['UserContactNo'];
+if (isset($_POST['submit'])) {
+  $username = strip_tags($_POST['Username']);
+  $email = strip_tags($_POST['UserEmail']);
+  $address = strip_tags($_POST['UserAddress']);
+  $contact = strip_tags($_POST['UserContactNo']);
 
   $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',`UserAddress`='$address',`UserContactNo`='$contact' 
   WHERE UserId = $user_id";
-  $result =mysqli_query($dbconn, $sql);
+  $result = mysqli_query($dbconn, $sql);
 
-  if($result){
+  if ($result) {
     header("Location: staff_profile.php?msg=Data updated successfully");
-  }
-  else{
-    echo "Failed: " .mysqli_error($dbconn);
+  } else {
+    echo "Failed: " . mysqli_error($dbconn);
   }
 }
 
@@ -43,18 +42,23 @@ if(isset($_POST['submit'])){
   $result_password = mysqli_query($dbconn, $select_sql_password);  
   $row_password = mysqli_fetch_assoc($result_password);
 
-  if(isset($_POST["submit_new_password"])){
+  if (isset($_POST["submit_new_password"])) {
     $checkCurrentPassword = $row_User['UserPassword'];
     $currentPassword = mysqli_real_escape_string($dbconn, $_POST["currentPassword"]);
-    $newPassword = mysqli_real_escape_string($dbconn, $_POST["newPassword"]);
-    $comfirmNewPassword = mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]);
-    if($currentPassword == $checkCurrentPassword){
-      if($newPassword == $comfirmNewPassword){
-        mysqli_query($dbconn, "UPDATE user_tbl 
-                                  SET UserPassword = '$newPassword' 
-                                WHERE UserId = '$user_id'");
-        header("Location: staff_profile.php");
-        exit();
+    $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
+    $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
+    if ($currentPassword == $checkCurrentPassword) {
+      if (!empty($newPassword) && !empty($comfirmNewPassword)) {
+        if ($newPassword == $comfirmNewPassword) {
+          mysqli_query($dbconn, "UPDATE user_tbl 
+                                    SET UserPassword = '$newPassword' 
+                                  WHERE UserId = '$user_id'");
+          header("Location: staff_profile.php");
+          exit();
+        }
+      }
+      else{
+        echo '<script>alert("Error: Invalid Password"); window.location.href = "staff_profile.php";</script>';
       }
     }
   }	

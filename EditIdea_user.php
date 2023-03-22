@@ -13,19 +13,19 @@ $id = $_GET['id'];
 
 
 if(isset($_POST['submit_post'])){
-    $title = mysqli_real_escape_string($dbconn,$_POST['title']);
-    $desc = mysqli_real_escape_string($dbconn,$_POST['description']);
-    
-    $sql = "UPDATE `idea_tbl` SET `IdeaTitle`='$title',`IdeaDescription`='$desc' WHERE IdeaId = $id";
-    $result =mysqli_query($dbconn, $sql);
+  $title = strip_tags(mysqli_real_escape_string($dbconn,$_POST['title']));
+  $desc = strip_tags(mysqli_real_escape_string($dbconn,$_POST['description']));
   
-    if($result){
-      header("Location: EditIdea.php?msg=Idea updated successfully");
-    }
-    else{
-      echo "Failed: " .mysqli_error($dbconn);
-    }
+  $sql = "UPDATE `idea_tbl` SET `IdeaTitle`='$title',`IdeaDescription`='$desc' WHERE IdeaId = $id";
+  $result =mysqli_query($dbconn, $sql);
+
+  if($result){
+    header("Location: EditIdea.php?msg=Idea updated successfully");
   }
+  else{
+    echo "Failed: " .mysqli_error($dbconn);
+  }
+}
   
 
 

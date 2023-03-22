@@ -16,7 +16,7 @@ else{
 }
 $id = $_GET['id'];
 if(isset($_POST['submit'])){
-  $title= $_POST['CategoryTitle'];
+  $title= strip_tags($_POST['CategoryTitle']);
   $dateclosure= $_POST['DateClosure'];
   $datefinal= $_POST['DateFinal'];
   

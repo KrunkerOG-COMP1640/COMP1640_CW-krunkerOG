@@ -15,24 +15,27 @@ else{
   }
 }
 $id = $_GET['id'];
-if(isset($_POST['submit'])){
-  $username = $_POST['Username'];
-  $password = $_POST['UserPassword'];
-  $contact = $_POST['UserContactNo'];
-  $address = $_POST['UserAddress'];
-  $email = $_POST['UserEmail'];
+if (isset($_POST['submit'])) {
+  $username = strip_tags($_POST['Username']);
+  $password = strip_tags($_POST['UserPassword']);
+  $contact = strip_tags($_POST['UserContactNo']);
+  $address = strip_tags($_POST['UserAddress']);
+  $email = strip_tags($_POST['UserEmail']);
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];
 
-  $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
-  WHERE UserId = $id";
-  $result =mysqli_query($dbconn, $sql);
+  if (!empty($email) && !empty($password)) {
+    $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
+            WHERE UserId = $id";
+    $result = mysqli_query($dbconn, $sql);
 
-  if($result){
-    header("Location: ManageUser_admin.php?msg=Data updated successfully");
-  }
-  else{
-    echo "Failed: " .mysqli_error($dbconn);
+    if ($result) {
+      header("Location: ManageUser_admin.php?msg=Data updated successfully");
+    } else {
+      echo "Failed: " . mysqli_error($dbconn);
+    }
+  } else {
+    echo '<script>alert("Error: Invalid Password"); window.location.href = "EditUser_admin.php";</script>';
   }
 }
 
