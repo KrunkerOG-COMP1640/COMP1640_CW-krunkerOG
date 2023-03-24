@@ -7,19 +7,30 @@ $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 
 $user_id = $_SESSION["userid"];
 if (isset($_POST['submit'])) {
-  $username = strip_tags($_POST['Username']);
-  $email = strip_tags($_POST['UserEmail']);
-  $address = strip_tags($_POST['UserAddress']);
-  $contact = strip_tags($_POST['UserContactNo']);
+  if (isset($_POST['UserEmail']))
+  $check_email=$_POST['UserEmail'];
+  $sql_email_check = "SELECT UserEmail FROM user_tbl WHERE UserEmail='$check_email' ";
+  $result_email = mysqli_query($dbconn, $sql_email_check);
+  $count = mysqli_num_rows($result_email);
+  if($count > 0)
+  {
+  }
+  else
+  { 
+    $username = strip_tags($_POST['Username']);
+    $email = strip_tags($_POST['UserEmail']);
+    $address = strip_tags($_POST['UserAddress']);
+    $contact = strip_tags($_POST['UserContactNo']);
 
-  $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',`UserAddress`='$address',`UserContactNo`='$contact' 
-  WHERE UserId = $user_id";
-  $result = mysqli_query($dbconn, $sql);
+    $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',`UserAddress`='$address',`UserContactNo`='$contact' 
+    WHERE UserId = $user_id";
+    $result = mysqli_query($dbconn, $sql);
 
-  if ($result) {
-    header("Location: staff_profile.php?msg=Data updated successfully");
-  } else {
-    echo "Failed: " . mysqli_error($dbconn);
+    if ($result) {
+      header("Location: staff_profile.php?msg=Data updated successfully");
+    } else {
+      echo "Failed: " . mysqli_error($dbconn);
+    }
   }
 }
 
@@ -39,23 +50,19 @@ if (isset($_POST['submit'])) {
   $row_password = mysqli_fetch_assoc($result_password);
 
   if (isset($_POST["submit_new_password"])) {
-    $checkCurrentPassword = $row_User['UserPassword'];
-    $currentPassword = mysqli_real_escape_string($dbconn, $_POST["currentPassword"]);
     $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
     $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
-    if ($currentPassword == $checkCurrentPassword) {
-      if (!empty($newPassword) && !empty($comfirmNewPassword)) {
-        if ($newPassword == $comfirmNewPassword) {
-          mysqli_query($dbconn, "UPDATE user_tbl 
-                                    SET UserPassword = '$newPassword' 
-                                  WHERE UserId = '$user_id'");
-          header("Location: staff_profile.php");
-          exit();
-        }
+    if (!empty($newPassword) && !empty($comfirmNewPassword)) {
+      if ($newPassword == $comfirmNewPassword) {
+        mysqli_query($dbconn, "UPDATE user_tbl 
+                                  SET UserPassword = '$newPassword' 
+                                WHERE UserId = '$user_id'");
+        header("Location: staff_profile.php");
+        exit();
       }
-      else{
-        echo '<script>alert("Error: Invalid Password"); window.location.href = "staff_profile.php";</script>';
-      }
+    }
+    else{
+      echo '<script>alert("Error: Invalid Password"); window.location.href = "staff_profile.php";</script>';
     }
   }	
 ?>
@@ -349,13 +356,6 @@ if (isset($_POST['submit'])) {
                   
                   <!-- Change Password Form -->
                   <form action="" method="post" enctype="multipart/form-data">
-
-                    <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="currentPassword" type="password" class="form-control" id="currentPassword">
-                      </div>
-                    </div>
 
                     <div class="row mb-3">
                       <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
