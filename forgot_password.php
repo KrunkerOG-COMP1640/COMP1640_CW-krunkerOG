@@ -5,14 +5,15 @@
 
 <?php
     if(isset($_POST["forgotPassword"])){
-        $myemail = $_POST["useremail"];
-        $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$myemail'";
-        $result = mysqli_query($dbconn,$sql);
+        $user_email = $_POST["useremail"];
+        $newPassword = $_POST["newPassword"];
+        $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$user_email'";
+        $checkaccount = mysqli_query($dbconn,$sql);
 
-        if(mysqli_num_rows($result) > 0){
-            $userrow = mysqli_fetch_array($result);
+        if(mysqli_num_rows($checkaccount) > 0){
+            $userrow = mysqli_fetch_array($checkaccount);
 
-            if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {
+            if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $user_email)) {
 
                 header("Location: forgot_password.php");
 
@@ -20,8 +21,13 @@
                 echo 'alert("Do Not Insert Special Character")';
                 echo '</script>';
             }
-            else{
+            else if(!empty($newPassword)) {
+                $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
+                mysqli_query($dbconn, "UPDATE user_tbl 
+                                        SET UserPassword = '$newPassword' 
+                                        WHERE UserEmail = '$user_email'");
                 header("Location: login.php");
+                exit();
             }
         }
     }
@@ -52,8 +58,13 @@
                         <i class='bx bx-user' ></i>
                     </div>
 
+                    <div class="input-field">
+                        <input type="password" class="input" placeholder="Password" name="newPassword">
+                        <i class='bx bx-lock-alt'></i>
+                    </div>
+
                     <?php
-                        if(!empty($_POST["useremail"])){
+                        if(!empty($_POST["useremail"]) && mysqli_num_rows($checkaccount) < 1){
                             echo'<div class="input-field" style="color:Red;">';
                                 echo'<p>*Incorrect email address.</p>';
                             echo'</div>';
