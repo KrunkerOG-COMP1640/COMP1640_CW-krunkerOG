@@ -44,7 +44,7 @@ INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId
         
         LIMIT $start, $rows_per_page";
 
-echo '<h1><pre>', $sql;
+
 
 $result = mysqli_query($dbconn, $sql);
   //displaying every ideas from database
@@ -107,7 +107,6 @@ $result = mysqli_query($dbconn, $sql);
 				  // echo'<a href="?page='.$i.'&category='.$category.'&sorting='.$sort_by.'">'.$i.'</a>';
           echo "<a href ='javascript:loadPage($i)'>$i</a>";
 			  }
-      echo '</div>';
-echo  '<p>',$page;
+
 
 ?>

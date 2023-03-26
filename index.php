@@ -290,6 +290,9 @@ $user_id = $_SESSION["userid"];
       console.log(
         'sorting', sorting
       );
+      console.log(
+        'Page', page
+      );
       $.ajax({
             url : `filter_sorting_post.php?page=${page}&category=${category}&sorting=${sorting}`,
             type : 'GET',
