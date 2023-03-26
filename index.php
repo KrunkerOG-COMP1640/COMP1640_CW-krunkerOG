@@ -267,48 +267,23 @@ $user_id = $_SESSION["userid"];
 
 
   <script>
-    $(document).ready(function(){
-      updateCategoryFilter();
+    let page = 1;
+    let category = 'All';
+    let sorting = 'latest_ideas';
 
-      function updateCategoryFilter(){
-          $.ajax({
-              url : 'get_categories.php',
-              type : 'GET',
-              success : function(response){
-                  $('#category-nav').html(response);
-              }
-          });
-      }
-    });
-  </script>
-  <script>
-  $(document).ready(function(){
-    //get default options
-    var currentCategory = 'All';
-    var currentSorting = 'latest_ideas';
-
-    //handle category click event
-    $('#category-nav').on('click', '.category-link', function(e){
-      e.preventDefault();
-      //get option
-      var category = $(this).data('category');
-      //update posts
-      currentCategory = category;
-      loadPosts(currentCategory, currentSorting);
-    });
-
-    //handle sorting click event
-    $('#sorting-btn').on('click', 'button.btn-primary', function(e){
-      e.preventDefault();
-      //get option
-      var sorting = $(this).data('sorting');
-      //update posts
-      currentSorting = sorting;
-      loadPosts(currentCategory, currentSorting);
-    });
+    function updateCategoryFilter(){
+        $.ajax({
+            url : 'get_categories.php',
+            type : 'GET',
+            success : function(response){
+                $('#category-nav').html(response);
+                loadPosts();
+            }
+        });
+    }
 
     //function to load posts using AJAX
-    function loadPosts(category, sorting){
+    function loadPosts(){
       console.log(
         'category', category
       );
@@ -316,20 +291,41 @@ $user_id = $_SESSION["userid"];
         'sorting', sorting
       );
       $.ajax({
-            url : 'filter_sorting_post.php',
+            url : `filter_sorting_post.php?page=${page}&category=${category}&sorting=${sorting}`,
             type : 'GET',
-            data: {category : category, sorting: sorting},
+            data: {category : category, sorting: sorting, page: page},
             success : function(response){
               $('#posts-container').html(response);
             }
            
       });
     }
-    //load posts with default options
-    loadPosts(currentCategory, currentSorting);
-  });
 
+    //handle category click event
+    $('#category-nav').on('click', '.category-link', function(e){
+      e.preventDefault();
+      //get option
+      var category = $(this).data('category');
+      loadPosts();
+    });
 
+    //handle sorting click event
+    $('#sorting-btn').on('click', 'button.btn-primary', function(e){
+      e.preventDefault();
+      //get option
+      var sorting = $(this).data('sorting');
+      loadPosts();
+    });
+      
+    function loadPage(pageNo){
+        page = pageNo;
+        loadPosts();
+    }
+
+    $(document).ready(function(){
+    //get default options
+    updateCategoryFilter();
+    });
   </script>
 </body>
 

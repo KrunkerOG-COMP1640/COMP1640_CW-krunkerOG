@@ -104,7 +104,8 @@ $result = mysqli_query($dbconn, $sql);
 
 			echo '<div class="pagination">';
         for ($i = 1; $i <= $total_pages; $i++){  
-				  echo'<a href="?page='.$i.'&category='.$category.'&sorting='.$sort_by.'">'.$i.'</a>';
+				  // echo'<a href="?page='.$i.'&category='.$category.'&sorting='.$sort_by.'">'.$i.'</a>';
+          echo "<a href ='javascript:loadPage($i)'>$i</a>";
 			  }
       echo '</div>';
 echo  '<p>',$page;
