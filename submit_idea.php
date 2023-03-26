@@ -72,9 +72,7 @@ if(isset($_POST["submit_post"])){
     exit();
   }
 }	
-?>
 
-<?php
   $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result_User = mysqli_query($dbconn, $select_sql);  
