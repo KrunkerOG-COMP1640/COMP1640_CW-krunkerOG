@@ -39,6 +39,30 @@ if(isset($_POST["submit_post"])){
         $allowed_image_types = array('png', 'jpg', 'jpeg');
         $image_ext_arr = explode('.', $ideaimage);
         $image_ext = strtolower(end($image_ext_arr));
+
+          //find coordinator email
+          $sqlC = mysqli_query($dbconn, "SELECT DepartmentId from user_tbl WHERE UserId=$user_id");
+          $strD = $sqlC->fetch_array()[0] ?? ''; //get single value n convert to string 
+          $sqlCor = "SELECT UserEmail from user_tbl WHERE DepartmentId = $strD AND UserRoleName ='QA Coordinator'";
+          $resulCor = mysqli_query($dbconn, $sqlCor); //get email
+          $strresulCor = $resulCor->fetch_array()[0] ?? ''; //conver email to single value
+
+          $sqlUsername =mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
+          $strUserName = $sqlUsername->fetch_array()[0] ?? '';
+
+          // send email to coordinator
+              $to      = $strresulCor;
+              $subject = 'Notifications Krunker Idea Portal';
+              $message= "You got a new message from Krunker Idea Portal : \r\n\n";
+              $message .= "$strUserName posted a new idea. \r\n\n\n" ;
+              $message.= "Warm regards, \r\n\n";
+              $message.= "Krunker Idea Portal \r\n";
+              $headers = 'From:krunkerog06@gmail.com' . "\r\n" .
+                  'Reply-To: krunkerog6@gmail.com' . "\r\n" .
+                  'X-Mailer: PHP/' . phpversion();
+              
+              mail($to, $subject, $message, $headers);
+
         if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
           // Move uploaded file to a permanent location
           $image_target_dir = "assets/img/";
