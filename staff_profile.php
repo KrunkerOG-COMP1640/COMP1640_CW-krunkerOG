@@ -9,7 +9,7 @@ $user_id = $_SESSION["userid"];
 if (isset($_POST['submit'])) {
   if (isset($_POST['UserEmail']))
   $check_email=$_POST['UserEmail'];
-  $sql_email_check = "SELECT UserEmail FROM user_tbl WHERE UserEmail='$check_email' ";
+  $sql_email_check = "SELECT UserEmail FROM user_tbl WHERE UserEmail='$check_email' AND NOT UserId='$user_id' ";
   $result_email = mysqli_query($dbconn, $sql_email_check);
   $count = mysqli_num_rows($result_email);
   if($count > 0)
