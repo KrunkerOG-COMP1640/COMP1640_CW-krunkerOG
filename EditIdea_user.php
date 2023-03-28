@@ -210,7 +210,11 @@ $row = mysqli_fetch_assoc($result);
           <textarea id="description" name="description" class="form-control" rows="4" cols="50" required><?php echo $row['IdeaDescription'] ?></textarea>
         </div>
         
-      
+        <div class="mb-3">
+          <label for="file" class="form-label">Upload file:</label>
+          <input type="file" id="file" name="ideaimage[]" class="form-control" accept="image/jpeg, image/png, image/jpg" multiple>
+        </div>
+
         <div class="mb-3 form-check">
           <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value= 1>
           <label for="anonymous" class="form-check-label">Post anonymously</label>
