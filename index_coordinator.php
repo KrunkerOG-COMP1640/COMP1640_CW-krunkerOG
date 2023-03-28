@@ -269,19 +269,49 @@ $user_id = $_SESSION["userid"];
     });
   </script>
   <script>
-  $(document).ready(function(){
-    //get default options
-    var currentCategory = 'All';
-    var currentSorting = 'latest_ideas';
+    let page = 1;
+    let category = 'All';
+    let sorting = 'latest_ideas';
+
+    function updateCategoryFilter(){
+        $.ajax({
+            url : 'get_categories.php',
+            type : 'GET',
+            success : function(response){
+                $('#category-nav').html(response);
+                loadPosts();
+            }
+        });
+    }
+
+    //function to load posts using AJAX
+    function loadPosts(){
+      console.log(
+        'category', category
+      );
+      console.log(
+        'sorting', sorting
+      );
+      console.log(
+        'Page', page
+      );
+      $.ajax({
+            url : `filter_sorting_post.php?page=${page}&category=${category}&sorting=${sorting}`,
+            type : 'GET',
+            data: {category : category, sorting: sorting, page: page},
+            success : function(response){
+              $('#posts-container').html(response);
+            }
+           
+      });
+    }
 
     //handle category click event
     $('#category-nav').on('click', '.category-link', function(e){
       e.preventDefault();
       //get option
       var category = $(this).data('category');
-      //update posts
-      currentCategory = category;
-      loadPosts(currentCategory, currentSorting);
+      loadPosts();
     });
 
     //handle sorting click event
@@ -289,34 +319,18 @@ $user_id = $_SESSION["userid"];
       e.preventDefault();
       //get option
       var sorting = $(this).data('sorting');
-      //update posts
-      currentSorting = sorting;
-      loadPosts(currentCategory, currentSorting);
+      loadPosts();
     });
-
-    //function to load posts using AJAX
-    function loadPosts(category, sorting){
-      console.log(
-        'category', category
-      );
-      console.log(
-        'sorting', sorting
-      );
-      $.ajax({
-            url : 'filter_sorting_post.php',
-            type : 'GET',
-            data: {category : category, sorting: sorting},
-            success : function(response){
-              $('#posts-container').html(response);
-            }
-           
-      });
+      
+    function loadPage(pageNo){
+        page = pageNo;
+        loadPosts();
     }
-    //load posts with default options
-    loadPosts(currentCategory, currentSorting);
-  });
 
-
+    $(document).ready(function(){
+    //get default options
+    updateCategoryFilter();
+    });
   </script>
 </body>
 
