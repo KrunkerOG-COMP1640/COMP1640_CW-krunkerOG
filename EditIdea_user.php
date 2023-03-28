@@ -195,13 +195,7 @@ $row = mysqli_fetch_assoc($result);
 
 ?>
 
-  <div class="card mx-auto" style="max-width: 600px;">
-    <div class="card-header">
-      Edit Idea
-    </div>
-    <div class="card-body">
-      <form action="" method="post" enctype="multipart/form-data">
-      <div class="card mx-auto" style="max-width: 600px;">
+<div class="card mx-auto" style="max-width: 600px;">
     <div class="card-header">
       Edit Idea
     </div>
@@ -209,7 +203,7 @@ $row = mysqli_fetch_assoc($result);
       <form action="" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="title" class="form-label">Title:</label>
-          <input type="text" id="title" name="title" value ="<?php echo $row['IdeaTitle'] ?>" class="form-control" required>
+          <input type="text" id="title" name="title" value="<?php echo $row['IdeaTitle'] ?>" class="form-control" required>
         </div>
         <div class="mb-3">
           <label for="description" class="form-label">Description:</label>
@@ -222,7 +216,7 @@ $row = mysqli_fetch_assoc($result);
         </div>
 
         <div class="mb-3 form-check">
-          <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value= 1>
+          <input type="checkbox" id="anonymous" name="anonymous" class="form-check-input" value=1>
           <label for="anonymous" class="form-check-label">Post anonymously</label>
         </div>
         <div class="mb-3 form-check">
