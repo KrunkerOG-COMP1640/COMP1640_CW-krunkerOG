@@ -391,8 +391,8 @@ $start= ($page-1)*$rows_per_page;
                   <thead>
                     <tr>
                       <th>Category Title</th>
-                      <th>Date Closure</th>
-                      <th>Date Final</th>
+                      <th>Closure Date</th>
+                      <th>Final Closure Date</th>
                       <th>Date Created</th>
                       <th>Edit</th>
                       <th>Delete</th>

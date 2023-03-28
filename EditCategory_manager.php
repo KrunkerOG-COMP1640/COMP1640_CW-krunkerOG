@@ -17,12 +17,9 @@ else{
 $id = $_GET['id'];
 if(isset($_POST['submit'])){
   $title= strip_tags($_POST['CategoryTitle']);
-  $dateclosure= $_POST['DateClosure'];
-  $datefinal= $_POST['DateFinal'];
-  
-  
-  $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title',`DateClosure`='$dateclosure',`DateFinal`='$datefinal' 
-          WHERE CategoryId = $id";
+
+
+  $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
   
   $result = mysqli_query($dbconn,$sql);
   
@@ -393,14 +390,14 @@ $row = mysqli_fetch_assoc($result);
                         <input type="text" name="CategoryTitle" class="form-control"  value ="<?php echo $row['CategoryTitle'] ?>" required autofocus>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="">Date Closure</label>
+                        <label for="">Closure Date</label>
                         <br>
-                        <input type="date" class="form-control" name="DateClosure"  min="1997-01-01" max="2030-12-31"  value ="<?php echo $row['DateClosure'] ?>" >
+                        <input type="date" class="form-control" name="DateClosure"  min="2023-01-01" max="2030-12-31"  value ="<?php echo $row['DateClosure'] ?>" readonly>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="">Date Final</label>
+                        <label for="">Final Closure Date</label>
                         <br>
-                        <input type="date" class="form-control" name="DateFinal"  min="1997-01-01" max="2030-12-31"  value ="<?php echo $row['DateFinal'] ?>" >
+                        <input type="date" class="form-control" name="DateFinal"  min="2023-01-01" max="2030-12-31"  value ="<?php echo $row['DateFinal'] ?>" readonly>
                     </div>
                    
                     <div class="col-md-12 mb-3">
