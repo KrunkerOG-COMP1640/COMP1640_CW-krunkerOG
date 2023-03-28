@@ -363,10 +363,10 @@ $user_id = $_SESSION["userid"];
             <div class="card-body">
                 <div class="row align-items-center">
                 <div class="col" id="sorting-btn">
-                    <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
-                    <button id="most_popular" data-sorting="most_popular" class="btn btn-primary"><i class="bi bi-star"></i> Most Popular</button>
-                    <button id="most_viewed" data-sorting="most_viewed" class="btn btn-primary"><i class="bi bi-eye"></i> Most Viewed</button>
-                    <button id="latest_comment" data-sorting="latest_comment" class="btn btn-primary"><i class="bi bi-chat-text"></i> Latest Comments</button>
+                    <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary btn-sorting"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
+                    <button id="most_popular" data-sorting="most_popular" class="btn btn-primary btn-sorting"><i class="bi bi-star"></i> Most Popular</button>
+                    <button id="most_viewed" data-sorting="most_viewed" class="btn btn-primary btn-sorting"><i class="bi bi-eye"></i> Most Viewed</button>
+                    <button id="latest_comment" data-sorting="latest_comment" class="btn btn-primary btn-sorting"><i class="bi bi-chat-text"></i> Latest Comments</button>
                     <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
                   </div>
                 </div>
@@ -450,7 +450,6 @@ $user_id = $_SESSION["userid"];
     });
     //handle sorting click event
     $('.btn-sorting').on('click', function(){
-      e.preventDefault();
       //get option
       sorting = $(this).data('sorting');
       loadPosts();
