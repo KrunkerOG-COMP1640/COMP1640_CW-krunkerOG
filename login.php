@@ -70,7 +70,7 @@ if(isset($_POST["userlogin"])){
                     header("Location: index_manager.php");
                     exit;
                 }
-                else if($_SESSION["role"] == "QA Manager") {
+                else if($_SESSION["role"] == "QA Coordinator") {
                     header("Location: index_coordinator.php");
                     exit;
                 }
