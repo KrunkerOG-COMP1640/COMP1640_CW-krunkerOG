@@ -279,20 +279,18 @@ $user_id = $_SESSION["userid"];
 
   <script>
     let page = 1;
-    let category = 'All';
-    let sorting = 'latest_ideas';
-
+    let category  = 'All';
+    let sorting   = 'latest_ideas';
     function updateCategoryFilter(){
-        $.ajax({
-            url : 'get_categories.php',
-            type : 'GET',
-            success : function(response){
-                $('#category-nav').html(response);
-                loadPosts();
-            }
-        });
-    }
-
+          $.ajax({
+              url : 'get_categories.php',
+              type : 'GET',
+              success : function(response){
+                  $('#category-nav').html(response);
+                  loadPosts();
+              }
+          });
+      }
     //function to load posts using AJAX
     function loadPosts(){
       console.log(
@@ -301,9 +299,6 @@ $user_id = $_SESSION["userid"];
       console.log(
         'sorting', sorting
       );
-      console.log(
-        'Page', page
-      );
       $.ajax({
             url : `filter_sorting_post.php?page=${page}&category=${category}&sorting=${sorting}`,
             type : 'GET',
@@ -311,7 +306,6 @@ $user_id = $_SESSION["userid"];
             success : function(response){
               $('#posts-container').html(response);
             }
-           
       });
     }
 
@@ -319,26 +313,25 @@ $user_id = $_SESSION["userid"];
     $('#category-nav').on('click', '.category-link', function(e){
       e.preventDefault();
       //get option
-      var category = $(this).data('category');
+      category = $(this).data('category');
+      loadPosts();
+    });
+    //handle sorting click event
+    $('.btn-sorting').on('click', function(){
+      e.preventDefault();
+      //get option
+      sorting = $(this).data('sorting');
       loadPosts();
     });
 
-    //handle sorting click event
-    $('#sorting-btn').on('click', 'button.btn-primary', function(e){
-      e.preventDefault();
-      //get option
-      var sorting = $(this).data('sorting');
+    function loadPage(pageNo) {
+      page = pageNo;
       loadPosts();
-    });
-      
-    function loadPage(pageNo){
-        page = pageNo;
-        loadPosts();
     }
 
     $(document).ready(function(){
-    //get default options
-    updateCategoryFilter();
+      //get default options
+      updateCategoryFilter();
     });
   </script>
 </body>

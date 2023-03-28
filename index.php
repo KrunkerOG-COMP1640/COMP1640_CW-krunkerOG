@@ -265,7 +265,7 @@ $user_id = $_SESSION["userid"];
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
-<script>
+  <script>
     let page = 1;
     let category  = 'All';
     let sorting   = 'latest_ideas';
@@ -281,6 +281,12 @@ $user_id = $_SESSION["userid"];
       }
     //function to load posts using AJAX
     function loadPosts(){
+      console.log(
+        'category', category
+      );
+      console.log(
+        'sorting', sorting
+      );
       $.ajax({
             url : `filter_sorting_post.php?page=${page}&category=${category}&sorting=${sorting}`,
             type : 'GET',
@@ -294,11 +300,14 @@ $user_id = $_SESSION["userid"];
     //handle category click event
     $('#category-nav').on('click', '.category-link', function(e){
       e.preventDefault();
+      //get option
       category = $(this).data('category');
       loadPosts();
     });
-
+    //handle sorting click event
     $('.btn-sorting').on('click', function(){
+      e.preventDefault();
+      //get option
       sorting = $(this).data('sorting');
       loadPosts();
     });
@@ -309,6 +318,7 @@ $user_id = $_SESSION["userid"];
     }
 
     $(document).ready(function(){
+      //get default options
       updateCategoryFilter();
     });
   </script>
