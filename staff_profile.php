@@ -371,6 +371,18 @@ if (isset($_POST['submit'])) {
                       </div>
                     </div>
 
+                    <?php
+                        if(isset($_POST["submit_new_password"])){
+
+                            $userNewPassword = $_POST["newPassword"];
+                            $userComfirmNewPassword = $_POST["comfirmNewPassword"];
+
+                            if($userNewPassword != $userComfirmNewPassword){
+                              echo '<script>alert("*New Password and Re-enter New Password does not match.")</script>';
+                            }
+                        }
+                    ?>
+
                     <div class="text-center">
                       <button type="submit" name="submit_new_password" class="btn btn-primary">Change Password</button>
                     </div>
