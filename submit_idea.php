@@ -15,6 +15,17 @@ if (isset($_POST["submit_post"])) {
   $category = mysqli_real_escape_string($dbconn, $_POST["category"]);
   $anon = isset($_POST["anonymous"]);
   $user_id = $_SESSION["userid"];
+
+  // Get category closure date
+  $getCategory = "SELECT DateClosure from category_tbl WHERE CategoryId = $category";
+  $categoryResult = mysqli_query($dbconn, $getCategory);
+  $categoryRow = mysqli_fetch_assoc($categoryResult);
+  $closureDate = $categoryRow['DateClosure'];
+  if(date('Y-m-d') >= $closureDate){
+  echo "<script>alert('Sorry, idea submissions for this category has been closed.')</script>";
+  }
+  else{
+
   $sql_insertpost = "INSERT INTO idea_tbl (CategoryId, UserId, IdeaTitle, IdeaDescription,IdeaAnonymous) 
   VALUES ('$category','$user_id','$title', '$desc','$anon')";
   mysqli_query($dbconn, $sql_insertpost);
@@ -121,7 +132,7 @@ if (isset($_POST["submit_post"])) {
     exit();
   }
 }
-
+}
 $user_id = $_SESSION["userid"];
 $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
 $result_User = mysqli_query($dbconn, $select_sql);
