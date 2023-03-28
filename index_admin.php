@@ -174,6 +174,12 @@ $user_id = $_SESSION["userid"];
               echo '</li>';
               ?>
  
+                <li class="nav-item">
+                <a class="nav-link collapsed" href="closure_date.php">
+                <i class="bi bi-calendar4-week"></i><span>Closure Dates</span>
+                </a>
+                </li>
+
             <?php
                 if($_SESSION['role'] == "Admin"){ //staff cannot see this
                 echo'<li class="nav-heading">Pages</li>';
@@ -192,6 +198,12 @@ $user_id = $_SESSION["userid"];
                     echo '</a>';
                 echo '</li><!-- End Manage Idea Page Nav -->';
                 }
+
+                echo '<li class="nav-item">';
+                echo '<a class="nav-link collapsed" href="closure_date.php">';
+                echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                echo '</a>';
+                echo '</li>'
             ?>
             
         </ul>

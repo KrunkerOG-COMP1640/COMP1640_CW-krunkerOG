@@ -131,12 +131,7 @@ $user_id = $_SESSION["userid"];
                 </a>
             </li><!-- End Staff Details Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="closure_date.php">
-                  <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
-                </a>
-            </li><!-- End Closure Date Nav -->
-            <!--Category filter-->
+      
             <li class="nav-item">
               <a class="nav-link collapsed" data-bs-target="#category-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-bar-chart"></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>

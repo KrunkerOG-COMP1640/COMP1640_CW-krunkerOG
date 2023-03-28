@@ -2,7 +2,7 @@
 date_default_timezone_set('Asia/Kuala_Lumpur');
 session_start();
 
-if($_SESSION["role"] != "QA Coordinator") {
+if($_SESSION["role"] != "Admin") {
   header("Location: login.php");
   exit;
 }
