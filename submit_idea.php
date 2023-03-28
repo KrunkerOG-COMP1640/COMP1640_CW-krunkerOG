@@ -1,23 +1,23 @@
 <?php
-	session_start();
-	
-	// Check if user is logged in
-if(!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
-    header("Location: login.php");// Redirect to login page if not logged in
-    exit;
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
+  header("Location: login.php"); // Redirect to login page if not logged in
+  exit;
 }
 // Connect to MySQL database
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 // Insert new post into database
-if(isset($_POST["submit_post"])){
-	$title = strip_tags(mysqli_real_escape_string($dbconn, $_POST["title"]));
-	$desc = strip_tags(mysqli_real_escape_string($dbconn, $_POST["description"]));
-	$category = mysqli_real_escape_string($dbconn, $_POST["category"]);
-	$anon = isset($_POST["anonymous"]);
-	$user_id = $_SESSION["userid"];
+if (isset($_POST["submit_post"])) {
+  $title = strip_tags(mysqli_real_escape_string($dbconn, $_POST["title"]));
+  $desc = strip_tags(mysqli_real_escape_string($dbconn, $_POST["description"]));
+  $category = mysqli_real_escape_string($dbconn, $_POST["category"]);
+  $anon = isset($_POST["anonymous"]);
+  $user_id = $_SESSION["userid"];
   $sql_insertpost = "INSERT INTO idea_tbl (CategoryId, UserId, IdeaTitle, IdeaDescription,IdeaAnonymous) 
   VALUES ('$category','$user_id','$title', '$desc','$anon')";
-	mysqli_query($dbconn, $sql_insertpost);
+  mysqli_query($dbconn, $sql_insertpost);
   $ideaid = mysqli_insert_id($dbconn);
 
   //upload image
@@ -26,9 +26,17 @@ if(isset($_POST["submit_post"])){
   $max_image_count = 5;
   $uploaded_image_count = 0;
   $image_error = false;
+  $countfiles = count($_FILES['ideaimage']['name']);
   if (!empty(array_filter($imagefiles['name']))) {
     foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
-      if ($uploaded_image_count < $max_image_count) {
+      if ($countfiles > $max_image_count) {
+        $sqldeleteidea = "DELETE FROM idea_tbl WHERE IdeaId = '$ideaid'";
+        mysqli_query($dbconn, $sqldeleteidea);
+
+        $errormessage = "Cannot upload more than 5 images";
+        echo "<script>alert('$errormessage'); window.location.href='index.php';</script>";
+        exit();
+      } else if ($countfiles < $max_image_count) {
         $ideaimage = $imagefiles['name'][$key];
         $ideaimage_tmp = $imagefiles['tmp_name'][$key];
         $ideaimage_size = $imagefiles['size'][$key];
@@ -39,6 +47,7 @@ if(isset($_POST["submit_post"])){
         $allowed_image_types = array('png', 'jpg', 'jpeg');
         $image_ext_arr = explode('.', $ideaimage);
         $image_ext = strtolower(end($image_ext_arr));
+        if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
 
           //find coordinator email
           $sqlC = mysqli_query($dbconn, "SELECT DepartmentId from user_tbl WHERE UserId=$user_id");
@@ -47,23 +56,22 @@ if(isset($_POST["submit_post"])){
           $resulCor = mysqli_query($dbconn, $sqlCor); //get email
           $strresulCor = $resulCor->fetch_array()[0] ?? ''; //conver email to single value
 
-          $sqlUsername =mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
+          $sqlUsername = mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
           $strUserName = $sqlUsername->fetch_array()[0] ?? '';
 
           // send email to coordinator
-              $to      = $strresulCor;
-              $subject = 'Notifications Krunker Idea Portal';
-              $message= "You got a new message from Krunker Idea Portal : \r\n\n";
-              $message .= "$strUserName posted a new idea. \r\n\n\n" ;
-              $message.= "Warm regards, \r\n\n";
-              $message.= "Krunker Idea Portal \r\n";
-              $headers = 'From:krunkerog06@gmail.com' . "\r\n" .
-                  'Reply-To: krunkerog6@gmail.com' . "\r\n" .
-                  'X-Mailer: PHP/' . phpversion();
-              
-              mail($to, $subject, $message, $headers);
+          $to      = $strresulCor;
+          $subject = 'Notifications Krunker Idea Portal';
+          $message = "You got a new message from Krunker Idea Portal : \r\n\n";
+          $message .= "$strUserName posted a new idea. \r\n\n\n";
+          $message .= "Warm regards, \r\n\n";
+          $message .= "Krunker Idea Portal \r\n";
+          $headers = 'From:krunkerog06@gmail.com' . "\r\n" .
+            'Reply-To: krunkerog6@gmail.com' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
 
-        if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
+          mail($to, $subject, $message, $headers);
+
           // Move uploaded file to a permanent location
           $image_target_dir = "assets/img/";
           $image_target_file = $image_target_dir . uniqid() . "_" . basename($ideaimage);
@@ -73,34 +81,51 @@ if(isset($_POST["submit_post"])){
           $sql_insertimage = "INSERT INTO ideamedia_tbl (IdeaId, IdeaImage) VALUES ('$ideaid', '$image_target_file')";
           mysqli_query($dbconn, $sql_insertimage);
           $uploaded_image_count++;
+          header("Location: index.php?msg=Idea and image successfully post");
         } else {
+          $sqldeleteidea = "DELETE FROM idea_tbl WHERE IdeaId = '$ideaid'";
+          mysqli_query($dbconn, $sqldeleteidea);
+
           $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
           echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
           $image_error = true;
 
           break; // stop processing additional files
         }
-      } else {
-        $errormsg = "Only 5 Image can be upload"; // error message to display
-        echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
-        $image_error = true;
-
-        break; // stop processing additional files
       }
     }
-  }
+  } else {
+    //find coordinator email
+    $sqlC = mysqli_query($dbconn, "SELECT DepartmentId from user_tbl WHERE UserId=$user_id");
+    $strD = $sqlC->fetch_array()[0] ?? ''; //get single value n convert to string 
+    $sqlCor = "SELECT UserEmail from user_tbl WHERE DepartmentId = $strD AND UserRoleName ='QA Coordinator'";
+    $resulCor = mysqli_query($dbconn, $sqlCor); //get email
+    $strresulCor = $resulCor->fetch_array()[0] ?? ''; //conver email to single value
 
-  // Redirect to the homepage
-  if (!$image_error) {
-    header("Location: index.php");
+    $sqlUsername = mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
+    $strUserName = $sqlUsername->fetch_array()[0] ?? '';
+
+    // send email to coordinator
+    $to      = $strresulCor;
+    $subject = 'Notifications Krunker Idea Portal';
+    $message = "You got a new message from Krunker Idea Portal : \r\n\n";
+    $message .= "$strUserName posted a new idea. \r\n\n\n";
+    $message .= "Warm regards, \r\n\n";
+    $message .= "Krunker Idea Portal \r\n";
+    $headers = 'From:krunkerog06@gmail.com' . "\r\n" .
+      'Reply-To: krunkerog6@gmail.com' . "\r\n" .
+      'X-Mailer: PHP/' . phpversion();
+
+    mail($to, $subject, $message, $headers);
+    header("Location: index.php?msg=Idea successfully post");
     exit();
   }
-}	
+}
 
-  $user_id = $_SESSION["userid"];
-  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-  $result_User = mysqli_query($dbconn, $select_sql);  
-  $row_User = mysqli_fetch_assoc($result_User);
+$user_id = $_SESSION["userid"];
+$select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+$result_User = mysqli_query($dbconn, $select_sql);
+$row_User = mysqli_fetch_assoc($result_User);
 ?>
 
 <!DOCTYPE html>
