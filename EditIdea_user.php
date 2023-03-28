@@ -201,6 +201,12 @@ $row = mysqli_fetch_assoc($result);
     </div>
     <div class="card-body">
       <form action="" method="post" enctype="multipart/form-data">
+      <div class="card mx-auto" style="max-width: 600px;">
+    <div class="card-header">
+      Edit Idea
+    </div>
+    <div class="card-body">
+      <form action="" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="title" class="form-label">Title:</label>
           <input type="text" id="title" name="title" value ="<?php echo $row['IdeaTitle'] ?>" class="form-control" required>
@@ -209,7 +215,7 @@ $row = mysqli_fetch_assoc($result);
           <label for="description" class="form-label">Description:</label>
           <textarea id="description" name="description" class="form-control" rows="4" cols="50" required><?php echo $row['IdeaDescription'] ?></textarea>
         </div>
-        
+
         <div class="mb-3">
           <label for="file" class="form-label">Upload file:</label>
           <input type="file" id="file" name="ideaimage[]" class="form-control" accept="image/jpeg, image/png, image/jpg" multiple>
