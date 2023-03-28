@@ -114,6 +114,22 @@ if(isset($_POST["userlogin"])){
             </div>
 
             <?php
+                if(isset($_POST["userlogin"])){
+
+                    $userEmail = $_POST["useremail"];
+                    $userPassword = $_POST["userpassword"];
+                    $usersql = "SELECT * FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'";
+                    $userResult = mysqli_query($dbconn,$usersql);
+
+                    if(empty($userEmail) || empty($userPassword)){
+                        echo'<div class="input-field" style="color:Red;">';
+                            echo'<p>*Please fill in both email and password.</p>';
+                        echo'</div>';
+                    }
+                }
+            ?>
+
+            <?php
                 if(!empty($_POST["useremail"]) && !empty($_POST["userpassword"])){
                     echo'<div class="input-field" style="color:Red;">';
                         echo'<p>*Incorrect email address or password.</p>';
@@ -122,7 +138,7 @@ if(isset($_POST["userlogin"])){
             ?>
 
             <div class="input-field">
-                <input type="submit" class="submit" value="Login" name="userlogin" id=""><br>  
+                <input type="submit" class="submit" value="Login" name="userlogin"><br>  
             </div>
 
             <div class="two-col">
