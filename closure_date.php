@@ -153,19 +153,35 @@ $result= mysqli_query($dbconn, $sql);
             </li><!-- End Idea Nav -->
 
             <li class="nav-heading">Pages</li>
-
+   
             <li class="nav-item">
-                <a class="nav-link collapsed" href="staff_details.php">
-                  <i class="bi bi-person-check"></i><span>Staff Details</span>
-                </a>
-            </li><!-- End Staff Details Nav -->
+        <a class="nav-link collapsed" href="ManageUser_admin.php">
+            <i class="bi bi-people"></i>
+          <span>Manage User</span>
+        </a>
+      </li><!-- End Manage User Page Nav -->
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="ManageIdea_admin.php">
+            <i class="bi bi-chat-left-text"></i>
+          <span>Manage Idea</span>
+        </a>
+      </li><!-- End Manage Idea Page Nav -->
+
+      <?php
+      echo '<li class="nav-item">';
+        echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" ;">';
+          echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+        echo '</a>';
+      echo '</li>';
+?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="closure_date.php">
                   <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
                 </a>
             </li><!-- End Closure Date Nav -->
 
+        
         </ul>
 
     </aside><!-- End Sidebar-->
