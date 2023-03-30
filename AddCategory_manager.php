@@ -17,8 +17,7 @@ else{
 
 if(isset($_POST['submit'])){
   $title= strip_tags($_POST['CategoryTitle']);
-  $dateclosure= $_POST['DateClosure'];
-  $datefinal= $_POST['DateFinal'];
+ 
   $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
   $error = array();
    if(mysqli_num_rows($checkcat) > 0){
@@ -34,8 +33,8 @@ if(isset($_POST['submit'])){
   
   
   if(count($error) < 1 ){
-  $sql = "INSERT INTO `category_tbl`(`CategoryTitle`, `DateClosure`, `DateFinal`) 
-          VALUES ('$title','$dateclosure','$datefinal')";
+  $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
+          VALUES ('$title')";
   
   $result = mysqli_query($dbconn,$sql);
   
@@ -399,17 +398,7 @@ if(isset($_POST['submit'])){
                         <label for="">Category Title</label>
                         <input type="text" name="CategoryTitle" class="form-control" required autofocus>
                     </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Date Closure</label>
-                        <br>
-                        <input type="date" class="form-control" name="DateClosure" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" required>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Date Final</label>
-                        <br>
-                        <input type="date" class="form-control" name="DateFinal" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" required>
-                    </div>
-                 
+                   
                     <div class="col-md-12 mb-3">
                       <button type="submit" class="btn btn-primary" name="submit">Add Category</button>
                       <a href="ManageCategory_manager.php" class="btn btn-danger">Cancel</a>
