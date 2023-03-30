@@ -78,7 +78,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       $imageidea_path = '' . $imageidea_row['IdeaImage'];
       if (file_exists($imageidea_path)) {
         echo '   <div class="col-lg-4 mb-4">';
-        echo '         <img src="' . $imageidea_path . '"  alt="idea image" class="shadow-1-strong rounded mb-4" style="width: 150px; height: 150px; object-fit: contain;">';
+        echo '         <img src="' . $imageidea_path . '"  alt="idea image" class="shadow-1-strong rounded mb-4" style="width: 200px; height: 200px; object-fit: contain;">';
         echo '   </div>';
       }
     }
@@ -100,22 +100,14 @@ while ($row = mysqli_fetch_assoc($result)) {
   $dislikeidea_row = mysqli_fetch_assoc($dislikeidea_result);
   echo '
       
-        <div class="row">
-          <div class="col-md-2">
-          <a href="CommentSection.php?id=' . $ideaid . '" class="btn btn-primary" ">See More</a>
-            
-          </div>
-          <div class="col-md-2 p-0">
-            <form action="filter_sorting_post.php" method="post" enctype="multipart/form-data" >
+            <form action="filter_sorting_post.php" method="post" enctype="multipart/form-data" style="margin-bottom:10px;">
               <input type="hidden" name="ideaid" value="' . $ideaid . '">
               <span>' . $likeidea_row['Like_Count'] . '</span>
               <button type="submit" name="submit_like" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></button>
               <span>' . $dislikeidea_row['DisLike_Count'] . '</span>
               <button type="submit" name="submit_dislike" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></button>
             </form>
-          </div>
-        </div>
-      
+           <a href="CommentSection.php?id=' . $ideaid . '" class="btn btn-primary" ">See More</a>
   ';
 
   echo '
