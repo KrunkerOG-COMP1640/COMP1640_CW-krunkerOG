@@ -250,7 +250,7 @@ $showComment = mysqli_query($dbconn, $show);
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index_admin.php">Idea</a></li>
-                    <li class="breadcrumb-item"><a href="CommentSection.php">Comments</a></li>
+               
                 </ol>
             </nav>
         </div><!-- End Page Title -->
