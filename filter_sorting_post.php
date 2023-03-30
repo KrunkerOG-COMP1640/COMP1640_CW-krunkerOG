@@ -99,13 +99,14 @@ while ($row = mysqli_fetch_assoc($result)) {
   $dislikeidea_result = mysqli_query($dbconn, $dislikeidea_query);
   $dislikeidea_row = mysqli_fetch_assoc($dislikeidea_result);
   echo '
-      
             <form action="filter_sorting_post.php" method="post" enctype="multipart/form-data" style="margin-bottom:10px;">
               <input type="hidden" name="ideaid" value="' . $ideaid . '">
+              
+              <button type="submit" name="submit_like" class="btn btn-primary" style="background-color: darkcyan; margin:0 10px 0 0;"><i class="bi bi-hand-thumbs-up"></i></button>
               <span>' . $likeidea_row['Like_Count'] . '</span>
-              <button type="submit" name="submit_like" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></button>
+              
+              <button type="submit" name="submit_dislike" class="btn btn-primary" style="background-color: darkcyan; margin: 0 10px 0 10px;"><i class="bi bi-hand-thumbs-down"></i></button>
               <span>' . $dislikeidea_row['DisLike_Count'] . '</span>
-              <button type="submit" name="submit_dislike" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></button>
             </form>
            <a href="CommentSection.php?id=' . $ideaid . '" class="btn btn-primary" ">See More</a>
   ';
