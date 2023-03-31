@@ -34,7 +34,7 @@ if(isset($_POST['submit'])){
   $result = mysqli_query($dbconn,$sql);
   
   if($result){
-      header("Location: closure_date.php?msg = Category Updated");
+      header("Location: closure_date.php?msg = Closure Date Updated");
   
   }
   else{
