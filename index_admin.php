@@ -97,19 +97,15 @@ $user_id = $_SESSION["userid"];
               <hr class="dropdown-divider">
             </li>
 
-            <?php
-                if($_SESSION['role'] == "Staff"){ //staff cannot see this
-                    echo'<li>';
-                        echo'<a class="dropdown-item d-flex align-items-center" href="staff_profile.php">';
-                            echo'<i class="bi bi-person"></i>';
-                            echo'<span>My Profile</span>';
-                        echo'</a>';
-                    echo'</li>';
-                    echo'<li>';
-                        echo'<hr class="dropdown-divider">';
-                    echo'</li>';
-                }
-            ?>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -132,16 +128,9 @@ $user_id = $_SESSION["userid"];
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-                    <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="list_of_category_admin.html">
-                            <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
-                        </a>
-                    </li>
-                </ul>
+              <a class="nav-link collapsed" href="index.php">
+                  <i class="bi bi-grid"></i><span>Idea</span>
+              </a>
             </li><!-- End Idea Nav -->
 
             <li class="nav-item">

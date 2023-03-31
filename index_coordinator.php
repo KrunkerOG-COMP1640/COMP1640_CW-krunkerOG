@@ -91,19 +91,15 @@ $user_id = $_SESSION["userid"];
               <hr class="dropdown-divider">
             </li>
 
-            <?php
-                if($_SESSION['role'] == "Staff"){ //Only Staff can see this
-                    echo'<li>';
-                        echo'<a class="dropdown-item d-flex align-items-center" href="staff_profile.php">';
-                            echo'<i class="bi bi-person"></i>';
-                            echo'<span>My Profile</span>';
-                        echo'</a>';
-                    echo'</li>';
-                    echo'<li>';
-                        echo'<hr class="dropdown-divider">';
-                    echo'</li>';
-                }
-            ?>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
