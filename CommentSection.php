@@ -28,7 +28,7 @@ if(isset($_POST["submit_comment_post"])){
     $getClosure = "SELECT DateFinal from user_tbl WHERE UserId = $user_id";
     $finalclosureResult = mysqli_query($dbconn, $getClosure);
     $closureRow = mysqli_fetch_assoc($finalclosureResult);
-    $finalclosureDate = $categoryRow['DateFinal'];
+    $finalclosureDate = $closureRow['DateFinal'];
     if(date('Y-m-d') >= $finalclosureDate){
     echo "<script>alert('Sorry, comments are temporarily.')</script>";
     }
