@@ -17,7 +17,6 @@ $sqlD = "SELECT DepartmentId from user_tbl WHERE UserId=$user_id";
 $resultD = mysqli_query($dbconn,$sqlD);
 $strD = $resultD->fetch_array()[0] ?? ''; //get single value n convert to string 
 
-$result = mysqli_query($dbconn,$sql);  
 ?>
 
 <?php
@@ -201,7 +200,7 @@ $result = mysqli_query($dbconn,$sql);
                         <thead>
                           <tr>
                             <th>Username</th>
-                            <th>Idea Posted</th>
+                            <th>Number of ideas posted</th>
                             <th>Department Name</th>
                             <th>Category</th>
                           </tr>
@@ -217,6 +216,8 @@ $result = mysqli_query($dbconn,$sql);
                             WHERE department_tbl.DepartmentId = $strD
                             GROUP BY idea_tbl.UserId ORDER BY idea_tbl.UserId DESC";
 
+                            $result = mysqli_query($dbconn,$sql); 
+                            
                             if(mysqli_num_rows($result) >0){
                               foreach($result as $row){
                                 ?>
