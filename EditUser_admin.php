@@ -406,7 +406,7 @@ $row = mysqli_fetch_assoc($result);
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Password</label>
-                        <input type="text" name="UserPassword" value ="<?php echo $row['UserPassword'] ?>" class="form-control">
+                        <input type="password" name="UserPassword" class="form-control">
                     </div>
                     
                     <div class="col-md-12 mb-3">

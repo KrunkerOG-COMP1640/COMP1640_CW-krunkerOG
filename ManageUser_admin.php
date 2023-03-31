@@ -247,7 +247,6 @@ $start= ($page-1)*$rows_per_page;
                 <thead>
                   <tr>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Contact No</th>
                     <th>Email</th>
                     <th>Department</th>
@@ -260,7 +259,7 @@ $start= ($page-1)*$rows_per_page;
                 <?php
                     include "krunkerideaconn.php";
 
-                    $sql = "SELECT user_tbl.UserRoleName, user_tbl.UserId, user_tbl.Username, user_tbl.UserPassword, user_tbl.UserContactNo, user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
+                    $sql = "SELECT user_tbl.UserRoleName, user_tbl.UserId, user_tbl.Username, user_tbl.UserContactNo, user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
                     INNER JOIN department_tbl ON user_tbl.DepartmentId = department_tbl.DepartmentId LIMIT $start,$rows_per_page";
 
                     $query_no = mysqli_query($dbconn,$sql);  
@@ -269,7 +268,6 @@ $start= ($page-1)*$rows_per_page;
                         ?>
                         <tr>
                         <td><?php echo $row['Username']?></td>
-                        <td><?php echo $row['UserPassword']?></td>
                         <td><?php echo $row['UserContactNo']?></td>
                         <td><?php echo $row['UserEmail']?></td>
                         <td><?php echo $row['DepartmentName']?></td>
