@@ -391,8 +391,6 @@ $start= ($page-1)*$rows_per_page;
                   <thead>
                     <tr>
                       <th>Category Title</th>
-                      <th>Closure Date</th>
-                      <th>Final Closure Date</th>
                       <th>Date Created</th>
                       <th>Edit</th>
                       <th>Delete</th>
@@ -411,8 +409,6 @@ $start= ($page-1)*$rows_per_page;
                         ?>
                         <tr>
                         <td><?php echo $row['CategoryTitle']?></td>
-                        <td><?php echo $row['DateClosure']?></td>
-                        <td><?php echo $row['DateFinal']?></td>
                         <td><?php echo $row['DateCreated']?></td>
                         <td><a href="EditCategory_manager.php?id=<?php echo $row['CategoryId'] ?>"  class="btn btn-success">Edit</a></td>
                         <td><a href="DeleteCategory_manager.php?id=<?php echo $row['CategoryId'] ?>" class="btn btn-danger">Delete</a></td>
