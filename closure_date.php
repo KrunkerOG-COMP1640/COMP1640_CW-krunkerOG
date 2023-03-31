@@ -206,7 +206,7 @@ $start= ($page-1)*$rows_per_page;
                     <tr>
                       <th>Username</th>
                       <th>UserEmail</th>
-                      <th>Deparment Name</th>
+                      <th>Department Name</th>
                       <th>Closure Date</th>
                       <th>Final Closure Date</th>
   
