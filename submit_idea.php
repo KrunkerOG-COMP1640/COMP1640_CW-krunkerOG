@@ -17,12 +17,14 @@ if (isset($_POST["submit_post"])) {
   $user_id = $_SESSION["userid"];
 
   // Get category closure date
-  $getCategory = "SELECT DateClosure from category_tbl WHERE CategoryId = $category";
-  $categoryResult = mysqli_query($dbconn, $getCategory);
-  $categoryRow = mysqli_fetch_assoc($categoryResult);
-  $closureDate = $categoryRow['DateClosure'];
+  $getClosure = "SELECT DateClosure from user_tbl WHERE UserId = $user_id";
+  $closureResult = mysqli_query($dbconn, $getClosure);
+  $closureRow = mysqli_fetch_assoc($closureResult);
+  $closureDate = $closureRow['DateClosure'];
   if(date('Y-m-d') >= $closureDate){
-  echo "<script>alert('Sorry, idea submissions for this category has been closed.')</script>";
+  echo "<script>alert('Sorry, idea submissions are temporarily closed.')</script>";
+  header("refresh:0; url=index.php");
+  exit();
   }
   else{
 

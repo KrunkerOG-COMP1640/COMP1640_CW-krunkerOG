@@ -25,12 +25,12 @@ if(isset($_POST["submit_comment_post"])){
     $anonymous = isset($_POST["anonymous"]);
 
     //Get category final closure date
-    $getCategory = "SELECT category_tbl.DateFinal from category_tbl INNER JOIN idea_tbl ON category_tbl.CategoryId = idea_tbl.CategoryId WHERE IdeaId=$id";
-    $categoryResult = mysqli_query($dbconn, $getCategory);
-    $categoryRow = mysqli_fetch_assoc($categoryResult);
+    $getClosure = "SELECT DateFinal from user_tbl WHERE UserId = $user_id";
+    $finalclosureResult = mysqli_query($dbconn, $getClosure);
+    $closureRow = mysqli_fetch_assoc($finalclosureResult);
     $finalclosureDate = $categoryRow['DateFinal'];
     if(date('Y-m-d') >= $finalclosureDate){
-    echo "<script>alert('Sorry, comments for this category has been closed.')</script>";
+    echo "<script>alert('Sorry, comments are temporarily.')</script>";
     }
     else{
       mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 

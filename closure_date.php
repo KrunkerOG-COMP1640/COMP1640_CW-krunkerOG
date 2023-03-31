@@ -16,12 +16,7 @@ $rows_per_page = 5;
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
 
-$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
 
-$result= mysqli_query($dbconn, $sql);
 
 ?>
 
@@ -67,7 +62,7 @@ $result= mysqli_query($dbconn, $sql);
   <style>
     .pagination{
         text-align:center;
-        display: inline;
+        display: block;
         letter-spacing:10px;
     }
   </style>
@@ -200,10 +195,75 @@ $result= mysqli_query($dbconn, $sql);
     <section class="section dashboard">
       
       <div class="row">
+      <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <a href="EditClosureDates.php"  class="btn btn-success">Change closure dates</a> 
+              </div>
           <div class="card-body">
+          <table class="table table-bordered text-center">
+                  <thead>
+                    <tr>
+                      <th>Username</th>
+                      <th>UserEmail</th>
+                      <th>Deparment Name</th>
+                      <th>Closure Date</th>
+                      <th>Final Closure Date</th>
+  
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                    include "krunkerideaconn.php";
 
+                    $sql = "SELECT user_tbl.UserRoleName, user_tbl.UserId, user_tbl.Username, user_tbl.DateClosure, user_tbl.DateFinal, user_tbl.UserEmail, department_tbl.DepartmentName from user_tbl
+                    INNER JOIN department_tbl ON user_tbl.DepartmentId = department_tbl.DepartmentId LIMIT $start,$rows_per_page";
 
+                    $query_no = mysqli_query($dbconn,$sql);  
+                    if(mysqli_num_rows($query_no) >0){
+                      foreach($query_no as $row){
+                        ?>
+                        <tr>
+                        <td><?php echo $row['Username']?></td>
+                        <td><?php echo $row['UserEmail']?></td>
+                        <td><?php echo $row['DepartmentName']?></td>                       
+                        <td><?php echo $row['DateClosure']?></td>
+                        <td><?php echo $row['DateFinal']?></td>
+                      
+                      </tr>
+                      <?php
+                      }
+                    }
+                    else{
+                      ?>
+                      <tr>
+                        <td colspan="6">No record found</td>
+                    
+                    <?php
+                    }
+                    ?>
+                  </tbody>
+                </table>
+  
+              </div>
+            </div>
           </div>
+      </div>
+      <div class = "pagination">
+      <?php
+			$sql_page = "SELECT COUNT(*) AS count FROM user_tbl";
+			$page_count = mysqli_query($dbconn, $sql_page);
+			$row_count = mysqli_fetch_assoc($page_count);
+			$total_rows = $row_count['count'];
+			$total_pages = ceil($total_rows / $rows_per_page);
+   
+			for ($i = 1; $i <= $total_pages; $i++){
+				echo'<a href="?page='.$i.'">'.$i.'</a>';
+			}
+		?>
+    </div>
+      </section>
+
       </div>
 
   </main><!-- End #main -->
