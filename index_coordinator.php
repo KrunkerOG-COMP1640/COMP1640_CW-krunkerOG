@@ -122,12 +122,12 @@ $user_id = $_SESSION["userid"];
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="staff_details.php">
-                  <i class="bi bi-person-check"></i><span>Staff Details</span>
-                </a>
-            </li><!-- End Staff Details Nav -->
+              <a class="nav-link collapsed" href="index.php">
+                  <i class="bi bi-grid"></i><span>Idea</span>
+              </a>
+            </li><!-- End Idea Nav -->
 
-      
+            <!--Category filter-->
             <li class="nav-item">
               <a class="nav-link collapsed" data-bs-target="#category-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-bar-chart"></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -135,19 +135,25 @@ $user_id = $_SESSION["userid"];
               <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
               </ul>
             </li>
- 
+
             <?php
               echo '<li class="nav-item">';
               echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+              echo '<i class="bi bi-pencil"></i></i><span>Edit Idea</span>';
               echo '</a>';
               echo '</li>';
-              ?>
- 
+            ?>
+            
+            <li class="nav-heading">Pages</li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="staff_details.php">
+                  <i class="bi bi-person-check"></i><span>Staff Details</span>
+                </a>
+            </li><!-- End Staff Details Nav -->
 
             <?php
                 if($_SESSION['role'] == "Admin"){ //QA Coordinator cannot see this
-                echo'<li class="nav-heading">Pages</li>';
 
                 echo'<li class="nav-item">';
                     echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';

@@ -131,31 +131,19 @@ $result= mysqli_query($dbconn, $sql);
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="index.php">
-            <i class="bi bi-grid"></i><span>Idea</span>
-        </a>
-      </li><!-- End Idea Nav -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="index.php">
+                  <i class="bi bi-grid"></i><span>Idea</span>
+              </a>
+            </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
-<?php
-      echo '<li class="nav-item">';
-        echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-          echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
-        echo '</a>';
-      echo '</li>';
-?>
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-pencil"></i><span>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+            ?>
      
     </ul>
 

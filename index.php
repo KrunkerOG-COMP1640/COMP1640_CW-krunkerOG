@@ -132,14 +132,13 @@ $user_id = $_SESSION["userid"];
               <a class="nav-link collapsed" data-bs-target="#category-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-bar-chart"></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>
               </a>
-              <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-              </ul>
+              <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav"></ul>
             </li>
 
             <?php
               echo '<li class="nav-item">';
               echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+              echo '<i class="bi bi-pencil"></i><span>Edit Idea</span>';
               echo '</a>';
               echo '</li>';
             ?>

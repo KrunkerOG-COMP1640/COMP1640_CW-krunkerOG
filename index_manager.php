@@ -123,38 +123,27 @@ $user_id = $_SESSION["userid"];
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="index_manager.php">
-            <i class="bi bi-grid"></i><span>Idea</span>
+          <i class="bi bi-grid"></i><span>Idea</span>
         </a>
       </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
       <!--Category filter-->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#category-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-bar-chart"></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        </ul>
+        <ul id="category-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav"></ul>
       </li>
 
-      <li class="nav-heading">Pages</li>
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+            ?>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Staff Details</span>
-        </a>
-      </li><!-- End Tables Nav -->
+      <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="ManageCategory_manager.php">
@@ -169,15 +158,7 @@ $user_id = $_SESSION["userid"];
           <span>Reports</span>
         </a>
       </li><!-- End Report Page Nav -->
-     
-            <?php
-              echo '<li class="nav-item">';
-              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
-              echo '</a>';
-              echo '</li>';
-              ?>
- 
+
     </ul>
 
   </aside><!-- End Sidebar-->
