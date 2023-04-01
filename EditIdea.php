@@ -15,7 +15,7 @@ $start= ($page-1)*$rows_per_page;
 
 $sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.UserId  from idea_tbl 
 INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
-WHERE UserId = $user_id ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
+WHERE UserId = $user_id AND is_hidden=0 ORDER BY idea_tbl.IdeaId DESC LIMIT $start,$rows_per_page";
 
 $result= mysqli_query($dbconn, $sql);
 
@@ -207,6 +207,8 @@ $result= mysqli_query($dbconn, $sql);
 
 
               $ideaid = $row['IdeaId'];
+              echo '<a href="HideIdea.php?id='.$user_id. '&idea=' .$ideaid.'">'; echo '<i class="fa-regular fa-x fa-1x btn btn-primary position-absolute top-0 end-0" style="margin:10px 10px 0 0;">'; echo '</i>'; echo '</a>';
+
               $imageidea_query = "SELECT IdeaImage FROM ideamedia_tbl WHERE IdeaId=$ideaid";
               $imageidea_result = mysqli_query($dbconn, $imageidea_query);
               $imageidea_count = mysqli_num_rows($imageidea_result);
