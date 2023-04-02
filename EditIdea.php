@@ -190,6 +190,26 @@ $result= mysqli_query($dbconn, $sql);
                 echo '</li><!-- End Staff Details Nav -->';
               }
             ?>
+
+            <?php
+              if($_SESSION['role'] == "QA Manager"){
+                echo'<li class="nav-heading">Pages</li>';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
+                        echo '<i class="bi bi-grid"></i>';
+                        echo '<span>Add a new Category</span>';
+                    echo '</a>';
+                echo '</li><!-- End Category Page Nav -->';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="report_manager.php">';
+                        echo '<i class="bi bi-bar-chart-line"></i>';
+                        echo '<span>Reports</span>';
+                    echo '</a>';
+                echo '</li><!-- End Report Page Nav -->';
+              }
+            ?>
             
         </ul>
 
@@ -198,10 +218,11 @@ $result= mysqli_query($dbconn, $sql);
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Idea</h1>
+      <h1>Edit Idea</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Idea</a></li>
+          <li class="breadcrumb-item active">Edit Idea</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

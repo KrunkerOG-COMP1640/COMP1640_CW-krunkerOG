@@ -143,21 +143,25 @@ $user_id = $_SESSION["userid"];
               echo '</li>';
             ?>
 
-      <li class="nav-heading">Pages</li>
+            <?php
+              if($_SESSION['role'] == "QA Manager"){
+                echo'<li class="nav-heading">Pages</li>';
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageCategory_manager.php">
-          <i class="bi bi-grid"></i>
-          <span>Add a new Category</span>
-        </a>
-      </li><!-- End Category Page Nav -->
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
+                        echo '<i class="bi bi-grid"></i>';
+                        echo '<span>Add a new Category</span>';
+                    echo '</a>';
+                echo '</li><!-- End Category Page Nav -->';
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="report_manager.php">
-          <i class="bi bi-bar-chart-line"></i>
-          <span>Reports</span>
-        </a>
-      </li><!-- End Report Page Nav -->
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="report_manager.php">';
+                        echo '<i class="bi bi-bar-chart-line"></i>';
+                        echo '<span>Reports</span>';
+                    echo '</a>';
+                echo '</li><!-- End Report Page Nav -->';
+              }
+            ?>
 
     </ul>
 
@@ -179,23 +183,24 @@ $user_id = $_SESSION["userid"];
         <!-- Left side columns -->
           <div class="row">
             <div class="card-body">
-                <div class="row align-items-center">
+              <div class="row align-items-center">
                 <div class="col" id="sorting-btn">
-                    <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary btn-sorting"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
-                    <button id="most_popular" data-sorting="most_popular" class="btn btn-primary btn-sorting"><i class="bi bi-star"></i> Most Popular</button>
-                    <button id="most_viewed" data-sorting="most_viewed" class="btn btn-primary btn-sorting"><i class="bi bi-eye"></i> Most Viewed</button>
-                    <button id="latest_comment" data-sorting="latest_comment" class="btn btn-primary btn-sorting"><i class="bi bi-chat-text"></i> Latest Comments</button>
-                    <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
-                  </div>
+                  <button id="latest_ideas" data-sorting="latest_ideas" class="btn btn-primary btn-sorting"><i class="bi bi-lightbulb"></i> Latest Ideas</button>
+                  <button id="most_popular" data-sorting="most_popular" class="btn btn-primary btn-sorting"><i class="bi bi-star"></i> Most Popular</button>
+                  <button id="most_viewed" data-sorting="most_viewed" class="btn btn-primary btn-sorting"><i class="bi bi-eye"></i> Most Viewed</button>
+                  <button id="latest_comment" data-sorting="latest_comment" class="btn btn-primary btn-sorting"><i class="bi bi-chat-text"></i> Latest Comments</button>
+                  <a href="submit_idea.php" class="btn btn-primary" style="background-color:#4CAF50; border-color:#4CAF50; float: right;"><i class="bi bi-file-earmark-text"></i> Submit Idea</a>
                 </div>
+              </div>
               </div>
 
               <div id="posts-container">
 
               </div>  
+            
           </div>                
         <!-- End Left side columns -->
-  </section>    
+    </section>    
 
   </main><!-- End #main -->
 

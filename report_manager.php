@@ -111,45 +111,38 @@ $user_id = $_SESSION["userid"];
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.php">
+        <a class="nav-link collapsed" href="index_manager.php">
           <i class="bi bi-grid"></i><span>Idea</span>
         </a>
       </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+            ?>
 
-      <li class="nav-heading">Pages</li>
+            <?php
+              if($_SESSION['role'] == "QA Manager"){
+                echo'<li class="nav-heading">Pages</li>';
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Staff Details</span>
-        </a>
-      </li><!-- End Tables Nav -->
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
+                        echo '<i class="bi bi-grid"></i>';
+                        echo '<span>Add a new Category</span>';
+                    echo '</a>';
+                echo '</li><!-- End Category Page Nav -->';
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageCategory_manager.php">
-          <i class="bi bi-person"></i>
-          <span>Add a new Category</span>
-        </a>
-      </li><!-- End Category Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="report_manager.php">
-          <i class="bi bi-bar-chart-line"></i>
-          <span>Reports</span>
-        </a>
-      </li><!-- End Report Page Nav -->
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="report_manager.php">';
+                        echo '<i class="bi bi-bar-chart-line"></i>';
+                        echo '<span>Reports</span>';
+                    echo '</a>';
+                echo '</li><!-- End Report Page Nav -->';
+              }
+            ?>
 
     </ul>
 
