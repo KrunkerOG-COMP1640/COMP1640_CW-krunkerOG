@@ -20,64 +20,72 @@ if (isset($_POST['submit_post'])) {
   $desc = strip_tags(mysqli_real_escape_string($dbconn, $_POST['description']));
 
 
+  try {
+    if (!empty($title) && !empty($desc)) {
+      //upload image
+      $imagefiles = $_FILES['ideaimage'];
+      $max_image_size = 2 * 1024 * 1024 * 1024; // 2 GB
+      $max_image_count = 5;
+      $uploaded_image_count = 0;
+      $image_error = false;
+      $countfiles = count($_FILES['ideaimage']['name']);
+      if (!empty(array_filter($imagefiles['name']))) {
+        $sql = "DELETE FROM ideamedia_tbl WHERE IdeaId = '$id'";
+        mysqli_query($dbconn, $sql);
 
-  //upload image
-  $imagefiles = $_FILES['ideaimage'];
-  $max_image_size = 2 * 1024 * 1024 * 1024; // 2 GB
-  $max_image_count = 5;
-  $uploaded_image_count = 0;
-  $image_error = false;
-  $countfiles = count($_FILES['ideaimage']['name']);
-  if (!empty(array_filter($imagefiles['name']))) {
-    $sql = "DELETE FROM ideamedia_tbl WHERE IdeaId = '$id'";
-    mysqli_query($dbconn, $sql);
+        $sql = "UPDATE `idea_tbl` SET `IdeaTitle`='$title',`IdeaDescription`='$desc' WHERE IdeaId = $id";
+        $result = mysqli_query($dbconn, $sql);
 
-    $sql = "UPDATE `idea_tbl` SET `IdeaTitle`='$title',`IdeaDescription`='$desc' WHERE IdeaId = $id";
-    $result = mysqli_query($dbconn, $sql);
+        foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
+          if ($countfiles > $max_image_count) {
 
-    foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
-      if ($countfiles > $max_image_count) {
+            $errormessage = "Cannot upload more than 5 images";
+            echo "<script>alert('$errormessage'); window.location.href='index.php';</script>";
+            exit();
+          } else if ($countfiles < $max_image_count) {
+            $ideaimage = $imagefiles['name'][$key];
+            $ideaimage_tmp = $imagefiles['tmp_name'][$key];
+            $ideaimage_size = $imagefiles['size'][$key];
+            $ideaimage_type = $imagefiles['type'][$key];
+            $ideaimage_error = $imagefiles['error'][$key];
 
-        $errormessage = "Cannot upload more than 5 images";
-        echo "<script>alert('$errormessage'); window.location.href='index.php';</script>";
-        exit();
-      } else if ($countfiles < $max_image_count) {
-        $ideaimage = $imagefiles['name'][$key];
-        $ideaimage_tmp = $imagefiles['tmp_name'][$key];
-        $ideaimage_size = $imagefiles['size'][$key];
-        $ideaimage_type = $imagefiles['type'][$key];
-        $ideaimage_error = $imagefiles['error'][$key];
+            // Check if file type is allowed
+            $allowed_image_types = array('png', 'jpg', 'jpeg');
+            $image_ext_arr = explode('.', $ideaimage);
+            $image_ext = strtolower(end($image_ext_arr));
+            if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
+              // Move uploaded file to a permanent location
+              $image_target_dir = "assets/img/";
+              $image_target_file = $image_target_dir . uniqid() . "_" . basename($ideaimage);
+              move_uploaded_file($ideaimage_tmp, $image_target_file);
 
-        // Check if file type is allowed
-        $allowed_image_types = array('png', 'jpg', 'jpeg');
-        $image_ext_arr = explode('.', $ideaimage);
-        $image_ext = strtolower(end($image_ext_arr));
-        if (in_array($image_ext, $allowed_image_types) && $ideaimage_size <= $max_image_size) {
-          // Move uploaded file to a permanent location
-          $image_target_dir = "assets/img/";
-          $image_target_file = $image_target_dir . uniqid() . "_" . basename($ideaimage);
-          move_uploaded_file($ideaimage_tmp, $image_target_file);
+              // Insert image details
+              $sql_insertimage = "INSERT INTO ideamedia_tbl (IdeaId, IdeaImage) VALUES ('$id', '$image_target_file')";
+              mysqli_query($dbconn, $sql_insertimage);
+              $uploaded_image_count++;
+              header("Location: EditIdea.php?msg=Idea and image updated successfully");
+            } else {
 
-          // Insert image details
-          $sql_insertimage = "INSERT INTO ideamedia_tbl (IdeaId, IdeaImage) VALUES ('$id', '$image_target_file')";
-          mysqli_query($dbconn, $sql_insertimage);
-          $uploaded_image_count++;
-          header("Location: EditIdea.php?msg=Idea and image updated successfully");
-        } else {
+              $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
+              echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+              $image_error = true;
 
-          $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
-          echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
-          $image_error = true;
-
-          break; // stop processing additional files
+              break; // stop processing additional files
+            }
+          }
         }
+      } else {
+        $sql = "UPDATE `idea_tbl` SET `IdeaTitle`='$title',`IdeaDescription`='$desc' WHERE IdeaId = $id";
+        $result = mysqli_query($dbconn, $sql);
+        header("Location: EditIdea.php?msg=Idea updated successfully");
+        exit();
       }
+    } else {
+      echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "EditIdea.php";</script>';
     }
-  } else {
-    $sql = "UPDATE `idea_tbl` SET `IdeaTitle`='$title',`IdeaDescription`='$desc' WHERE IdeaId = $id";
-    $result = mysqli_query($dbconn, $sql);
-    header("Location: EditIdea.php?msg=Idea updated successfully");
-    exit();
+  } catch (Exception) {
+    $errormsg = "⚠️ Something wrong with your input ⚠️";
+    echo '<script>alert('.$errormsg.'); window.location.href = "EditIdea.php";</script>';
   }
 }
 
@@ -87,7 +95,6 @@ $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
 $result_Username = mysqli_query($dbconn, $select_sql);
 $row_Username = mysqli_fetch_assoc($result_Username);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

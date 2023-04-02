@@ -2,35 +2,33 @@
 session_start();
 
 require("krunkerideaconn.php");
-if(!isset($_SESSION['role'])){
+if (!isset($_SESSION['role'])) {
   header("Location: index.php");
   exit;
-  
-}
-else{
-  if($_SESSION['role'] != "QA Manager"){ //staff cannot access admin page
-      header("Location: index.php");
-      // exit;
+} else {
+  if ($_SESSION['role'] != "QA Manager") { //staff cannot access admin page
+    header("Location: index.php");
+    // exit;
   }
-
 }
 $id = $_GET['id'];
-if(isset($_POST['submit'])){
-  $title= strip_tags($_POST['CategoryTitle']);
+if (isset($_POST['submit'])) {
 
+  try {
+    $title = strip_tags($_POST['CategoryTitle']);
+    $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
 
-  $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
-  
-  $result = mysqli_query($dbconn,$sql);
-  
-  if($result){
+    if (!empty($title)) {
+      mysqli_query($dbconn, $sql);
       header("Location: ManageCategory_manager.php?msg = Category Updated");
-  
-  }
-  else{
-      echo "Failed: " .mysqli_error($dbconn);
+    } else {
+      echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "ManageCategory_manager.php";</script>';
     }
+  } catch (Exception) {
+    $errormsg = "⚠️ Something wrong with your input ⚠️";
+    echo "<script>alert('$errormsg'); window.location.href='ManageCategory_manager.php';</script>";
   }
+}
 
 ?>
 

@@ -3,40 +3,39 @@ session_start();
 
 require("krunkerideaconn.php");
 
-if(!isset($_SESSION['role'])){
+if (!isset($_SESSION['role'])) {
   header("Location: index.php");
   exit;
-  
-}
-else{
-  if($_SESSION['role'] != "Admin"){ //staff cannot access admin page
-      header("Location: index.php");
-      // exit;
+} else {
+  if ($_SESSION['role'] != "Admin") { //staff cannot access admin page
+    header("Location: index.php");
+    // exit;
   }
 }
 $id = $_GET['id'];
 if (isset($_POST['submit'])) {
-  $username = strip_tags($_POST['Username']);
-  $password = strip_tags($_POST['UserPassword']);
-  $contact = strip_tags($_POST['UserContactNo']);
-  $address = strip_tags($_POST['UserAddress']);
-  $email = strip_tags($_POST['UserEmail']);
-  $role = $_POST['UserRoleName'];
-  $department = $_POST['DepartmentId'];
 
-  if (!empty($email) && !empty($password)) {
-    $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
-            WHERE UserId = $id";
-    $result = mysqli_query($dbconn, $sql);
 
-    if ($result) {
-      header("Location: ManageUser_admin.php?msg=Data updated successfully");
+  try {
+    $username = strip_tags($_POST['Username']);
+    $password = strip_tags($_POST['UserPassword']);
+    $contact = strip_tags($_POST['UserContactNo']);
+    $address = strip_tags($_POST['UserAddress']);
+    $email = strip_tags($_POST['UserEmail']);
+    $role = $_POST['UserRoleName'];
+    $department = $_POST['DepartmentId'];
+    if (!empty($email) && !empty($username)) {
+      $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
+              WHERE UserId = $id";
+      mysqli_query($dbconn, $sql);
     } else {
-      echo "Failed: " . mysqli_error($dbconn);
+      echo '<script>alert("Error: Invalid Input"); window.location.href = "ManageUser_admin.php";</script>';
     }
-  } else {
-    echo '<script>alert("Error: Invalid Password"); window.location.href = "EditUser_admin.php";</script>';
+  } catch (Exception) {
+    $errormsg = "⚠️ Something wrong with your input ⚠️";
+    echo '<script>alert("' . $errormsg . '"); window.location.href="ManageUser_admin.php";</script>';
   }
+
 }
 
 

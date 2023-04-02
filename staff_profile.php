@@ -8,28 +8,34 @@ $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 $user_id = $_SESSION["userid"];
 if (isset($_POST['submit'])) {
   if (isset($_POST['UserEmail']))
-  $check_email=$_POST['UserEmail'];
+    $check_email = mysqli_real_escape_string($dbconn,$_POST['UserEmail']);
   $sql_email_check = "SELECT UserEmail FROM user_tbl WHERE UserEmail='$check_email' AND NOT UserId='$user_id' ";
   $result_email = mysqli_query($dbconn, $sql_email_check);
   $count = mysqli_num_rows($result_email);
-  if($count > 0)
-  {
-  }
-  else
-  { 
-    $username = strip_tags($_POST['Username']);
-    $email = strip_tags($_POST['UserEmail']);
-    $address = strip_tags($_POST['UserAddress']);
-    $contact = strip_tags($_POST['UserContactNo']);
-
-    $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',`UserAddress`='$address',`UserContactNo`='$contact' 
-    WHERE UserId = $user_id";
-    $result = mysqli_query($dbconn, $sql);
-
-    if ($result) {
-      header("Location: staff_profile.php?msg=Data updated successfully");
-    } else {
-      echo "Failed: " . mysqli_error($dbconn);
+  if ($count > 0) {
+  } else {
+    try {
+      $username = strip_tags(mysqli_real_escape_string($dbconn,$_POST['Username']));
+      $email = strip_tags(mysqli_real_escape_string($dbconn,$_POST['UserEmail']));
+      $address = strip_tags(mysqli_real_escape_string($dbconn,$_POST['UserAddress']));
+      $contact = strip_tags(mysqli_real_escape_string($dbconn,$_POST['UserContactNo']));
+      if (!empty($email) || !empty($username)) {
+        if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $username) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email)) {
+          $errormsg = "Invalid Input";
+          echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
+        } else {
+          $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',
+                `UserAddress`='$address',`UserContactNo`='$contact' 
+                WHERE UserId = $user_id";
+          mysqli_query($dbconn, $sql);
+          header("Location: staff_profile.php?msg=Data updated successfully");
+        }
+      } else {
+        echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "staff_profile.php";</script>';
+      }
+    } catch (Exception) {
+      $errormsg = "⚠️ Something wrong with your input ⚠️";
+      echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
     }
   }
 }

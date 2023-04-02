@@ -4,16 +4,15 @@ require("krunkerideaconn.php");
 if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
     header("Location: login.php"); // Redirect to login page if not logged in
     exit;
-}else{
+} else {
     $id = $_GET['id'];
-    $count_sql="SELECT idea_tbl.ViewCount FROM idea_tbl WHERE IdeaId= $id";
+    $count_sql = "SELECT idea_tbl.ViewCount FROM idea_tbl WHERE IdeaId= $id";
     $count_result = mysqli_query($dbconn, $count_sql);
     $viewcount_row = mysqli_fetch_assoc($count_result);
     $Viewcount = $viewcount_row['ViewCount'];
     $Viewcount++;
     $sqlCount = "UPDATE idea_tbl SET ViewCount =$Viewcount WHERE IdeaId = $id";
     $resultCount = mysqli_query($dbconn, $sqlCount);
-
 }
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 $user_id = $_SESSION["userid"];
@@ -43,12 +42,21 @@ if (isset($_POST["submit_comment_post"])) {
     if (date('Y-m-d') >= $finalclosureDate) {
         echo "<script>alert('Sorry, comments are temporarily closed.')</script>";
     } else {
-        mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
+        try {
+            if (!empty($comment)) {
+                mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
                               VALUES ('$user_id','$comment','$anonymous', '$id')");
 
-        
-        header("Location:CommentSection.php?id=" . $id);
-        exit();
+
+                header("Location:CommentSection.php?id=" . $id);
+                exit();
+            } else {
+                echo '<script>alert("Error: Dont leave your comment empty"); </script>';
+            }
+        } catch (Exception) {
+            $errormsg = "⚠️ Something wrong with your input ⚠️";
+            echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+        }
     }
 }
 $show = "SELECT user_tbl.UserId, comment_tbl.CommentId, comment_tbl.IdeaId, comment_tbl.CommentDetails, comment_tbl.DateComment, comment_tbl.CommentAnonymous, comment_tbl.comment_hidden, user_tbl.Username from comment_tbl

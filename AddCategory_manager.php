@@ -2,51 +2,56 @@
 session_start();
 
 require("krunkerideaconn.php");
-if(!isset($_SESSION['role'])){
+if (!isset($_SESSION['role'])) {
   header("Location: index.php");
   exit;
-  
-}
-else{
-  if($_SESSION['role'] != "QA Manager"){ //staff cannot access manager page
-      header("Location: index.php");
-      // exit;
+} else {
+  if ($_SESSION['role'] != "QA Manager") { //staff cannot access manager page
+    header("Location: index.php");
+    // exit;
   }
-
 }
 
-if(isset($_POST['submit'])){
-  $title= strip_tags($_POST['CategoryTitle']);
- 
-  $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
-  $error = array();
-   if(mysqli_num_rows($checkcat) > 0){
-    $error['1'] = "Cannot add existed category";
-  }
-  
-  
-  if(isset($error['1'])){
-    $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>".$error['1'].'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-  }else{
-      $output .= "";
-    }
-  
-  
-  if(count($error) < 1 ){
-  $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
+if (isset($_POST['submit'])) {
+  try {
+    $title = strip_tags($_POST['CategoryTitle']);
+
+    if (!empty($title)) {
+      $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
+      $error = array();
+      if (mysqli_num_rows($checkcat) > 0) {
+        $error['1'] = "Cannot add existed category";
+      }
+
+
+      if (isset($error['1'])) {
+        $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>" . $error['1'] . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+      } else {
+        $output .= "";
+      }
+
+
+      if (count($error) < 1) {
+        $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
           VALUES ('$title')";
-  
-  $result = mysqli_query($dbconn,$sql);
-  
-  if($result){
-      header("Location: ManageCategory_manager.php?msg = New category added");
-  
-  }
-  else{
-      echo "Failed: " .mysqli_error($dbconn);
+
+        $result = mysqli_query($dbconn, $sql);
+
+        if ($result) {
+          header("Location: ManageCategory_manager.php?msg = New category added");
+        } else {
+          echo "Failed: " . mysqli_error($dbconn);
+        }
+      }
+    } else {
+      echo '<script>alert("Input cannot be empty"); window.location.href = "ManageCategory_manager.php";</script>';
     }
+  } catch (Exception) {
+    $errormsg = "⚠️ Something wrong with your input ⚠️"; // error message to display
+    echo "<script>alert('$errormsg'); window.location.href='ManageCategory_manager.php';</script>";
   }
-  }
+}
+
 ?>
 
 <?php
