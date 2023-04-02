@@ -389,16 +389,7 @@ $row = mysqli_fetch_assoc($result);
                         <label for="">Category Title</label>
                         <input type="text" name="CategoryTitle" class="form-control"  value ="<?php echo $row['CategoryTitle'] ?>" required autofocus>
                     </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Closure Date</label>
-                        <br>
-                        <input type="date" class="form-control" name="DateClosure"  min="2023-01-01" max="2030-12-31"  value ="<?php echo $row['DateClosure'] ?>" readonly>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="">Final Closure Date</label>
-                        <br>
-                        <input type="date" class="form-control" name="DateFinal"  min="2023-01-01" max="2030-12-31"  value ="<?php echo $row['DateFinal'] ?>" readonly>
-                    </div>
+                    
                    
                     <div class="col-md-12 mb-3">
                       <button type="submit" class="btn btn-primary" name="submit">Update category</button>
