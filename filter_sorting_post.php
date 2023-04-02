@@ -136,7 +136,7 @@ if (isset($_POST["submit_like"])  || isset($_POST["submit_dislike"])) {
                             WHERE IdeaId = $ideaid AND UserId = $user_id;";
   mysqli_query($dbconn, $sql_updatelikedislike);
 
-  header('Location: index.php');
+  echo "<script>window.location.href='index.php';</script>";
   exit();
 
 }
