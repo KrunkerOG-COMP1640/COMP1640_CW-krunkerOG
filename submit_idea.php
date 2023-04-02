@@ -49,7 +49,7 @@ if (isset($_POST["submit_post"])) {
         $errormessage = "Cannot upload more than 5 images";
         echo "<script>alert('$errormessage'); window.location.href='index.php';</script>";
         exit();
-      } else if ($countfiles < $max_image_count) {
+      } else if ($countfiles < $max_image_count || $countfiles == $max_image_count) {
         $ideaimage = $imagefiles['name'][$key];
         $ideaimage_tmp = $imagefiles['tmp_name'][$key];
         $ideaimage_size = $imagefiles['size'][$key];
