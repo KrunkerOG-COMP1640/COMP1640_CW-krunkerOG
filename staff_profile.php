@@ -177,6 +177,14 @@ if (isset($_POST['submit'])) {
             </li><!-- End Idea Nav -->
 
             <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-pencil"></i><span>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+            ?>
+
+            <?php
                 if($_SESSION['role'] == "Admin"){ //staff cannot see this
                 echo'<li class="nav-heading">Pages</li>';
 
@@ -193,6 +201,12 @@ if (isset($_POST['submit'])) {
                         echo '<span>Manage Idea</span>';
                     echo '</a>';
                 echo '</li><!-- End Manage Idea Page Nav -->';
+
+                echo '<li class="nav-item">';
+                  echo '<a class="nav-link collapsed" href="closure_date.php">';
+                    echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                  echo '</a>';
+                echo '</li>';
                 }
             ?>
             

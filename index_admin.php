@@ -169,10 +169,17 @@ $user_id = $_SESSION["userid"];
                 }
 
                 echo '<li class="nav-item">';
-                echo '<a class="nav-link collapsed" href="closure_date.php">';
-                echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                  echo '<a class="nav-link collapsed" href="closure_date.php">';
+                  echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
                 echo '</a>';
                 echo '</li>'
+
+                echo '<li class="nav-item">';
+                  echo '<a class="nav-link collapsed" href="ManageComment_admin.php">';
+                    echo '<i class="bi bi-chat-left-text"></i>';
+                    echo '<span>Manage Comment</span>';
+                  echo '</a>';
+                echo '</li>';
             ?>
             
         </ul>
