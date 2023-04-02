@@ -141,7 +141,7 @@ if (isset($_POST["submit_like"])  || isset($_POST["submit_dislike"])) {
 
 }
 
-$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl $category_sql $sorting_sql";
+$sql_page = "SELECT COUNT(*) AS count FROM idea_tbl";
 $page_count = mysqli_query($dbconn, $sql_page);
 $row_count = mysqli_fetch_assoc($page_count);
 $total_rows = $row_count['count'];
