@@ -172,7 +172,7 @@ $user_id = $_SESSION["userid"];
                   echo '<a class="nav-link collapsed" href="closure_date.php">';
                   echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
                 echo '</a>';
-                echo '</li>'
+                echo '</li>';
 
                 echo '<li class="nav-item">';
                   echo '<a class="nav-link collapsed" href="ManageComment_admin.php">';
