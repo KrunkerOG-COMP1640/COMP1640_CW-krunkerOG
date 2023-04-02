@@ -4,6 +4,16 @@ require("krunkerideaconn.php");
 if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
     header("Location: login.php"); // Redirect to login page if not logged in
     exit;
+}else{
+    $id = $_GET['id'];
+    $count_sql="SELECT idea_tbl.ViewCount FROM idea_tbl WHERE IdeaId= $id";
+    $count_result = mysqli_query($dbconn, $count_sql);
+    $viewcount_row = mysqli_fetch_assoc($count_result);
+    $Viewcount = $viewcount_row['ViewCount'];
+    $Viewcount++;
+    $sqlCount = "UPDATE idea_tbl SET ViewCount =$Viewcount WHERE IdeaId = $id";
+    $resultCount = mysqli_query($dbconn, $sqlCount);
+
 }
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 $user_id = $_SESSION["userid"];

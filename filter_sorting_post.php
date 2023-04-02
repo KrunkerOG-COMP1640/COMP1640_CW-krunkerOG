@@ -27,26 +27,26 @@ if ($category != 'All') {
 $sort_by = isset($_GET['sorting']) ? $_GET['sorting'] : 'latest_ideas';
 $sorting_sql = '';
 if ($sort_by == 'most_viewed') {
-  $sorting_sql = 'ORDER BY view_count DESC';
+  $sorting_sql = 'ORDER BY idea_tbl.ViewCount DESC';
 } else if ($sort_by == 'most_popular') {
-  $sorting_sql = 'ORDER BY idea_tbl.IdeaId ASC';
+  $sorting_sql = 'ORDER BY COUNT(like_dislikepost_tbl.LikeStatus) DESC';
 } else if ($sort_by == 'latest_comment') {
-  $sorting_sql = 'ORDER BY last_comment DESC';
+  $sorting_sql = 'ORDER BY comment_tbl.CommentId DESC';
 } else {
   $sorting_sql = 'ORDER BY idea_tbl.IdeaId DESC';
 }
 
 
 
-$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl 
-INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
-INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId 
+$sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous, idea_tbl.ViewCount from idea_tbl 
+        INNER JOIN user_tbl ON idea_tbl.UserId =user_tbl.UserId 
+        INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId
+        LEFT OUTER JOIN comment_tbl ON idea_tbl.ideaId = comment_tbl.ideaId
+        LEFT OUTER JOIN like_dislikepost_tbl ON idea_tbl.ideaId = like_dislikepost_tbl.ideaId
         $category_sql
+        GROUP BY idea_tbl.IdeaId
         $sorting_sql
-        
         LIMIT $start, $rows_per_page";
-
-
 
 $result = mysqli_query($dbconn, $sql);
 //displaying every ideas from database
@@ -148,7 +148,21 @@ $total_rows = $row_count['count'];
 $total_pages = ceil($total_rows / $rows_per_page);
 
 echo '<div class="pagination">';
-for ($i = 1; $i <= $total_pages; $i++) {
-  // echo'<a href="?page='.$i.'&category='.$category.'&sorting='.$sort_by.'">'.$i.'</a>';
-  echo "<a href ='javascript:loadPage($i)'>$i</a>";
-}
+
+  if ($page > 1) {
+    $prev = $page - 1;
+    echo "<a href ='javascript:loadPage($prev)' style='padding = right: 20px;'>Prev</a>";
+  }
+  for ($i = 1; $i <= $total_pages; $i++){ 
+      if ($page == $i){
+          echo "<a class='active' href ='#'>$i</a>";
+      }else{
+          echo "<a href ='javascript:loadPage($i)'>$i</a>";
+      }
+//				  echo'<a href="?page='.$i.'&category='.$category.'&sorting='.$sort_by.'">'.$i.'</a>';
+  }
+  if($page<$total_pages){
+    $next = $page+1;
+    echo "<a href ='javascript:loadPage($next)' >Next</a>";
+  }
+echo '</div>';
