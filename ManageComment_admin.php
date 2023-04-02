@@ -17,7 +17,7 @@ else{
 
 $page = isset($_GET['page'])?$_GET['page']:1;
 //determine the number of data per page
-$rows_per_page = 5;
+$rows_per_page = 10;
 
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
