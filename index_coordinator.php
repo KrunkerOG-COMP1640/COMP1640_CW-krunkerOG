@@ -143,31 +143,17 @@ $user_id = $_SESSION["userid"];
               echo '</a>';
               echo '</li>';
             ?>
-            
-            <li class="nav-heading">Pages</li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="staff_details.php">
-                  <i class="bi bi-person-check"></i><span>Staff Details</span>
-                </a>
-            </li><!-- End Staff Details Nav -->
 
             <?php
-                if($_SESSION['role'] == "Admin"){ //QA Coordinator cannot see this
+                if($_SESSION['role'] == "QA Coordinator"){
+                  echo'<li class="nav-heading">Pages</li>';
 
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
-                        echo '<i class="bi bi-people"></i>';
-                        echo '<span>Manage User</span>';
-                    echo '</a>';
-                echo '</li><!-- End Manage User Page Nav -->';
-
-                echo '<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
-                        echo '<i class="bi bi-chat-left-text"></i>';
-                        echo '<span>Manage Idea</span>';
-                    echo '</a>';
-                echo '</li><!-- End Manage Idea Page Nav -->';
+                  echo'<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="staff_details.php">';
+                          echo '<i class="bi bi-person-check"></i>';
+                          echo '<span>Staff Details</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Staff Details Nav -->';
                 }
             ?>
             

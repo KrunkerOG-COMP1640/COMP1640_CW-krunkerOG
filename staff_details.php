@@ -99,19 +99,15 @@ $strD = $resultD->fetch_array()[0] ?? ''; //get single value n convert to string
               <hr class="dropdown-divider">
             </li>
 
-            <?php
-                if($_SESSION['role'] == "Staff"){ //Only Staff can see this
-                    echo'<li>';
-                        echo'<a class="dropdown-item d-flex align-items-center" href="staff_profile.php">';
-                            echo'<i class="bi bi-person"></i>';
-                            echo'<span>My Profile</span>';
-                        echo'</a>';
-                    echo'</li>';
-                    echo'<li>';
-                        echo'<hr class="dropdown-divider">';
-                    echo'</li>';
-                }
-            ?>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -132,42 +128,67 @@ $strD = $resultD->fetch_array()[0] ?? ''; //get single value n convert to string
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
-              
+
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-                    <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="list_of_category_admin.html">
-                            <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
-                        </a>
-                    </li>
-                </ul>
+              <a class="nav-link collapsed" href="index.php">
+                  <i class="bi bi-grid"></i><span>Idea</span>
+              </a>
             </li><!-- End Idea Nav -->
 
-            <li class="nav-heading">Pages</li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="staff_details.php">
-                  <i class="bi bi-person-check"></i><span>Staff Details</span>
-                </a>
-            </li><!-- End Staff Details Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="closure_date.php">
-                  <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
-                </a>
-            </li><!-- End Closure Date Nav -->
-               
             <?php
               echo '<li class="nav-item">';
               echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
+              echo '<i class="bi bi-pencil"></i><span>Edit Idea</span>';
               echo '</a>';
               echo '</li>';
-              ?>
+            ?>
 
+            <?php
+                if($_SESSION['role'] == "Admin"){ //staff cannot see this
+                  echo'<li class="nav-heading">Pages</li>';
+
+                  echo'<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
+                          echo '<i class="bi bi-people"></i>';
+                          echo '<span>Manage User</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage User Page Nav -->';
+
+                  echo '<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
+                          echo '<i class="bi bi-chat-left-text"></i>';
+                          echo '<span>Manage Idea</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage Idea Page Nav -->';
+                  
+                  echo '<li class="nav-item">';
+                  echo '<a class="nav-link collapsed" href="closure_date.php">';
+                  echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                  echo '</a>';
+                  echo '</li>';
+                  
+                  echo '<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageComment_admin.php">';
+                      echo '<i class="bi bi-chat-left-text"></i>';
+                      echo '<span>Manage Comment</span>';
+                    echo '</a>';
+                  echo '</li>';
+                }
+            ?>
+
+            <?php
+              if($_SESSION['role'] == "QA Coordinator"){
+                echo'<li class="nav-heading">Pages</li>';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="staff_details.php">';
+                        echo '<i class="bi bi-person-check"></i>';
+                        echo '<span>Staff Details</span>';
+                    echo '</a>';
+                echo '</li><!-- End Staff Details Nav -->';
+              }
+            ?>
+            
         </ul>
 
     </aside><!-- End Sidebar-->

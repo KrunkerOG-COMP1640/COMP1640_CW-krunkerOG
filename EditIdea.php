@@ -126,10 +126,10 @@ $result= mysqli_query($dbconn, $sql);
 
   </header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+        <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
               <a class="nav-link collapsed" href="index.php">
@@ -144,10 +144,56 @@ $result= mysqli_query($dbconn, $sql);
               echo '</a>';
               echo '</li>';
             ?>
-     
-    </ul>
 
-  </aside><!-- End Sidebar-->
+            <?php
+                if($_SESSION['role'] == "Admin"){ //staff cannot see this
+                  echo'<li class="nav-heading">Pages</li>';
+
+                  echo'<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
+                          echo '<i class="bi bi-people"></i>';
+                          echo '<span>Manage User</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage User Page Nav -->';
+
+                  echo '<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
+                          echo '<i class="bi bi-chat-left-text"></i>';
+                          echo '<span>Manage Idea</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage Idea Page Nav -->';
+                  
+                  echo '<li class="nav-item">';
+                  echo '<a class="nav-link collapsed" href="closure_date.php">';
+                  echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                  echo '</a>';
+                  echo '</li>';
+                  
+                  echo '<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageComment_admin.php">';
+                      echo '<i class="bi bi-chat-left-text"></i>';
+                      echo '<span>Manage Comment</span>';
+                    echo '</a>';
+                  echo '</li>';
+                }
+            ?>
+
+            <?php
+              if($_SESSION['role'] == "QA Coordinator"){
+                echo'<li class="nav-heading">Pages</li>';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="staff_details.php">';
+                        echo '<i class="bi bi-person-check"></i>';
+                        echo '<span>Staff Details</span>';
+                    echo '</a>';
+                echo '</li><!-- End Staff Details Nav -->';
+              }
+            ?>
+            
+        </ul>
+
+    </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 

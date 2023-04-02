@@ -184,7 +184,7 @@ if (isset($_POST['submit'])) {
               echo '</li>';
             ?>
 
-              <?php
+            <?php
                 if($_SESSION['role'] == "Admin"){ //staff cannot see this
                   echo'<li class="nav-heading">Pages</li>';
 
@@ -215,6 +215,19 @@ if (isset($_POST['submit'])) {
                     echo '</a>';
                   echo '</li>';
                 }
+            ?>
+
+            <?php
+              if($_SESSION['role'] == "QA Coordinator"){
+                echo'<li class="nav-heading">Pages</li>';
+
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="staff_details.php">';
+                        echo '<i class="bi bi-person-check"></i>';
+                        echo '<span>Staff Details</span>';
+                    echo '</a>';
+                echo '</li><!-- End Staff Details Nav -->';
+              }
             ?>
             
         </ul>
