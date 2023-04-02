@@ -64,10 +64,21 @@
                     </div>
 
                     <?php
-                        if(!empty($_POST["useremail"]) && mysqli_num_rows($checkaccount) < 1){
-                            echo'<div class="input-field" style="color:Red;">';
-                                echo'<p>*Incorrect email address.</p>';
-                            echo'</div>';
+                        if(isset($_POST["forgotPassword"])){
+                            $userEmail = $_POST["useremail"];
+                            $userPassword = $_POST["newPassword"];
+
+                            if(empty($userEmail) || empty($userPassword)){
+                                echo'<div class="input-field" style="color:Red;">';
+                                    echo'<p>*Please fill in both email and password.</p>';
+                                echo'</div>';
+                            }
+                            
+                            if (!empty($_POST["useremail"]) && !empty($_POST["newPassword"])){
+                                echo'<div class="input-field" style="color:Red;">';
+                                    echo'<p>*Incorrect email address</p>';
+                                echo'</div>';
+                            }
                         }
                     ?>
 
