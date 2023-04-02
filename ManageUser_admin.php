@@ -153,30 +153,37 @@ $start= ($page-1)*$rows_per_page;
               echo '</li>';
             ?>
 
-            <?php
+              <?php
                 if($_SESSION['role'] == "Admin"){ //staff cannot see this
-                echo'<li class="nav-heading">Pages</li>';
+                  echo'<li class="nav-heading">Pages</li>';
 
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
-                        echo '<i class="bi bi-people"></i>';
-                        echo '<span>Manage User</span>';
-                    echo '</a>';
-                echo '</li><!-- End Manage User Page Nav -->';
+                  echo'<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
+                          echo '<i class="bi bi-people"></i>';
+                          echo '<span>Manage User</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage User Page Nav -->';
 
-                echo '<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
-                        echo '<i class="bi bi-chat-left-text"></i>';
-                        echo '<span>Manage Idea</span>';
+                  echo '<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
+                          echo '<i class="bi bi-chat-left-text"></i>';
+                          echo '<span>Manage Idea</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage Idea Page Nav -->';
+                  
+                  echo '<li class="nav-item">';
+                  echo '<a class="nav-link collapsed" href="closure_date.php">';
+                  echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                  echo '</a>';
+                  echo '</li>';
+                  
+                  echo '<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageComment_admin.php">';
+                      echo '<i class="bi bi-chat-left-text"></i>';
+                      echo '<span>Manage Comment</span>';
                     echo '</a>';
-                echo '</li><!-- End Manage Idea Page Nav -->';
+                  echo '</li>';
                 }
-
-                echo '<li class="nav-item">';
-                echo '<a class="nav-link collapsed" href="closure_date.php">';
-                echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
-                echo '</a>';
-                echo '</li>'
             ?>
             
         </ul>
