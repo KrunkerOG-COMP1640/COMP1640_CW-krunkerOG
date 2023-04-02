@@ -147,7 +147,7 @@ if(isset($_POST["userlogin"])){
                     <label for="check"> Remember Me</label>
                 </div>
             <div class="two">
-                <label><a href="#">Forgot password?</a></label>
+                <label><a href="forgot_password.php">Forgot password?</a></label>
             </div>
         </form>
         
