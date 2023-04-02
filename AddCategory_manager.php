@@ -49,6 +49,12 @@ if(isset($_POST['submit'])){
   }
 ?>
 
+<?php
+  $user_id = $_SESSION["userid"];
+  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+  $result_User = mysqli_query($dbconn, $select_sql);  
+  $row_User = mysqli_fetch_assoc($result_User);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -102,199 +108,34 @@ if(isset($_POST['submit'])){
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $row_User['Username'] ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?php echo $_SESSION["username"];?></h6>
-              <span>Web Designer</span>
+              <h6><?php echo $row_User['Username'] ?></h6>
+              <span><?php echo $row_User['UserRoleName'] ?></span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
+                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
             </li>
             <li>
-              <hr class="dropdown-divider">
+                <hr class="dropdown-divider">
             </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
@@ -317,52 +158,38 @@ if(isset($_POST['submit'])){
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-          <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" href="index_manager.php">
+          <i class="bi bi-grid"></i><span>Idea</span>
         </a>
-        <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="list_of_category_admin.html">
-              <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
-            </a>
-          </li>
-        </ul>
       </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+            ?>
 
-      <li class="nav-heading">Pages</li>
+            <?php
+              if($_SESSION['role'] == "QA Manager"){
+                echo'<li class="nav-heading">Pages</li>';
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Staff Details</span>
-        </a>
-      </li><!-- End Tables Nav -->
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
+                        echo '<i class="bi bi-grid"></i>';
+                        echo '<span>Add a new Category</span>';
+                    echo '</a>';
+                echo '</li><!-- End Category Page Nav -->';
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageCategory_manager.php">
-          <i class="bi bi-grid"></i>
-          <span>Add a new Category</span>
-        </a>
-      </li><!-- End Category Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="report_manager.html">
-          <i class="bi bi-bar-chart-line"></i>
-          <span>Reports</span>
-        </a>
-      </li><!-- End Report Page Nav -->
+                echo'<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="report_manager.php">';
+                        echo '<i class="bi bi-bar-chart-line"></i>';
+                        echo '<span>Reports</span>';
+                    echo '</a>';
+                echo '</li><!-- End Report Page Nav -->';
+              }
+            ?>
 
     </ul>
 
