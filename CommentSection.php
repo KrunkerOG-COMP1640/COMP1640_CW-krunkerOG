@@ -46,27 +46,7 @@ if (isset($_POST["submit_comment_post"])) {
         mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
                               VALUES ('$user_id','$comment','$anonymous', '$id')");
 
-        // find author email
-        $sqlID =  mysqli_query($dbconn, "SELECT UserId from idea_tbl WHERE IdeaId = $id");
-        $strID = $sqlID->fetch_array()[0] ?? ''; //get single value n convert to string 
-        $sqlauthorEmail = mysqli_query($dbconn, "SELECT UserEmail from user_tbl WHERE UserId = $strID");
-        $strresultEmail = $sqlauthorEmail->fetch_array()[0] ?? ''; //conver email to single value
-        $sqlUsername = mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
-        $strUserName = $sqlUsername->fetch_array()[0] ?? '';
-
-        $to      = $strresultEmail;
-        $subject = 'New comment on your idea';
-        $message = "Hello, \r\n\n";
-        $message .= "You got a new message from Krunker Idea Portal : \r\n\n";
-        $message .= "$strUserName commented on your idea. \r\n\n\n";
-        $message .= "Warm regards, \r\n\n";
-        $message .= "Krunker Idea Portal \r\n";
-        $headers = 'From:caleb@gmail.com' . "\r\n" .
-            'Reply-To: krunkerog6@gmail.com' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
-
-        mail($to, $subject, $message, $headers);
-
+        
         header("Location:CommentSection.php?id=" . $id);
         exit();
     }
