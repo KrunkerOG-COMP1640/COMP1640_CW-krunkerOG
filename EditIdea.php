@@ -296,6 +296,7 @@ $result= mysqli_query($dbconn, $sql);
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="https://kit.fontawesome.com/bb8f73d07f.js" crossorigin="anonymous"></script>
 
 </body>
 
