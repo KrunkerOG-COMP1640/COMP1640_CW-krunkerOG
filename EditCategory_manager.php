@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
       mysqli_query($dbconn, $sql);
       header("Location: ManageCategory_manager.php?msg = Category Updated");
     } else {
-      echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "ManageCategory_manager.php";</script>';
+      echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "ManageCategory_manager.php";</script>';
     }
   } catch (Exception) {
     $errormsg = "⚠️ Something wrong with your input ⚠️";

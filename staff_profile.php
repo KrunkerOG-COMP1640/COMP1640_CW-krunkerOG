@@ -8,17 +8,17 @@ $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 $user_id = $_SESSION["userid"];
 if (isset($_POST['submit'])) {
   if (isset($_POST['UserEmail']))
-    $check_email = mysqli_real_escape_string($dbconn,$_POST['UserEmail']);
+    $check_email = mysqli_real_escape_string($dbconn, $_POST['UserEmail']);
   $sql_email_check = "SELECT UserEmail FROM user_tbl WHERE UserEmail='$check_email' AND NOT UserId='$user_id' ";
   $result_email = mysqli_query($dbconn, $sql_email_check);
   $count = mysqli_num_rows($result_email);
   if ($count > 0) {
   } else {
     try {
-      $username = strip_tags(mysqli_real_escape_string($dbconn,$_POST['Username']));
-      $email = strip_tags(mysqli_real_escape_string($dbconn,$_POST['UserEmail']));
-      $address = strip_tags(mysqli_real_escape_string($dbconn,$_POST['UserAddress']));
-      $contact = strip_tags(mysqli_real_escape_string($dbconn,$_POST['UserContactNo']));
+      $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
+      $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
+      $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
+      $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
       if (!empty($email) || !empty($username)) {
         if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $username) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email)) {
           $errormsg = "Invalid Input";
@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
           header("Location: staff_profile.php?msg=Data updated successfully");
         }
       } else {
-        echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "staff_profile.php";</script>';
+        echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "staff_profile.php";</script>';
       }
     } catch (Exception) {
       $errormsg = "⚠️ Something wrong with your input ⚠️";
@@ -43,34 +43,38 @@ if (isset($_POST['submit'])) {
 ?>
 
 <?php
-  $user_id = $_SESSION["userid"];
-  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-  $result_User = mysqli_query($dbconn, $select_sql);  
-  $row_User = mysqli_fetch_assoc($result_User);
+$user_id = $_SESSION["userid"];
+$select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+$result_User = mysqli_query($dbconn, $select_sql);
+$row_User = mysqli_fetch_assoc($result_User);
 ?>
 
 <?php
-  $user_id_password = $_SESSION["userid"];
-  $select_sql_password = "SELECT * FROM user_tbl WHERE UserId = $user_id_password";
-  $result_password = mysqli_query($dbconn, $select_sql_password);  
-  $row_password = mysqli_fetch_assoc($result_password);
+$user_id_password = $_SESSION["userid"];
+$select_sql_password = "SELECT * FROM user_tbl WHERE UserId = $user_id_password";
+$result_password = mysqli_query($dbconn, $select_sql_password);
+$row_password = mysqli_fetch_assoc($result_password);
 
-  if (isset($_POST["submit_new_password"])) {
-    $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
-    $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
-    if (!empty($newPassword) && !empty($comfirmNewPassword)) {
-      if ($newPassword == $comfirmNewPassword) {
+if (isset($_POST["submit_new_password"])) {
+  $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
+  $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
+  if (!empty($newPassword) && !empty($comfirmNewPassword)) {
+    if ($newPassword == $comfirmNewPassword) {
+      if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $newPassword)) {
+        $errormsg = "Invalid Password";
+        echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
+      } else {
         mysqli_query($dbconn, "UPDATE user_tbl 
-                                  SET UserPassword = '$newPassword' 
-                                WHERE UserId = '$user_id'");
+                               SET UserPassword = '$newPassword' 
+                               WHERE UserId = '$user_id'");
         header("Location: staff_profile.php");
         exit();
       }
     }
-    else{
-      echo '<script>alert("Error: Invalid Password"); window.location.href = "staff_profile.php";</script>';
-    }
-  }	
+  } else {
+    echo '<script>alert("Error: Invalid Password"); window.location.href = "staff_profile.php";</script>';
+  }
+}
 ?>
 
 <!DOCTYPE html>

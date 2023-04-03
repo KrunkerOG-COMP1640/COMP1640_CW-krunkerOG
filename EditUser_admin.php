@@ -17,25 +17,29 @@ if (isset($_POST['submit'])) {
 
 
   try {
-    $username = strip_tags($_POST['Username']);
-    $password = strip_tags($_POST['UserPassword']);
-    $contact = strip_tags($_POST['UserContactNo']);
-    $address = strip_tags($_POST['UserAddress']);
-    $email = strip_tags($_POST['UserEmail']);
+    $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
+    $password = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserPassword']));
+    $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
+    $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
+    $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
     $role = $_POST['UserRoleName'];
     $department = $_POST['DepartmentId'];
-    if (!empty($email) && !empty($username)) {
-      $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
+    if (!empty($email) && !empty($username) && !empty($password)) {
+      if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $password)) {
+        $errormsg = "Invalid Password";
+        echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
+      } else {
+        $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
               WHERE UserId = $id";
-      mysqli_query($dbconn, $sql);
+        mysqli_query($dbconn, $sql);
+      }
     } else {
-      echo '<script>alert("Error: Invalid Input"); window.location.href = "ManageUser_admin.php";</script>';
+      echo '<script>alert("Error: Input cannot be empty"); window.location.href = "ManageUser_admin.php";</script>';
     }
   } catch (Exception) {
     $errormsg = "⚠️ Something wrong with your input ⚠️";
     echo '<script>alert("' . $errormsg . '"); window.location.href="ManageUser_admin.php";</script>';
   }
-
 }
 
 

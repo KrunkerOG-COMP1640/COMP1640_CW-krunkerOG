@@ -115,7 +115,7 @@ if (isset($_POST["submit_post"])) {
     }
   }
   else{
-    echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "index.php";</script>';
+    echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "index.php";</script>';
   }
 }
 $user_id = $_SESSION["userid"];

@@ -81,7 +81,7 @@ if (isset($_POST['submit_post'])) {
         exit();
       }
     } else {
-      echo '<script>alert("Error: Dont leave your input empty"); window.location.href = "EditIdea.php";</script>';
+      echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "EditIdea.php";</script>';
     }
   } catch (Exception) {
     $errormsg = "⚠️ Something wrong with your input ⚠️";

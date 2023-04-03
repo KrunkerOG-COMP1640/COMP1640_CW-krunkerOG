@@ -51,7 +51,7 @@ if (isset($_POST["submit_comment_post"])) {
                 header("Location:CommentSection.php?id=" . $id);
                 exit();
             } else {
-                echo '<script>alert("Error: Dont leave your comment empty"); </script>';
+                echo '<script>alert("Error: Don\'t leave your comment empty"); </script>';
             }
         } catch (Exception) {
             $errormsg = "⚠️ Something wrong with your input ⚠️";

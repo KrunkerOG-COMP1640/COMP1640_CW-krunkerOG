@@ -2,17 +2,14 @@
 session_start();
 
 require("krunkerideaconn.php");
-if(!isset($_SESSION['role'])){
+if (!isset($_SESSION['role'])) {
   header("Location: index.php");
   exit;
-  
-}
-else{
-  if($_SESSION['role'] != "Admin"){ //staff cannot access admin page
-      header("Location: index.php");
-      // exit;
+} else {
+  if ($_SESSION['role'] != "Admin") { //staff cannot access admin page
+    header("Location: index.php");
+    // exit;
   }
-
 }
 $output = "";
 if (isset($_POST['submit'])) {
@@ -25,50 +22,55 @@ if (isset($_POST['submit'])) {
   $department = $_POST['DepartmentId'];
 
   try {
-    if (!empty($email) && !empty($password)) {
-      $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
-      $error = array();
-  
-      if (empty($username)) {
-        $error['1'] = "Enter Username";
-      } else if (empty($password)) {
-        $error['1'] = "Enter Password";
-      } else if (empty($role)) {
-        $error['1'] = "Enter Role";
-      } else if (empty($department)) {
-        $error['1'] = "Enter department";
-      } else if (mysqli_num_rows($check_email) > 0) {
-        $error['1'] = "Email address already exist";
-      }
-  
-  
-      if (isset($error['1'])) {
-        $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>" . $error['1'] . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    if (!empty($email) && !empty($password) && !empty($username)) {
+      if (
+        !preg_match('/^[a-zA-Z0-9_@.!]+$/', $username) ||
+        !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email) ||
+        !preg_match('/^[a-zA-Z0-9_@.!]+$/', $password)
+      ) {
+        echo '<script>alert("Error: Invalid Input"); window.location.href = "ManageUser_admin.php";</script>';
       } else {
-        $output .= "";
-      }
-  
-      if (count($error) < 1) {
-        $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
-                VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
-  
-        $result = mysqli_query($dbconn, $sql);
-        if ($result) {
-          header("Location: ManageUser_admin.php?msg = New user added successfully");
+        $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
+        $error = array();
+
+        if (empty($username)) {
+          $error['1'] = "Enter Username";
+        } else if (empty($password)) {
+          $error['1'] = "Enter Password";
+        } else if (empty($role)) {
+          $error['1'] = "Enter Role";
+        } else if (empty($department)) {
+          $error['1'] = "Enter department";
+        } else if (mysqli_num_rows($check_email) > 0) {
+          $error['1'] = "Email address already exist";
+        }
+
+
+        if (isset($error['1'])) {
+          $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>" . $error['1'] . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         } else {
-          echo "Failed: " . mysqli_error($dbconn);
+          $output .= "";
+        }
+
+        if (count($error) < 1) {
+          $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
+                VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
+
+          $result = mysqli_query($dbconn, $sql);
+          if ($result) {
+            header("Location: ManageUser_admin.php?msg = New user added successfully");
+          } else {
+            echo "Failed: " . mysqli_error($dbconn);
+          }
         }
       }
     } else {
-      echo '<script>alert("Error: Email and Password cannot be empty"); window.location.href = "ManageUser_admin.php";</script>';
+      echo '<script>alert("Error: Username and Password cannot be empty"); window.location.href = "ManageUser_admin.php";</script>';
     }
-  } 
- catch (Exception) {
-    $errormsg = "⚠️ Something wrong with your input ⚠️"; 
+  } catch (Exception) {
+    $errormsg = "⚠️ Something wrong with your input ⚠️";
     echo "<script>alert('$errormsg'); window.location.href='ManageUser_admin.php';</script>";
   }
-
-
 }
 
 ?>
