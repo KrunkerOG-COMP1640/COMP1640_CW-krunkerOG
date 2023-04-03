@@ -7,12 +7,63 @@ if($_SESSION["role"] != "QA Manager") {
   exit;
 }
 
-$user_id = $_SESSION["userid"];
-
   $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result_User = mysqli_query($dbconn, $select_sql);  
   $row_User = mysqli_fetch_assoc($result_User);
+
+//Get total department data
+$departmentquery = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) as Total_Ideas 
+FROM user_tbl U
+RIGHT JOIN department_tbl D
+ON U.DepartmentId = D.DepartmentId
+LEFT JOIN idea_tbl I
+ON I.UserId = U.UserId
+WHERE D.DepartmentId IN ('1','2','3','4')
+GROUP BY D.DepartmentName"
+);
+$departmentresult = $departmentquery;
+$departmentdata = array();
+
+while($row = $departmentresult ->fetch_assoc()) {
+  $departmentdata[] = array('label' => $row['DepartmentName'], 'value' => $row['Total_Ideas']);
+}
+//echo json_encode($departmentdata);
+
+//Get Contributor data
+$contributorquery = mysqli_query($dbconn, "SELECT C.CategoryTitle, D.DepartmentName, COUNT(DISTINCT I.UserId) AS Total_Contributor
+FROM department_tbl D
+LEFT JOIN user_tbl U
+ON U.DepartmentId = D.DepartmentId
+RIGHT JOIN idea_tbl I
+ON I.UserId = U.UserId
+INNER JOIN category_tbl C
+ON I.CategoryId = C.CategoryId
+WHERE D.DepartmentId IN ('1','2','3','4')
+GROUP BY C.CategoryTitle"
+);
+$contributorresult = $contributorquery;
+$contributordata = array();
+
+while($row = $contributorresult ->fetch_assoc()) {
+   $contributordata[] = array('label' => $row['DepartmentName'], 'value' => $row['Total_Contributor']);
+}
+//echo json_encode($contributordata);
+
+//Get Percentage for each department ideas
+$percentideas = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) AS Total_Ideas,
+(SELECT COUNT(*) FROM idea_tbl) AS Total_Post
+FROM user_tbl U, department_tbl D, idea_tbl I
+WHERE U.DepartmentId = D.DepartmentId AND I.UserId = U.UserId
+GROUP BY D.DepartmentName"
+);
+$percentideas_department = array();
+$percentideas_data = array();
+
+while ($row = mysqli_fetch_assoc($percentideas)) {
+  $percentideas_department[] = $row["DepartmentName"];
+  $percentideas_data[] = round(($row["Total_Ideas"] / $row["Total_Post"]) * 100, 2);
+}
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +96,43 @@ $user_id = $_SESSION["userid"];
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- Include the Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+  
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Department', 'Percentage'],
+      <?php for ($i = 0; $i < count($percentideas_department); $i++) { ?>
+        ['<?php echo $percentideas_department[$i]; ?>', <?php echo $percentideas_data[$i]; ?>],
+      <?php } ?>
+    ]);
+
+    var options = {
+      legend: {
+        top: '5%',
+        left: 'left'
+      },
+      height: 300,
+      //chartArea: {width: '90%', height: '70%'},
+      avoidLabelOverlap:false,
+      pieHole: 1
+    };
+        
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+    }
+</script>
 
 </head>
 
@@ -161,120 +249,333 @@ $user_id = $_SESSION["userid"];
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-        
-    <div class="col-lg-auto">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Idea by Departments</h5>
+      <div class="row">
+          <!--No of Department Card -->
+          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+            <div class="card info-card department-card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                <ul class="dropdown-menu text-center">
+                  <li><a class="icon" href="department_download.php">Download</a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">No of Departments</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-building"></i>
+                  </div>
+                  <div class="ps-3">
+                    <?php
+                    $dash_department_query = "SELECT * from department_tbl WHERE DepartmentId IN ('1','2','3','4')";
+                    $dash_department_query_run = mysqli_query($dbconn, $dash_department_query);
 
-              <!-- Bar Chart -->
-              <canvas id="barChart" style="max-height: 400px;"></canvas>
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  new Chart(document.querySelector('#barChart'), {
+                    if($department_total = mysqli_num_rows($dash_department_query_run))
+                    {
+                      echo '<h4 class="mb-0"> '.$department_total.'</h4>';
+                    }
+                    else
+                    {
+                      echo '<h4 class="mb-0">No Data</h4>';
+                    }
+                    ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End No of Department Card -->
+
+          <!--Total Contributors Card -->
+          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+            <div class="card info-card staff-card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                <ul class="dropdown-menu text-center">
+                  <li><a class="icon" href="Contributors_download.php">Download</a></li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Total Contributors</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    <?php
+                    $dash_user_query = "SELECT D.DepartmentName, U.Username, U.UserRoleName, U.UserEmail from user_tbl U
+                    INNER JOIN department_tbl D 
+                    ON U.DepartmentId = D.DepartmentId
+                    WHERE D.DepartmentId IN ('1','2','3','4')";
+                    $dash_user_query_run = mysqli_query($dbconn, $dash_user_query);
+
+                    if($user_total = mysqli_num_rows($dash_user_query_run))
+                    {
+                      echo '<h4 class="mb-0"> '.$user_total.'</h4>';
+                    }
+                    else
+                    {
+                      echo '<h4 class="mb-0">No Data</h4>';
+                    }
+                    ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End Total Contributors Card -->
+
+          <!--% Idea by Departments Card -->
+          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+            <div class="card info-card idea-card">
+            <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                  <ul class="dropdown-menu text-center">
+                    <li><a class="icon" href="Ideas_download.php">Download</a></li>
+                  </ul>
+                </div>
+              <div class="card-body">
+                <h5 class="card-title">Ideas by Departments</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-lightbulb"></i>
+                  </div>
+                  <div class="ps-3">
+                    <?php
+                    $dash_idea_query = "SELECT * from idea_tbl";
+                    $dash_idea_query_run = mysqli_query($dbconn, $dash_idea_query);
+
+                    if($idea_total = mysqli_num_rows($dash_idea_query_run))
+                    {
+                      echo '<h4 class="mb-0"> '.$idea_total.'</h4>';
+                    }
+                    else
+                    {
+                      echo '<h4 class="mb-0">No Data</h4>';
+                    }
+                    ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End % Idea by Departments Card -->
+
+          <!--Like Ideas by Departments Card -->
+          <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+            <div class="card info-card likeidea-card">
+            <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                  <ul class="dropdown-menu text-center">
+                    <li><a class="icon" href="LikeIdeas_download.php">Download</a></li>
+                  </ul>
+                </div>
+              <div class="card-body">
+                <h5 class="card-title">Total Likes </h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-hand-thumbs-up"></i>
+                  </div>
+                  <div class="ps-3">
+                    <?php
+                    $dash_likeideas_query = "SELECT LD.LikeStatus, COUNT(I.IdeaId) AS Total_Ideas, 
+                    (SELECT COUNT(LikeStatus) FROM like_dislikepost_tbl LD) AS Total_Post
+                    FROM like_dislikepost_tbl LD, user_tbl U, idea_tbl I
+                    WHERE LD.IdeaId = I.IdeaId AND I.UserId = U.UserId
+                    GROUP BY LD.LikeDislikePostId";
+
+                    $dash_likeideas_query_run = mysqli_query($dbconn, $dash_likeideas_query);
+
+                    if($likeideas_total = mysqli_num_rows($dash_likeideas_query_run))
+                    {
+                      echo '<h4 class="mb-0"> '.$likeideas_total.'</h4>';
+                    }
+                    else
+                    {
+                      echo '<h4 class="mb-0">No Data</h4>';
+                    }
+                    ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End Like Ideas by Departments Card -->
+
+          <div class="row">
+            <!-- Idea by Departments Reports -->
+            <div class="col-lg-7">
+              <div class="card">
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
+                    <li><a class="icon" onclick="downloadCSV()"> Download</a></li>
+                  </ul>
+                </div>
+                <div class="card-body pt-0">
+                  <h5 class="card-title">Idea by Departments</h5>
+                  <!-- Create a canvas element for the chart -->
+                  <canvas id="BarChart"></canvas>
+                  
+                  <script>
+                  // Get the data from PHP
+                  var ctx = document.getElementById('BarChart').getContext('2d');
+                  var chartData = <?php echo json_encode($departmentdata); ?>;
+
+                  // Initialize the chart
+
+                  var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                      labels: ['Information Technology', 'Human Resource', 'Business & Marketing', 'Accounting'],
+                      labels: chartData.map(data => data.label),
                       datasets: [{
-                        label: 'Bar Chart',
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        backgroundColor: [
-                          'rgba(255, 99, 132, 0.2)',
-                          'rgba(255, 159, 64, 0.2)',
-                          'rgba(255, 205, 86, 0.2)',
-                          'rgba(75, 192, 192, 0.2)',
-                          'rgba(54, 162, 235, 0.2)',
-                          'rgba(153, 102, 255, 0.2)',
-                          'rgba(201, 203, 207, 0.2)'
-                        ],
-                        borderColor: [
-                          'rgb(255, 99, 132)',
-                          'rgb(255, 159, 64)',
-                          'rgb(255, 205, 86)',
-                          'rgb(75, 192, 192)',
-                          'rgb(54, 162, 235)',
-                          'rgb(153, 102, 255)',
-                          'rgb(201, 203, 207)'
-                        ],
+                        label: 'Number of ideas per department',
+                        data: chartData.map(data => data.value),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                       }]
                     },
                     options: {
                       scales: {
-                        y: {
-                          beginAtZero: true
-                        }
+                        xAxes: [{
+                          ticks: {
+                            beginAtZero: true
+                          }
+                        }]
                       }
                     }
                   });
-                });
-              </script>
-              <!-- End Bar CHart -->
+                  // Function to download CSV file
+                  function downloadCSV() {
+                    // Create CSV data from chart data
+                    var csvData = '';
+                    chartData.forEach(function(data) {
+                      csvData += data.label + ',' + data.value + '\n';
+                    });
+                    // Create new CSV file and download it
+                    var link = document.createElement('a');
+                    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData));
+                    link.setAttribute('download', 'Idea_by_Departments.csv');
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }
+                  </script>
+                  </div>
+                </div>
+              </div>
+              <!-- End Idea by Departments Reports -->
 
-            </div>
+              <!-- Percentage of ideas by each Department -->
+              <div class="col-lg-5">
+                <div class="card">
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
+                    <li><a class="icon" onclick="location.href='download_percentideas.php'"> Download</a></li>
+                  </ul>
+                </div>
+                  <div class="card-body pt-0">
+                    <h5 class="card-title">Percentage of ideas by each Department</h5>
+                    
+                    <!-- Create a canvas element for the chart -->
+                    <div id="chart_div"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Percentage of ideas by each Department -->
           </div>
-        </div>
+          <!-- End Row -->
 
-        <div class="col-lg-auto">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Closed Category</h5>
+          <!-- Start Row -->
+          <div class="row">
 
-        <!-- Active Table -->
-        <table class="table border border-primary">
-                <thead>
-                  <tr>
-                    <th scope="col" class="table-active">ID</th>
-                    <th scope="col" class="table-active">Category</th>
-                    <th scope="col" class="table-active">Total Idea</th>
-                    <th scope="col" class="table-active">Total Comment</th>
-                    <th scope="col" class="table-active"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td><button type="button" class="btn btn-outline-primary" href="#"><i class="bi bi-download me-1"></i> Download</button></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td><button type="button" class="btn btn-outline-primary" href="#"><i class="bi bi-download me-1"></i> Download</button></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td><button type="button" class="btn btn-outline-primary" href="#"><i class="bi bi-download me-1"></i> Download</button></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td><button type="button" class="btn btn-outline-primary" href="#"><i class="bi bi-download me-1"></i> Download</button></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td><button type="button" class="btn btn-outline-primary" href="#"><i class="bi bi-download me-1"></i> Download</button></td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Active Table -->
+            <!-- Number of Contributors each Department Reports -->
+            <div class="col-lg-8">
+              <div class="card">
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
+                    <li><a class="icon" onclick="ContributordownloadCSV()"> Download</a></li>
+                  </ul>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Number of Contributors each Department</h5>
+                  
+                  <!-- Create a canvas element for the chart -->
+                  <canvas id="myChart"></canvas>
+                  
+                  <script>
+                  // Get the data from PHP
+                  var ctx = document.getElementById('myChart').getContext('2d');
+                  var chartData = <?php echo json_encode($contributordata); ?>;
 
-            </div>
+                  // Initialize the chart
+                  var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                      labels: chartData.map(data => data.label),
+                      datasets: [{
+                        label: 'Total Contributors',
+                        data: chartData.map(data => data.value),
+                        backgroundColor: 'rgba(136, 31, 222, 0.5)',
+                        borderColor: 'rgba(137, 0, 250, 1)',
+                        borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        yAxes: [{
+                          ticks: {
+                            beginAtZero: true
+                          }
+                        }]
+                      },
+                    }
+                  });
+                  function ContributorCSV(csv, filename) {
+                    var csvFile;
+                    var downloadLink;
+
+                    // CSV file
+                    csvFile = new Blob([csv], {type: "text/csv"});
+
+                    // Download link
+                    downloadLink = document.createElement("a");
+
+                    // File name
+                    downloadLink.download = filename;
+
+                    // We create a link to the file
+                    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+                    // We add the link to the DOM so it becomes clickable
+                    document.body.appendChild(downloadLink);
+
+                    // We trigger the click event to start the download
+                    downloadLink.click();
+                  }
+
+                  function ContributordownloadCSV() {
+                      var csv = 'Department,Contributors\n';
+                      <?php foreach($contributordata as $data): ?>
+                          csv += '<?php echo $data['label'];?>,' + <?php echo $data['value'];?> + '\n';
+                      <?php endforeach; ?>
+
+                      ContributorCSV(csv, 'Contributors_by_department.csv');
+                  }
+                  </script>
+                  </div>
+                </div>
+              </div>
+              <!-- End Number of Contributors each Department Reports -->
+
           </div>
-        </div>
+          <!-- End Row -->
 
+        </div>
       </section>
 
   </main><!-- End #main -->
@@ -283,13 +584,6 @@ $user_id = $_SESSION["userid"];
   <footer id="footer" class="footer">
     <div class="copyright">
       &copy; Copyright <strong><span>Krunker Idea Portal 2023</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
 
