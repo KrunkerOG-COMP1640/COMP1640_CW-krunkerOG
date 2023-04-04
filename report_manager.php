@@ -438,7 +438,7 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                     },
                     options: {
                       scales: {
-                        xAxes: [{
+                        yAxes: [{
                           ticks: {
                             beginAtZero: true
                           }
