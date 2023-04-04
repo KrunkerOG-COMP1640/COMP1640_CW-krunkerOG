@@ -50,6 +50,7 @@ if(isset($_POST['submit'])){
   $result_User = mysqli_query($dbconn, $select_sql);  
   $row_User = mysqli_fetch_assoc($result_User);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -99,45 +100,30 @@ if(isset($_POST['submit'])){
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-     
-
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION["username"];?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $row_User['Username'] ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?php echo $_SESSION["username"];?></h6>
-              <span>Web Designer</span>
+              <h6><?php echo $row_User['Username'] ?></h6>
+              <span><?php echo $row_User['UserRoleName'] ?></span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
+                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                  <i class="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
             </li>
             <li>
-              <hr class="dropdown-divider">
-            </li>
-
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
+                <hr class="dropdown-divider">
             </li>
 
             <li>
@@ -155,70 +141,61 @@ if(isset($_POST['submit'])){
 
   </header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+        <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#idea-nav" data-bs-toggle="collapse" href="index_admin.html">
-          <i class="bi bi-grid"></i><span>Idea</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="idea-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="list_of_category_admin.html">
-              <i class="bi bi-list-nested" style="font-size:18px"></i><span>List of Category</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Idea Nav -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="index_admin.php">
+                  <i class="bi bi-grid"></i><span>Idea</span>
+              </a>
+            </li><!-- End Idea Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#statistics-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Statistics</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="statistics-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Charts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Statistics Nav -->
+            <?php
+              echo '<li class="nav-item">';
+              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+              echo '<i class="bi bi-pencil"></i><span>Edit Idea</span>';
+              echo '</a>';
+              echo '</li>';
+            ?>
 
-      <li class="nav-heading">Pages</li>
+              <?php
+                if($_SESSION['role'] == "Admin"){ //staff cannot see this
+                  echo'<li class="nav-heading">Pages</li>';
 
+                  echo'<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageUser_admin.php">';
+                          echo '<i class="bi bi-people"></i>';
+                          echo '<span>Manage User</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage User Page Nav -->';
+
+                  echo '<li class="nav-item">';
+                      echo '<a class="nav-link collapsed" href="ManageIdea_admin.php">';
+                          echo '<i class="bi bi-chat-left-text"></i>';
+                          echo '<span>Manage Idea</span>';
+                      echo '</a>';
+                  echo '</li><!-- End Manage Idea Page Nav -->';
+                  
+                  echo '<li class="nav-item">';
+                  echo '<a class="nav-link collapsed" href="closure_date.php">';
+                  echo '<i class="bi bi-calendar4-week"></i><span>Closure Dates</span>';
+                  echo '</a>';
+                  echo '</li>';
+                  
+                  echo '<li class="nav-item">';
+                    echo '<a class="nav-link collapsed" href="ManageComment_admin.php">';
+                      echo '<i class="bi bi-chat-left-text"></i>';
+                      echo '<span>Manage Comment</span>';
+                    echo '</a>';
+                  echo '</li>';
+                }
+            ?>
             
-            <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageUser_admin.php">
-            <i class="bi bi-people"></i>
-          <span>Manage User</span>
-        </a>
-      </li><!-- End Manage User Page Nav -->
+        </ul>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="ManageIdea_admin.php">
-            <i class="bi bi-chat-left-text"></i>
-          <span>Manage Idea</span>
-        </a>
-      </li><!-- End Manage Idea Page Nav -->
-
-      <?php
-      echo '<li class="nav-item">';
-        echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-          echo '<i class="bi bi-bar-chart"></i><span>Edit Idea</span>';
-        echo '</a>';
-      echo '</li>';
-?>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="closure_date.php">
-                  <i class="bi bi-calendar4-week"></i><span>Closure Date</span>
-                </a>
-            </li><!-- End Closure Date Nav -->
-    </ul>
-
-  </aside><!-- End Sidebar-->
+    </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
