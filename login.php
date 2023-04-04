@@ -27,10 +27,10 @@ if(isset($_POST["userlogin"])){
 
     $myemail = $_POST["useremail"];
     $mypassword = $_POST["userpassword"];
-    $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = '$mypassword'";
+    $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$myemail' AND UserPassword = MD5('$mypassword')";
     $checkaccount = mysqli_query($dbconn,$sql);
 
-    if(mysqli_num_rows($checkaccount) > 0){
+    if($checkaccount){
         $userrow = mysqli_fetch_array($checkaccount);
     
         if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {

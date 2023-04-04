@@ -19,6 +19,7 @@ if (isset($_POST['submit'])) {
   try {
     $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
     $password = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserPassword']));
+    $hashedPassword = md5($password);
     $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
     $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
     $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
@@ -29,7 +30,7 @@ if (isset($_POST['submit'])) {
         $errormsg = "Invalid Password";
         echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
       } else {
-        $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$password',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
+        $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$hashedPassword',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
               WHERE UserId = $id";
         mysqli_query($dbconn, $sql);
       }

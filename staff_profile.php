@@ -57,6 +57,7 @@ $row_password = mysqli_fetch_assoc($result_password);
 
 if (isset($_POST["submit_new_password"])) {
   $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
+  $hashedPassword = md5($newPassword);
   $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
   if (!empty($newPassword) && !empty($comfirmNewPassword)) {
     if ($newPassword == $comfirmNewPassword) {
@@ -65,7 +66,7 @@ if (isset($_POST["submit_new_password"])) {
         echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
       } else {
         mysqli_query($dbconn, "UPDATE user_tbl 
-                               SET UserPassword = '$newPassword' 
+                               SET UserPassword = '$hashedPassword' 
                                WHERE UserId = '$user_id'");
         header("Location: staff_profile.php");
         exit();
@@ -76,7 +77,6 @@ if (isset($_POST["submit_new_password"])) {
   }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 

@@ -15,6 +15,7 @@ $output = "";
 if (isset($_POST['submit'])) {
   $username = strip_tags($_POST['Username']);
   $password = strip_tags($_POST['UserPassword']);
+  $hashedPassword = md5($password);
   $contact = strip_tags($_POST['UserContactNo']);
   $address = strip_tags($_POST['UserAddress']);
   $email = strip_tags($_POST['UserEmail']);
@@ -54,7 +55,7 @@ if (isset($_POST['submit'])) {
 
         if (count($error) < 1) {
           $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
-                VALUES ('$department','$role','$username','$password','$email','$contact','$address')";
+                VALUES ('$department','$role','$username','$hashedPassword','$email','$contact','$address')";
 
           $result = mysqli_query($dbconn, $sql);
           if ($result) {

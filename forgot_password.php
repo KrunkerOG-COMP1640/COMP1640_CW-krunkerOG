@@ -7,6 +7,7 @@
     if(isset($_POST["forgotPassword"])){
         $user_email = $_POST["useremail"];
         $newPassword = $_POST["newPassword"];
+        $hashedPassword = md5($newPassword);
         $sql = "SELECT * FROM user_tbl WHERE UserEmail = '$user_email'";
         $checkaccount = mysqli_query($dbconn,$sql);
 
@@ -24,7 +25,7 @@
             else if(!empty($newPassword)) {
                 $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
                 mysqli_query($dbconn, "UPDATE user_tbl 
-                                        SET UserPassword = '$newPassword' 
+                                        SET UserPassword = '$hashedPassword' 
                                         WHERE UserEmail = '$user_email'");
                 header("Location: login.php");
                 exit();
