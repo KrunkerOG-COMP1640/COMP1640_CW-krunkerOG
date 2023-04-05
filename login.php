@@ -33,15 +33,7 @@ if(isset($_POST["userlogin"])){
     if($checkaccount){
         $userrow = mysqli_fetch_array($checkaccount);
     
-        if(!preg_match('/^[a-zA-Z0-9_@.!]+$/', $myemail)) {
 
-            header("Location: login.php");
-
-            echo '<script>';
-            echo 'alert("Do Not Insert Special Character")';
-            echo '</script>';
-        }
-        else{
             if(is_array($userrow)) {
                 $_SESSION["userid"] = $userrow["UserId"];
                 $_SESSION["username"] = $userrow["Username"];
@@ -53,7 +45,7 @@ if(isset($_POST["userlogin"])){
 
             }
             else{
-                header("Location: login.php");
+                echo "<script>alert('Sorry, the email or password you entered is incorrect. Please try again'); window.location.href='index.php';</script>";
             }
             if(isset($_SESSION["username"]) 
             && isset($_SESSION["userid"]) 
@@ -76,7 +68,6 @@ if(isset($_POST["userlogin"])){
                 }
                 
             }
-        }
     }
 }
 ?>
@@ -143,8 +134,6 @@ if(isset($_POST["userlogin"])){
 
             <div class="two-col">
                 <div class="one">
-                    <input type="checkbox" name="" id="check">
-                    <label for="check"> Remember Me</label>
                 </div>
             <div class="two">
                 <label><a href="forgot_password.php">Forgot password?</a></label>
