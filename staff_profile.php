@@ -61,7 +61,7 @@ if (isset($_POST["submit_new_password"])) {
   $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
   if (!empty($newPassword) && !empty($comfirmNewPassword)) {
     if ($newPassword == $comfirmNewPassword) {
-      if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $newPassword)) {
+      if (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $newPassword)) {
         $errormsg = "Invalid Password";
         echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
       } else {

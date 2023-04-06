@@ -21,8 +21,10 @@
                 echo '<script>';
                 echo 'alert("Do Not Insert Special Character")';
                 echo '</script>';
-            }
-            else if(!empty($newPassword)) {
+            }elseif (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $newPassword)) {
+                $errormsg = "Invalid Password";
+                echo '<script>alert("' . $errormsg . '"); window.location.href="forgot_password.php";</script>';
+            }elseif(!empty($newPassword)) {
                 $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
                 mysqli_query($dbconn, "UPDATE user_tbl 
                                         SET UserPassword = '$hashedPassword' 
@@ -62,7 +64,7 @@
                     </div>
 
                     <div class="input-field">
-                        <input type="password" class="input" placeholder="Password" name="newPassword" required>
+                        <input type="password" class="input" placeholder="Password" name="newPassword" minlength="8" required>
                         <i class='bx bx-lock-alt'></i>
                     </div>
 

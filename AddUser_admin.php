@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
       if (
         !preg_match('/^[a-zA-Z0-9_@.!]+$/', $username) ||
         !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email) ||
-        !preg_match('/^[a-zA-Z0-9_@.!]+$/', $password)
+        !preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $password)
       ) {
         echo '<script>alert("Error: Invalid Input"); window.location.href = "ManageUser_admin.php";</script>';
       } else {
@@ -270,7 +270,7 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Password</label>
-                        <input type="password" name="UserPassword" class="form-control" required>
+                        <input type="password" name="UserPassword" class="form-control" minlength="8" required>
                     </div>
                  
                     <div class="col-md-12 mb-3">

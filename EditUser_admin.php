@@ -26,13 +26,14 @@ if (isset($_POST['submit'])) {
     $role = $_POST['UserRoleName'];
     $department = $_POST['DepartmentId'];
     if (!empty($email) && !empty($username) && !empty($password)) {
-      if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $password)) {
+      if (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $password)) {
         $errormsg = "Invalid Password";
         echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
       } else {
         $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$hashedPassword',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
               WHERE UserId = $id";
         mysqli_query($dbconn, $sql);
+        echo '<script>window.location.href = "ManageUser_admin.php";</script>';
       }
     } else {
       echo '<script>alert("Error: Input cannot be empty"); window.location.href = "ManageUser_admin.php";</script>';
