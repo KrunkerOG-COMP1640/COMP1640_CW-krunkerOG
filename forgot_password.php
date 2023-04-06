@@ -27,8 +27,10 @@
                 mysqli_query($dbconn, "UPDATE user_tbl 
                                         SET UserPassword = '$hashedPassword' 
                                         WHERE UserEmail = '$user_email'");
-                header("Location: login.php");
+                echo "<script>alert('Your password has changed!'); window.location.href='login.php';</script>";
                 exit();
+            }else{
+                echo "<script>alert('Password change failed. Please try again'); window.location.href='forgot_password.php';</script>";
             }
         }
     }
@@ -55,12 +57,12 @@
 
                 <form action="" method="post">
                     <div class="input-field">
-                        <input type="email" class="input" placeholder="Email"  name="useremail">
+                        <input type="email" class="input" placeholder="Email"  name="useremail" autofocus required>
                         <i class='bx bx-user' ></i>
                     </div>
 
                     <div class="input-field">
-                        <input type="password" class="input" placeholder="Password" name="newPassword">
+                        <input type="password" class="input" placeholder="Password" name="newPassword" required>
                         <i class='bx bx-lock-alt'></i>
                     </div>
 
