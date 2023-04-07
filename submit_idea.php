@@ -11,8 +11,8 @@ $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 // Insert new post into database
 if (isset($_POST["submit_post"])) {
 
-  $title = strip_tags(mysqli_real_escape_string($dbconn, $_POST["title"]));
-  $desc = strip_tags(mysqli_real_escape_string($dbconn, $_POST["description"]));
+  $title = htmlentities(mysqli_real_escape_string($dbconn, $_POST["title"]));
+  $desc = htmlentities(mysqli_real_escape_string($dbconn, $_POST["description"]));
   $category = mysqli_real_escape_string($dbconn, $_POST["category"]);
   $anon = isset($_POST["anonymous"]);
   $user_id = $_SESSION["userid"];

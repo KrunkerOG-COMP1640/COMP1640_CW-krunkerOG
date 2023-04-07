@@ -16,8 +16,8 @@ $id = $_GET['id'];
 if (isset($_POST['submit_post'])) {
 
 
-  $title = strip_tags(mysqli_real_escape_string($dbconn, $_POST['title']));
-  $desc = strip_tags(mysqli_real_escape_string($dbconn, $_POST['description']));
+  $title = htmlentities(mysqli_real_escape_string($dbconn, $_POST['title']));
+  $desc = htmlentities(mysqli_real_escape_string($dbconn, $_POST['description']));
 
 
   try {

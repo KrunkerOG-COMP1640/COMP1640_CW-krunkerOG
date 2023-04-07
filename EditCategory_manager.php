@@ -15,7 +15,7 @@ $id = $_GET['id'];
 if (isset($_POST['submit'])) {
 
   try {
-    $title = strip_tags($_POST['CategoryTitle']);
+    $title = htmlentities($_POST['CategoryTitle']);
     $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
 
     if (!empty($title)) {

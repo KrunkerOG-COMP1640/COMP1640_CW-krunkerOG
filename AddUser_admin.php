@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
   $password = strip_tags($_POST['UserPassword']);
   $hashedPassword = md5($password);
   $contact = strip_tags($_POST['UserContactNo']);
-  $address = strip_tags($_POST['UserAddress']);
+  $address = htmlentities($_POST['UserAddress']);
   $email = strip_tags($_POST['UserEmail']);
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];

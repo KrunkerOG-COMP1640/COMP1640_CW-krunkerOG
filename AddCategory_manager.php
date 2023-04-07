@@ -14,7 +14,7 @@ if (!isset($_SESSION['role'])) {
 
 if (isset($_POST['submit'])) {
   try {
-    $title = strip_tags($_POST['CategoryTitle']);
+    $title = htmlentities($_POST['CategoryTitle']);
 
     if (!empty($title)) {
       $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");

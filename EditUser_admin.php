@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
     $password = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserPassword']));
     $hashedPassword = md5($password);
     $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
-    $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
+    $address = htmlentities(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
     $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
     $role = $_POST['UserRoleName'];
     $department = $_POST['DepartmentId'];

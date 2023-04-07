@@ -16,9 +16,6 @@ if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
 }
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 $user_id = $_SESSION["userid"];
-//$count = $_GET['count']; //get view count
-// $sqlCount = "UPDATE idea_tbl SET views_count =$count WHERE IdeaId = $id";
-// $resultCount = mysqli_query($dbconn, $sqlCount);
 $id = $_GET['id']; // get ideaID
 
 $sql = "SELECT idea_tbl.IdeaId, idea_tbl.IdeaTitle, category_tbl.CategoryTitle, user_tbl.Username, idea_tbl.DatePost, idea_tbl.IdeaDescription, idea_tbl.IdeaAnonymous from idea_tbl  
@@ -31,7 +28,7 @@ $result = mysqli_query($dbconn, $sql);
 if (isset($_POST["submit_comment_post"])) {
 
     $user_id = $_SESSION["userid"];
-    $usercomment = strip_tags($_POST["CommentDetails"]);
+    $usercomment = htmlentities($_POST["CommentDetails"]);
     $comment = $usercomment;
     $anonymous = isset($_POST["anonymous"]);
 
