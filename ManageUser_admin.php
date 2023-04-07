@@ -62,12 +62,6 @@ $start= ($page-1)*$rows_per_page;
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
   <style>
     .pagination{
       justify-content: center;
@@ -260,7 +254,13 @@ $start= ($page-1)*$rows_per_page;
                         <td><?php echo $row['DepartmentName']?></td>
                         <td><?php echo $row['UserRoleName']?></td> 
                         <td><a href="EditUser_admin.php?id=<?php echo $row['UserId'] ?>"  class="btn btn-success">Edit</a></td>
-                        <td><a href="DeleteUser_admin.php?id=<?php echo $row['UserId'] ?>" class="btn btn-danger">Delete</a></td>
+                        <?php
+                          if($row['UserId'] != $user_id){
+                        ?>
+                            <td><a href="DeleteUser_admin.php?id=<?php echo $row['UserId'] ?>" class="btn btn-danger">Delete</a></td>
+                        <?php
+                          }
+                        ?>
                       </tr>
                       <?php
                       }
