@@ -13,41 +13,7 @@ if (!isset($_SESSION['role'])) {
   }
 }
 $id = $_GET['id'];
-if (isset($_POST['submit'])) {
 
-
-  try {
-    $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
-    $password = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserPassword']));
-    $hashedPassword = md5($password);
-    $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
-    $address = htmlentities(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
-    $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
-    $role = $_POST['UserRoleName'];
-    $department = $_POST['DepartmentId'];
-    if (!empty($email) && !empty($username) && !empty($password)) {
-      if (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $password)) {
-        $errormsg = "Invalid Password";
-        echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
-      } else {
-        $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserPassword`='$hashedPassword',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address' 
-              WHERE UserId = $id";
-        mysqli_query($dbconn, $sql);
-        echo '<script>window.location.href = "ManageUser_admin.php";</script>';
-      }
-    } else {
-      echo '<script>alert("Error: Input cannot be empty"); window.location.href = "ManageUser_admin.php";</script>';
-    }
-  } catch (Exception) {
-    $errormsg = "⚠️ Something wrong with your input ⚠️";
-    echo '<script>alert("' . $errormsg . '"); window.location.href="ManageUser_admin.php";</script>';
-  }
-}
-
-
-?>
-
-<?php
   $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result_User = mysqli_query($dbconn, $select_sql);  
@@ -222,7 +188,46 @@ if (isset($_POST['submit'])) {
         
       </nav>
     </div><!-- End Page Title -->
+    <div class="container">
+      <?php
+      if (isset($_POST['submit'])) {
 
+
+        try {
+          $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
+          $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
+          $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
+          $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
+          $role = $_POST['UserRoleName'];
+          $department = $_POST['DepartmentId'];
+          if (!empty($email) && !empty($username)) {
+            $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address'
+            WHERE UserId = $id";
+            mysqli_query($dbconn, $sql);
+            echo '<script>window.location.href = "ManageUser_admin.php";</script>';
+          }else{
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Username and email cannot be empty
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+  
+            </button>
+          </div>';
+            }
+
+        } catch (Exception) {
+          $errormsg = "⚠️ Something wrong with your input ⚠️";
+          '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+              '.$errormsg.'
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+                  </button>
+                </div>';
+        }
+      }
+      
+      
+      ?>
+             </div>
     <section class="section dashboard">
       <div class="row">
         <div class="col-md-12">
