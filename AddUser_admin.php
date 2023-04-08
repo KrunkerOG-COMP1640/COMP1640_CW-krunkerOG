@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
                 VALUES ('$department','$role','$username','$hashedPassword','$email','$contact','$address')";
 
           $result = mysqli_query($dbconn, $sql);
-          header("Location: ManageUser_admin.php?msg = New user added successfully");
+          header("Location: ManageUser_admin.php?msg=New user added successfully");
   }
 }
 
