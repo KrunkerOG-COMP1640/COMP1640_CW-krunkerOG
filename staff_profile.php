@@ -4,7 +4,10 @@ session_start();
 
 
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
-
+if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
+  header("Location: login.php"); // Redirect to login page if not logged in
+  exit;
+}
 $user_id = $_SESSION["userid"];
 if (isset($_POST['submit'])) {
   if (isset($_POST['UserEmail']))
