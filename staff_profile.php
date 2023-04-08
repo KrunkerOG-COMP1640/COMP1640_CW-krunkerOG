@@ -43,17 +43,11 @@ if (isset($_POST['submit'])) {
   }
 }
 
-?>
 
-<?php
-$user_id = $_SESSION["userid"];
 $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
 $result_User = mysqli_query($dbconn, $select_sql);
 $row_User = mysqli_fetch_assoc($result_User);
-?>
 
-<?php
-$user_id_password = $_SESSION["userid"];
 $select_sql_password = "SELECT * FROM user_tbl WHERE UserId = $user_id_password";
 $result_password = mysqli_query($dbconn, $select_sql_password);
 $row_password = mysqli_fetch_assoc($result_password);
