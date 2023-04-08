@@ -252,11 +252,6 @@ $row = mysqli_fetch_assoc($result);
                         <input type="text" name="Username" value ="<?php echo $row['Username'] ?>"  class="form-control">
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="">Password</label>
-                        <input type="password" name="UserPassword" class="form-control">
-                    </div>
-                    
-                    <div class="col-md-12 mb-3">
                         <label for="">Email</label>
                         <input type="email" name="UserEmail" value ="<?php echo $row['UserEmail'] ?>" class="form-control">
                     </div>
