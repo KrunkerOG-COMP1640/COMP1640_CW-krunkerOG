@@ -200,6 +200,9 @@ $sql = "SELECT * FROM idea_tbl WHERE IdeaId = $id LIMIT 1";
 $result = mysqli_query($dbconn, $sql);  
 $row = mysqli_fetch_assoc($result);
 
+if ($user_id != $row['UserId']){
+  echo "<script>alert('Invalid user access!'); window.location.href='EditIdea.php';</script>";
+}
 ?>
 
 <div class="card mx-auto" style="max-width: 600px;">
