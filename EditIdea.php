@@ -2,6 +2,10 @@
 date_default_timezone_set('Asia/Kuala_Lumpur');
 session_start();
 
+if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
+  header("Location: login.php"); // Redirect to login page if not logged in
+  exit;
+}
 
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 //determine current page
