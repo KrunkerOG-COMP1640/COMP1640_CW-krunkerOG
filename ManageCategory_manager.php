@@ -18,12 +18,11 @@ else{
 $page = isset($_GET['page'])?$_GET['page']:1;
 //determine the number of data per page
 $rows_per_page = 5;
-$user_id = $_SESSION["userid"];
 
 // Determine the starting row number for the current page
 $start= ($page-1)*$rows_per_page;
 
-$user_id = $_SESSION["userid"];
+
 
   $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";

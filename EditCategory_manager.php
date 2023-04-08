@@ -11,6 +11,7 @@ if (!isset($_SESSION['role'])) {
     // exit;
   }
 }
+$errormsg="";
 $id = $_GET['id'];
 if (isset($_POST['submit'])) {
 
@@ -22,11 +23,10 @@ if (isset($_POST['submit'])) {
       mysqli_query($dbconn, $sql);
       header("Location: ManageCategory_manager.php?msg = Category Updated");
     } else {
-      echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "ManageCategory_manager.php";</script>';
+      $errormsg = "Don't leave your input empty!";
     }
   } catch (Exception) {
     $errormsg = "⚠️ Something wrong with your input ⚠️";
-    echo "<script>alert('$errormsg'); window.location.href='ManageCategory_manager.php';</script>";
   }
 }
 
@@ -190,7 +190,17 @@ if (isset($_POST['submit'])) {
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
+    <div class="container">
+    <?php
+      if ($errormsg){
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        '.$errormsg.'
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>';
+      }
+    ?>
+    </div>
     <section class="section dashboard">
       <div class="row">
         <div class="col-md-12">

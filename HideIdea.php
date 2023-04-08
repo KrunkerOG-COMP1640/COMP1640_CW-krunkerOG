@@ -17,7 +17,7 @@ $result =mysqli_query($dbconn, $sql);
 
 if($result){
     echo "<script>alert('Idea deleted successfully.')</script>";
-    header("refresh:0; url=EditIdea.php");
+    header("refresh:0; url=EditIdea.php?msg=Idea deleted successfully.");
 }
 
 

@@ -12,14 +12,10 @@ $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
 // Insert new post into database
 $id = $_GET['id'];
 
-
+$errormsg="";
 if (isset($_POST['submit_post'])) {
-
-
   $title = htmlentities(mysqli_real_escape_string($dbconn, $_POST['title']));
   $desc = htmlentities(mysqli_real_escape_string($dbconn, $_POST['description']));
-
-
   try {
     if (!empty($title) && !empty($desc)) {
       //upload image
@@ -39,8 +35,7 @@ if (isset($_POST['submit_post'])) {
         foreach ($imagefiles['tmp_name'] as $key => $tmp_name) {
           if ($countfiles > $max_image_count) {
 
-            $errormessage = "Cannot upload more than 5 images";
-            echo "<script>alert('$errormessage'); window.location.href='index.php';</script>";
+            $errormsg = "Cannot upload more than 5 images";
             exit();
           } else if ($countfiles < $max_image_count) {
             $ideaimage = $imagefiles['name'][$key];
@@ -67,7 +62,6 @@ if (isset($_POST['submit_post'])) {
             } else {
 
               $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
-              echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
               $image_error = true;
 
               break; // stop processing additional files
@@ -81,11 +75,10 @@ if (isset($_POST['submit_post'])) {
         exit();
       }
     } else {
-      echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "EditIdea.php";</script>';
+      $errormsg = "Don't leave your input empty!";
     }
   } catch (Exception) {
     $errormsg = "⚠️ Something wrong with your input ⚠️";
-    echo '<script>alert('.$errormsg.'); window.location.href = "EditIdea.php";</script>';
   }
 }
 
@@ -194,17 +187,27 @@ $row_Username = mysqli_fetch_assoc($result_Username);
 </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
-<?php
+<main id="main" class="main">
+    <div>
+      <?php
+        if ($errormsg){
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            '.$errormsg.'
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+              </div>';
+          }
+        
 
-$sql = "SELECT * FROM idea_tbl WHERE IdeaId = $id LIMIT 1";
-$result = mysqli_query($dbconn, $sql);  
-$row = mysqli_fetch_assoc($result);
+        $sql = "SELECT * FROM idea_tbl WHERE IdeaId = $id LIMIT 1";
+        $result = mysqli_query($dbconn, $sql);  
+        $row = mysqli_fetch_assoc($result);
 
-if ($user_id != $row['UserId']){
-  echo "<script>alert('Invalid user access!'); window.location.href='EditIdea.php';</script>";
-}
-?>
-
+      if ($user_id != $row['UserId']){
+        echo "<script>alert('Invalid user access!'); window.location.href='EditIdea.php';</script>";
+      }
+    ?>
+  </div>
 <div class="card mx-auto" style="max-width: 600px;">
     <div class="card-header">
       Edit Idea
@@ -213,11 +216,11 @@ if ($user_id != $row['UserId']){
       <form action="" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="title" class="form-label">Title:</label>
-          <input type="text" id="title" name="title" value="<?php echo $row['IdeaTitle'] ?>" class="form-control" required>
+          <input type="text" id="title" name="title" value="<?php echo $row['IdeaTitle'] ?>" class="form-control" >
         </div>
         <div class="mb-3">
           <label for="description" class="form-label">Description:</label>
-          <textarea id="description" name="description" class="form-control" rows="4" cols="50" required><?php echo $row['IdeaDescription'] ?></textarea>
+          <textarea id="description" name="description" class="form-control" rows="4" cols="50" ><?php echo $row['IdeaDescription'] ?></textarea>
         </div>
 
         <div class="mb-3">
@@ -239,7 +242,7 @@ if ($user_id != $row['UserId']){
       </form>
     </div>
   </div>
-  
+    </main>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

@@ -56,8 +56,8 @@ $user_id = $_SESSION["userid"];
   ======================================================== -->
   <style>
     .pagination{
-      position: sticky;
-      left: 50%;
+      position: relative;
+      left: 40%;
       bottom: 1%;
       display: inline;
       letter-spacing:10px;

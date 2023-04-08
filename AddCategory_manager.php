@@ -12,45 +12,21 @@ if (!isset($_SESSION['role'])) {
   }
 }
 
-if (isset($_POST['submit'])) {
-  try {
+$error = "";
+  if (isset($_POST['submit'])) {
     $title = htmlentities($_POST['CategoryTitle']);
-
-    if (!empty($title)) {
-      $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
-      $error = array();
-      if (mysqli_num_rows($checkcat) > 0) {
-        $error['1'] = "Cannot add existed category";
-      }
-
-
-      if (isset($error['1'])) {
-        $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>" . $error['1'] . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-      } else {
-        $output .= "";
-      }
-
-
-      if (count($error) < 1) {
-        $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
-          VALUES ('$title')";
-
-        $result = mysqli_query($dbconn, $sql);
-
-        if ($result) {
-          header("Location: ManageCategory_manager.php?msg = New category added");
-        } else {
-          echo "Failed: " . mysqli_error($dbconn);
-        }
-      }
-    } else {
-      echo '<script>alert("Input cannot be empty"); window.location.href = "ManageCategory_manager.php";</script>';
+    $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
+    if (empty($title)){
+      $error = "Input cannot be empty";
+    }elseif (mysqli_num_rows($checkcat) > 0) {
+      $error = "Cannot add existed category";
+    }else{
+      $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
+                  VALUES ('$title')";
+      $result = mysqli_query($dbconn, $sql);
+      header("Location: ManageCategory_manager.php?msg = New category added");
     }
-  } catch (Exception) {
-    $errormsg = "⚠️ Something wrong with your input ⚠️"; // error message to display
-    echo "<script>alert('$errormsg'); window.location.href='ManageCategory_manager.php';</script>";
   }
-}
 
 ?>
 
@@ -212,7 +188,17 @@ if (isset($_POST['submit'])) {
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
+    <div class="container">
+    <?php
+      if ($error){
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        '.$error.'
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>';
+      }
+    ?>
+    </div>
     <section class="section dashboard">
       <div class="row">
         <div class="col-md-12">

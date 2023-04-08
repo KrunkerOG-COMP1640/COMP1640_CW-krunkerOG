@@ -11,7 +11,7 @@ if (!isset($_SESSION['role'])) {
     // exit;
   }
 }
-$output = "";
+$error = "";
 if (isset($_POST['submit'])) {
   $username = strip_tags($_POST['Username']);
   $password = strip_tags($_POST['UserPassword']);
@@ -22,61 +22,25 @@ if (isset($_POST['submit'])) {
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];
 
-  try {
-    if (!empty($email) && !empty($password) && !empty($username)) {
-      if (
-        !preg_match('/^[a-zA-Z0-9_@.!]+$/', $username) ||
-        !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email) ||
-        !preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $password)
-      ) {
-        echo '<script>alert("Error: Invalid Input"); window.location.href = "ManageUser_admin.php";</script>';
-      } else {
-        $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
-        $error = array();
+  $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
 
-        if (empty($username)) {
-          $error['1'] = "Enter Username";
-        } else if (empty($password)) {
-          $error['1'] = "Enter Password";
-        } else if (empty($role)) {
-          $error['1'] = "Enter Role";
-        } else if (empty($department)) {
-          $error['1'] = "Enter department";
-        } else if (mysqli_num_rows($check_email) > 0) {
-          $error['1'] = "Email address already exist";
-        }
-
-
-        if (isset($error['1'])) {
-          $output .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>" . $error['1'] . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        } else {
-          $output .= "";
-        }
-
-        if (count($error) < 1) {
+  if (empty($username) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $username)) {
+    $error = "Enter valid an Username";
+  } else if (empty($password)|| !preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $password)) {
+    $error = "Enter valid a Password";
+  } else if (mysqli_num_rows($check_email) > 0) {
+    $error = "Email address already exist";
+  }elseif (empty($email)||!preg_match('/^[a-zA-Z0-9_@.!]+$/', $email) ) {
+    $error = "Enter valid an email";
+  }else{
           $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
                 VALUES ('$department','$role','$username','$hashedPassword','$email','$contact','$address')";
 
           $result = mysqli_query($dbconn, $sql);
-          if ($result) {
-            header("Location: ManageUser_admin.php?msg = New user added successfully");
-          } else {
-            echo "Failed: " . mysqli_error($dbconn);
-          }
-        }
-      }
-    } else {
-      echo '<script>alert("Error: Username and Password cannot be empty"); window.location.href = "ManageUser_admin.php";</script>';
-    }
-  } catch (Exception) {
-    $errormsg = "⚠️ Something wrong with your input ⚠️";
-    echo "<script>alert('$errormsg'); window.location.href='ManageUser_admin.php';</script>";
+          header("Location: ManageUser_admin.php?msg = New user added successfully");
   }
 }
 
-?>
-
-<?php
   $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result_User = mysqli_query($dbconn, $select_sql);  
@@ -251,7 +215,17 @@ if (isset($_POST['submit'])) {
         
       </nav>
     </div><!-- End Page Title -->
-
+    <div class="container">
+    <?php
+      if ($error){
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+        '.$error.'
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>';
+      }
+    ?>
+    </div>
     <section class="section dashboard">
       <div class="row">
         <div class="col-md-12">

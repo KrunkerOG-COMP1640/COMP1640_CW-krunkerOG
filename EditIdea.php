@@ -302,8 +302,6 @@ $result= mysqli_query($dbconn, $sql);
 
 
               echo '<a href="EditIdea_user.php?id=' .$ideaid. '" class="btn btn-primary" style="margin-right: 10px;">Edit Idea</a>';
-              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-up"></i></a>';
-              echo '<a href="#" class="btn btn-primary" style="background-color: darkcyan; margin-right: 10px;"><i class="bi bi-hand-thumbs-down"></i></a>';
               echo '</div>';
               echo '</div>';
             }
