@@ -192,42 +192,30 @@ $id = $_GET['id'];
       <?php
       if (isset($_POST['submit'])) {
 
-
-        try {
-          $username = mysqli_real_escape_string($dbconn, $_POST['Username']);
-          $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
-          $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
-          $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
-          $role = $_POST['UserRoleName'];
-          $department = $_POST['DepartmentId'];
-          if (!empty($email) && !empty($username)) {
-            $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address'
+        $username = mysqli_real_escape_string($dbconn, $_POST['Username']);
+        $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
+        $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
+        $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
+        $role = $_POST['UserRoleName'];
+        $department = $_POST['DepartmentId'];
+        if (!empty($email) && !empty($username)) {
+          $sql = "UPDATE `user_tbl` SET `DepartmentId`='$department',`UserRoleName`='$role',`Username`='$username',`UserEmail`='$email',`UserContactNo`='$contact',`UserAddress`='$address'
             WHERE UserId = $id";
-            mysqli_query($dbconn, $sql);
-            echo '<script>window.location.href = "ManageUser_admin.php";</script>';
-          }else{
-            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+          mysqli_query($dbconn, $sql);
+          echo '<script>window.location.href = "ManageUser_admin.php";</script>';
+        } else {
+          echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
             Username and email cannot be empty
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
   
             </button>
           </div>';
-            }
-
-        } catch (Exception) {
-          $errormsg = "⚠️ Something wrong with your input ⚠️";
-          '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-              '.$errormsg.'
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        
-                  </button>
-                </div>';
         }
       }
-      
-      
+
+
       ?>
-             </div>
+    </div>
     <section class="section dashboard">
       <div class="row">
         <div class="col-md-12">

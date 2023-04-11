@@ -8,6 +8,7 @@ if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
   header("Location: login.php"); // Redirect to login page if not logged in
   exit;
 }
+$errorAlert = "";
 $user_id = $_SESSION["userid"];
 if (isset($_POST['submit'])) {
   if (isset($_POST['UserEmail']))
@@ -17,15 +18,42 @@ if (isset($_POST['submit'])) {
   $count = mysqli_num_rows($result_email);
   if ($count > 0) {
   } else {
-    try {
-      $username = mysqli_real_escape_string($dbconn, $_POST['Username']);
-      $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
-      $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
-      $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
+    $username = mysqli_real_escape_string($dbconn, $_POST['Username']);
+    $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
+    $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
+    $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
+    if (empty($username)) {
+      $error = "Username cannot be empty";
+      $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+        . $error .
+        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+    } else if (empty($email)) {
+      $error = "Email cannot be empty";
+      $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+        . $error .
+        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+    } else if (empty($address)) {
+      $error = "Please insert your address cannot be empty";
+      $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+        . $error .
+        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+    } else if (empty($contact)) {
+      $error = "Contact number cannot be empty";
+      $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+        . $error .
+        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+    } else {
       if (!empty($email) || !empty($username)) {
-        if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $username) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email)) {
-          $errormsg = "Invalid Input";
-          echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
+        if (!preg_match('/^[a-zA-Z0-9_@.!]+$/', $email)) {
+          $error = "Don't include single quotation in your email";
+          $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+            . $error .
+            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
         } else {
           $sql = "UPDATE `user_tbl` SET `Username`='$username',`UserEmail`='$email',
                 `UserAddress`='$address',`UserContactNo`='$contact' 
@@ -33,12 +61,7 @@ if (isset($_POST['submit'])) {
           mysqli_query($dbconn, $sql);
           header("Location: staff_profile.php?msg=Data updated successfully");
         }
-      } else {
-        echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "staff_profile.php";</script>';
       }
-    } catch (Exception) {
-      $errormsg = "⚠️ Something wrong with your input ⚠️";
-      echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
     }
   }
 }
@@ -57,11 +80,38 @@ if (isset($_POST["submit_new_password"])) {
   $newPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["newPassword"]));
   $hashedPassword = md5($newPassword);
   $comfirmNewPassword = strip_tags(mysqli_real_escape_string($dbconn, $_POST["comfirmNewPassword"]));
-  if (!empty($newPassword) && !empty($comfirmNewPassword)) {
+  if ($newPassword != $comfirmNewPassword) {
+    $error = "New Password and Re-enter New Password does not match..";
+    $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+      . $error .
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+  } else if (!empty($newPassword) && !empty($comfirmNewPassword)) {
     if ($newPassword == $comfirmNewPassword) {
-      if (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $newPassword)) {
-        $errormsg = "Invalid Password";
-        echo '<script>alert("' . $errormsg . '"); window.location.href="staff_profile.php";</script>';
+      if (strlen($newPassword) < 8) {
+        $error = "Password must be at least 8 characters long.";
+        $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+          . $error .
+          '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+      } elseif (!preg_match('/[a-z]/', $newPassword)) {
+        $error = "Password must contain at least one lowercase letter.";
+        $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+          . $error .
+          '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+      } elseif (!preg_match('/^[ -~]+$/', $newPassword)) {
+        $error = "Password can only contain alphabetical character.";
+        $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+          . $error .
+          '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+      } elseif (!preg_match('/[!@#$%^&*()_+}{":?><~`\-.,\/\\|]+/', $newPassword)) {
+        $error = "Password must contain at least one symbol (except single quote and semicolon).";
+        $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+          . $error .
+          '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
       } else {
         mysqli_query($dbconn, "UPDATE user_tbl 
                                SET UserPassword = '$hashedPassword' 
@@ -71,7 +121,11 @@ if (isset($_POST["submit_new_password"])) {
       }
     }
   } else {
-    echo '<script>alert("Error: Invalid Password"); window.location.href = "staff_profile.php";</script>';
+    $error = "Password cannot be empty.";
+    $errorAlert .= "<div class='alert alert-warning alert-dismissible fade show' role=alert'>"
+      . $error .
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
   }
 }
 ?>
@@ -297,7 +351,7 @@ if (isset($_POST["submit_new_password"])) {
         </div>
 
         <div class="col-xl-8">
-
+          <?= $errorAlert ?>
           <div class="card">
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->

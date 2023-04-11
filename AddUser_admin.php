@@ -13,11 +13,11 @@ if (!isset($_SESSION['role'])) {
 }
 $error = "";
 if (isset($_POST['submit'])) {
-  $username = strip_tags($_POST['Username']);
+  $username = $_POST['Username'];
   $password = strip_tags($_POST['UserPassword']);
   $hashedPassword = md5($password);
   $contact = strip_tags($_POST['UserContactNo']);
-  $address = htmlentities($_POST['UserAddress']);
+  $address = strip_tags(mysqli_real_escape_string($dbconn ,$_POST['UserAddress']));
   $email = strip_tags($_POST['UserEmail']);
   $role = $_POST['UserRoleName'];
   $department = $_POST['DepartmentId'];
@@ -25,26 +25,38 @@ if (isset($_POST['submit'])) {
   $check_email = mysqli_query($dbconn, "SELECT * FROM user_tbl WHERE UserEmail = '$email'");
 
   if (empty($username) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $username)) {
-    $error = "Enter valid an Username";
-  } else if (empty($password)|| !preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^';]{8,})$/", $password)) {
-    $error = "Enter valid a Password";
+    $error = "Enter valid Username";
+  } else if (empty($password)) {
+    $error = "Don't leave your password empty";
   } else if (mysqli_num_rows($check_email) > 0) {
     $error = "Email address already exist";
-  }elseif (empty($email)||!preg_match('/^[a-zA-Z0-9_@.!]+$/', $email) ) {
+  } elseif (empty($email) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email)) {
     $error = "Enter valid an email";
-  }else{
-          $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
+  } else {
+    if (!empty($password)) {
+      if (strlen($password) < 8) {
+        $error = "Password must be at least 8 characters long.";
+      } elseif (!preg_match('/[a-z]/', $password)) {
+        $error = "Password must contain at least one lowercase letter.";
+      } elseif (!preg_match('/^[ -~]+$/', $password)) {
+        $error = "Password can only contain alphabetical character.";
+      } elseif (!preg_match('/[!@#$%^&*()_+}{":?><~`\-.,\/\\|]+/', $password)) {
+        $error = "Password must contain at least one symbol (except single quote and semicolon).";
+      } else {
+        $sql = "INSERT INTO `user_tbl`(`DepartmentId`, `UserRoleName`, `Username`, `UserPassword`, `UserEmail`, `UserContactNo`, `UserAddress`) 
                 VALUES ('$department','$role','$username','$hashedPassword','$email','$contact','$address')";
 
-          $result = mysqli_query($dbconn, $sql);
-          header("Location: ManageUser_admin.php?msg=New user added successfully");
+        $result = mysqli_query($dbconn, $sql);
+        header("Location: ManageUser_admin.php?msg=New user added successfully");
+      }
+    }
   }
 }
 
-  $user_id = $_SESSION["userid"];
-  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-  $result_User = mysqli_query($dbconn, $select_sql);  
-  $row_User = mysqli_fetch_assoc($result_User);
+$user_id = $_SESSION["userid"];
+$select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+$result_User = mysqli_query($dbconn, $select_sql);
+$row_User = mysqli_fetch_assoc($result_User);
 ?>
 
 <!DOCTYPE html>
