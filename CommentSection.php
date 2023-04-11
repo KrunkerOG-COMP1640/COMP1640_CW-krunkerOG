@@ -369,7 +369,7 @@ $showComment = mysqli_query($dbconn, $show);
                                         while ($imageidea_row = mysqli_fetch_assoc($imageidea_result)) {
                                             $imageidea_path = '' . $imageidea_row['IdeaImage'];
                                             if (file_exists($imageidea_path)) {
-                                                echo '   <div class="col-lg-4 mb-4">';
+                                                echo '   <div class="col-md-6 mb-4">';
                                                 echo '         <img src="' . $imageidea_path . '"  alt="idea image" class="shadow-1-strong rounded mb-4" style="width: 150px; height: 150px; object-fit: contain;">';
                                                 echo '   </div>';
                                             }
