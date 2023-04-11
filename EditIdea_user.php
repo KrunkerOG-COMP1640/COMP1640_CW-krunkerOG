@@ -150,12 +150,12 @@ $row_Username = mysqli_fetch_assoc($result_Username);
 
       <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-        <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $row_Username['Username'] ?></span>
+        <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo htmlentities($row_Username['Username']) ?></span>
       </a><!-- End Profile Iamge Icon -->
 
       <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
         <li class="dropdown-header">
-          <h6><?php echo $row_Username['Username'] ?></h6>
+          <h6><?php echo htmlentities($row_Username['Username']) ?></h6>
           <span><?php echo $_SESSION["role"];?></span>
         </li>
         <li>
@@ -216,11 +216,11 @@ $row_Username = mysqli_fetch_assoc($result_Username);
       <form action="" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="title" class="form-label">Title:</label>
-          <input type="text" id="title" name="title" value="<?php echo $row['IdeaTitle'] ?>" class="form-control" >
+          <input type="text" id="title" name="title" value="<?php echo htmlentities($row['IdeaTitle']) ?>" class="form-control" >
         </div>
         <div class="mb-3">
           <label for="description" class="form-label">Description:</label>
-          <textarea id="description" name="description" class="form-control" rows="4" cols="50" ><?php echo $row['IdeaDescription'] ?></textarea>
+          <textarea id="description" name="description" class="form-control" rows="4" cols="50" ><?php echo htmlentities($row['IdeaDescription']) ?></textarea>
         </div>
 
         <div class="mb-3">
