@@ -14,8 +14,8 @@ $id = $_GET['id'];
 
 $errormsg="";
 if (isset($_POST['submit_post'])) {
-  $title = htmlentities(mysqli_real_escape_string($dbconn, $_POST['title']));
-  $desc = htmlentities(mysqli_real_escape_string($dbconn, $_POST['description']));
+  $title = mysqli_real_escape_string($dbconn, $_POST['title']);
+  $desc = mysqli_real_escape_string($dbconn, $_POST['description']);
   try {
     if (!empty($title) && !empty($desc)) {
       //upload image

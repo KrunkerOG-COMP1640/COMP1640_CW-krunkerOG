@@ -12,8 +12,8 @@ $error="";
 // Insert new post into database
 if (isset($_POST["submit_post"])) {
 
-  $title = htmlentities(mysqli_real_escape_string($dbconn, $_POST["title"]));
-  $desc = htmlentities(mysqli_real_escape_string($dbconn, $_POST["description"]));
+  $title = mysqli_real_escape_string($dbconn, $_POST["title"]);
+  $desc = mysqli_real_escape_string($dbconn, $_POST["description"]);
   $category = mysqli_real_escape_string($dbconn, $_POST["category"]);
   $anon = isset($_POST["anonymous"]);
   $user_id = $_SESSION["userid"];
