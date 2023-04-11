@@ -11,32 +11,35 @@ if (!isset($_SESSION['role'])) {
     // exit;
   }
 }
-$errormsg="";
+$errormsg = "";
 $id = $_GET['id'];
 if (isset($_POST['submit'])) {
 
-  try {
-    $title = htmlentities($_POST['CategoryTitle']);
-    $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
+  $title = htmlentities(strip_tags(mysqli_escape_string($dbconn, $_POST['CategoryTitle'])));
+  $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
+  $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
 
-    if (!empty($title)) {
+  if (empty($title)) {
+    $errormsg = "Don't leave your input empty!";
+  } elseif (mysqli_num_rows($checkcat) > 0) {
+    $errormsg = "Category already created";
+  } else {
+    if (!preg_match('/^[ -~]+$/', $title)) {
+      $errormsg = "Do not use different language character";
+    } else {
       mysqli_query($dbconn, $sql);
       header("Location: ManageCategory_manager.php?msg = Category Updated");
-    } else {
-      $errormsg = "Don't leave your input empty!";
     }
-  } catch (Exception) {
-    $errormsg = "⚠️ Something wrong with your input ⚠️";
   }
 }
 
 ?>
 
 <?php
-  $user_id = $_SESSION["userid"];
-  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-  $result_User = mysqli_query($dbconn, $select_sql);  
-  $row_User = mysqli_fetch_assoc($result_User);
+$user_id = $_SESSION["userid"];
+$select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+$result_User = mysqli_query($dbconn, $select_sql);
+$row_User = mysqli_fetch_assoc($result_User);
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +51,7 @@ if (isset($_POST['submit'])) {
 
   <title>Krunker Idea Portal 2023</title>
   <meta content="" name="description">
-  <meta content="" name="keywords"> 
+  <meta content="" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -111,13 +114,13 @@ if (isset($_POST['submit'])) {
             </li>
 
             <li>
-                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
-                  <i class="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
+              <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
             </li>
             <li>
-                <hr class="dropdown-divider">
+              <hr class="dropdown-divider">
             </li>
 
             <li>
@@ -146,33 +149,33 @@ if (isset($_POST['submit'])) {
         </a>
       </li><!-- End Idea Nav -->
 
-            <?php
-              echo '<li class="nav-item">';
-              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
-              echo '</a>';
-              echo '</li>';
-            ?>
+      <?php
+      echo '<li class="nav-item">';
+      echo '<a href="EditIdea.php?id=' . $user_id . '" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+      echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
+      echo '</a>';
+      echo '</li>';
+      ?>
 
-            <?php
-              if($_SESSION['role'] == "QA Manager"){
-                echo'<li class="nav-heading">Pages</li>';
+      <?php
+      if ($_SESSION['role'] == "QA Manager") {
+        echo '<li class="nav-heading">Pages</li>';
 
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
-                        echo '<i class="bi bi-grid"></i>';
-                        echo '<span>Add a new Category</span>';
-                    echo '</a>';
-                echo '</li><!-- End Category Page Nav -->';
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
+        echo '<i class="bi bi-grid"></i>';
+        echo '<span>Add a new Category</span>';
+        echo '</a>';
+        echo '</li><!-- End Category Page Nav -->';
 
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="report_manager.php">';
-                        echo '<i class="bi bi-bar-chart-line"></i>';
-                        echo '<span>Reports</span>';
-                    echo '</a>';
-                echo '</li><!-- End Report Page Nav -->';
-              }
-            ?>
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link collapsed" href="report_manager.php">';
+        echo '<i class="bi bi-bar-chart-line"></i>';
+        echo '<span>Reports</span>';
+        echo '</a>';
+        echo '</li><!-- End Report Page Nav -->';
+      }
+      ?>
 
     </ul>
 
@@ -191,15 +194,15 @@ if (isset($_POST['submit'])) {
       </nav>
     </div><!-- End Page Title -->
     <div class="container">
-    <?php
-      if ($errormsg){
+      <?php
+      if ($errormsg) {
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-        '.$errormsg.'
+        ' . $errormsg . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
             </button>
           </div>';
       }
-    ?>
+      ?>
     </div>
     <section class="section dashboard">
       <div class="row">
@@ -211,23 +214,23 @@ if (isset($_POST['submit'])) {
             <!-- End Header Name -->
             <div class="card-body">
 
-<?php
-$sql = "SELECT * FROM category_tbl WHERE CategoryId = $id LIMIT 1";
-$result = mysqli_query($dbconn, $sql);  
-$row = mysqli_fetch_assoc($result);
-?>
+              <?php
+              $sql = "SELECT * FROM category_tbl WHERE CategoryId = $id LIMIT 1";
+              $result = mysqli_query($dbconn, $sql);
+              $row = mysqli_fetch_assoc($result);
+              ?>
               <form action="" method="post">
                 <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <label for="">Category Title</label>
-                        <input type="text" name="CategoryTitle" class="form-control"  value ="<?php echo $row['CategoryTitle'] ?>" required autofocus>
-                    </div>
-                    
-                   
-                    <div class="col-md-12 mb-3">
-                      <button type="submit" class="btn btn-primary" name="submit">Update category</button>
-                      <a href="ManageCategory_manager.php" class="btn btn-danger" >Cancel</a>
-                    </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="">Category Title</label>
+                    <input type="text" name="CategoryTitle" class="form-control" value="<?php echo $row['CategoryTitle'] ?>" required autofocus>
+                  </div>
+
+
+                  <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn btn-primary" name="submit">Update category</button>
+                    <a href="ManageCategory_manager.php" class="btn btn-danger">Cancel</a>
+                  </div>
                 </div>
               </form>
 
@@ -249,7 +252,7 @@ $row = mysqli_fetch_assoc($result);
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
- 
+
     </div>
   </footer><!-- End Footer -->
 

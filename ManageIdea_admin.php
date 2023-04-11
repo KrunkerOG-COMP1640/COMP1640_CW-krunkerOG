@@ -258,9 +258,9 @@ $start= ($page-1)*$rows_per_page;
                         ?>
                          <tr>
                          <td><?php echo htmlentities($row['Username'])?></td>
-                        <td><?php echo $row['IdeaTitle']?></td>
-                        <td><?php echo $row['IdeaDescription']?></td>
-                        <td><?php echo $row['CategoryTitle']?></td>
+                        <td><?php echo htmlentities($row['IdeaTitle'])?></td>
+                        <td><?php echo htmlentities($row['IdeaDescription'])?></td>
+                        <td><?php echo htmlentities($row['CategoryTitle'])?></td>
                         <td><?php echo $row['DatePost']?></td>
                         <td>
                           <?php if($row['is_hidden']== 0 ){

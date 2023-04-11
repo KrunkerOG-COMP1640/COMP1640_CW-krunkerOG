@@ -250,7 +250,7 @@ $start= ($page-1)*$rows_per_page;
                         <tr>
                         <td><?php echo htmlentities($row['Username'])?></td>
                         <td><?php echo $row['UserContactNo']?></td>
-                        <td><?php echo $row['UserEmail']?></td>
+                        <td><?php echo htmlentities($row['UserEmail'])?></td>
                         <td><?php echo $row['DepartmentName']?></td>
                         <td><?php echo $row['UserRoleName']?></td> 
                         <td><a href="EditUser_admin.php?id=<?php echo $row['UserId'] ?>"  class="btn btn-success">Edit</a></td>

@@ -255,8 +255,8 @@ $start= ($page-1)*$rows_per_page;
                         ?>
                          <tr>
                          <td><?php echo htmlentities($row['Username'])?></td>
-                        <td><?php echo $row['IdeaTitle']?></td>
-                        <td><?php echo $row['CommentDetails']?></td>
+                        <td><?php echo htmlentities($row['IdeaTitle'])?></td>
+                        <td><?php echo htmlentities($row['CommentDetails'])?></td>
 
                         <td>
                           <?php if($row['comment_hidden']== 0 ){

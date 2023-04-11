@@ -53,15 +53,15 @@ $result = mysqli_query($dbconn, $sql);
 while ($row = mysqli_fetch_assoc($result)) {
   echo '<div class="card">';
   echo '<div class="card-body">';
-  echo '<h1 class="card-title">' . $row['IdeaTitle'] . '</h1>';
+  echo '<h1 class="card-title">' . htmlentities($row['IdeaTitle']) . '</h1>';
   if ($row['IdeaAnonymous'] == 0) {
-    echo '<h5 class="card-author">' . $row['Username'] . '</h5>';
+    echo '<h5 class="card-author">' . htmlentities($row['Username']) . '</h5>';
   } else if ($row['IdeaAnonymous'] == 1) {
     echo '<h5 class="card-author">Anonymous</h5>';
   }
 
-  echo '<h5 class="card-category">' . $row['CategoryTitle'] . '</h5>';
-  echo '<p class="card-text">' . $row['IdeaDescription'] . '</p>';
+  echo '<h5 class="card-category">' . htmlentities($row['CategoryTitle']) . '</h5>';
+  echo '<p class="card-text">' . htmlentities($row['IdeaDescription']) . '</p>';
 
 
   $ideaid = $row['IdeaId'];

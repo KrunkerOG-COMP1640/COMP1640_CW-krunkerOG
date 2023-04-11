@@ -28,7 +28,7 @@ $error = "";
 if (isset($_POST["submit_comment_post"])) {
 
     $user_id = $_SESSION["userid"];
-    $usercomment = htmlentities($_POST["CommentDetails"]);
+    $usercomment = $_POST["CommentDetails"];
     $comment = $usercomment;
     $anonymous = isset($_POST["anonymous"]);
 
@@ -331,7 +331,7 @@ $showComment = mysqli_query($dbconn, $show);
                                 <div class="card-body">
                                     <div class="row align-items-center mb-3">
                                         <div class="col">
-                                            <?= '<h1 class="card-title">' . $row['IdeaTitle'] . '</h1>'; ?>
+                                            <?= '<h1 class="card-title">' . htmlentities($row['IdeaTitle']) . '</h1>'; ?>
                                         </div>
                                         <div class="col-auto">
                                             <a href="index.php"><i class="fa-regular fa-x fa-2x"></i></a>
@@ -345,7 +345,7 @@ $showComment = mysqli_query($dbconn, $show);
                                         </div>
                                         <div class="col px-0">
                                             <p class="small text-secondary mb-0">Posted by</p>
-                                            <?= '<h5 class="card-author">' . $row['Username'] . '</h5>'; ?>
+                                            <?= '<h5 class="card-author">' . htmlentities($row['Username']) . '</h5>'; ?>
                                             <!-- <p class="mb-0">User <small class="text-secondary">1 hr ago</small></p> -->
                                         </div>
                                         <div class="col-auto text-end">
@@ -353,7 +353,7 @@ $showComment = mysqli_query($dbconn, $show);
                                             <?= '<h5 class="card-author">' . $row['DatePost'] . '</h5>'; ?>
                                         </div>
                                     </div>
-                                    <?= '<p class="card-text">' . $row['IdeaDescription'] . '</p>'; ?>
+                                    <?= '<p class="card-text">' . htmlentities($row['IdeaDescription']) . '</p>'; ?>
                                     <!-- Gallery -->
                                     <?php
                                     $ideaid = $row['IdeaId'];
@@ -432,7 +432,7 @@ $showComment = mysqli_query($dbconn, $show);
                                                 <p class="small text-secondary mb-0">Commented by</p>
                                                 <?php if ($shoCom['CommentAnonymous'] == 0) {
 
-                                                    echo '<p class="mb-0">' . $shoCom['Username'] . '</p>';
+                                                    echo '<p class="mb-0">' . htmlentities($shoCom['Username']) . '</p>';
                                                 } else if ($shoCom['CommentAnonymous'] == 1) {
                                                     echo '<p class="mb-0">Anonymous</h5>';
                                                 }
@@ -459,7 +459,7 @@ $showComment = mysqli_query($dbconn, $show);
                                                 <?= '<p class="mb-0">' . $shoCom['DateComment'] . '</p>'; ?>
                                             </div>
                                         </div>
-                                        <?= '<p class="mb-0" style="margin-left:10px;">' . $shoCom['CommentDetails'] . '</p>'; ?>
+                                        <?= '<p class="mb-0" style="margin-left:10px;">' . htmlentities($shoCom['CommentDetails']) . '</p>'; ?>
                                     </div>
                                 </div>
                             </div>

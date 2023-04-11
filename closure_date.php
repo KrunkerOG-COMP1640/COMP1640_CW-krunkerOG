@@ -225,7 +225,7 @@ $start= ($page-1)*$rows_per_page;
                         ?>
                         <tr>
                         <td><?php echo htmlentities($row['Username'])?></td>
-                        <td><?php echo $row['UserEmail']?></td>
+                        <td><?php echo htmlentities($row['UserEmail'])?></td>
                         <td><?php echo $row['DepartmentName']?></td>                       
                         <td><?php echo $row['DateClosure']?></td>
                         <td><?php echo $row['DateFinal']?></td>

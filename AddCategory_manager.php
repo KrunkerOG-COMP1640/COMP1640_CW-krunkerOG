@@ -13,28 +13,32 @@ if (!isset($_SESSION['role'])) {
 }
 
 $error = "";
-  if (isset($_POST['submit'])) {
-    $title = htmlentities($_POST['CategoryTitle']);
-    $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
-    if (empty($title)){
-      $error = "Input cannot be empty";
-    }elseif (mysqli_num_rows($checkcat) > 0) {
-      $error = "Cannot add existed category";
-    }else{
+if (isset($_POST['submit'])) {
+  $title = htmlentities(strip_tags(mysqli_escape_string($dbconn, $_POST['CategoryTitle'])));
+  $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
+  if (empty($title)) {
+    $error = "Input cannot be empty";
+  } elseif (mysqli_num_rows($checkcat) > 0) {
+    $error = "Cannot add existed category";
+  } else {
+    if (!preg_match('/^[ -~]+$/', $title)) {
+      $error = "Do not use different language character";
+    } else {
       $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
                   VALUES ('$title')";
       $result = mysqli_query($dbconn, $sql);
       header("Location: ManageCategory_manager.php?msg = New category added");
     }
   }
+}
 
 ?>
 
 <?php
-  $user_id = $_SESSION["userid"];
-  $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
-  $result_User = mysqli_query($dbconn, $select_sql);  
-  $row_User = mysqli_fetch_assoc($result_User);
+$user_id = $_SESSION["userid"];
+$select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
+$result_User = mysqli_query($dbconn, $select_sql);
+$row_User = mysqli_fetch_assoc($result_User);
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +50,7 @@ $error = "";
 
   <title>Krunker Idea Portal 2023</title>
   <meta content="" name="description">
-  <meta content="" name="keywords"> 
+  <meta content="" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -109,13 +113,13 @@ $error = "";
             </li>
 
             <li>
-                <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
-                  <i class="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
+              <a class="dropdown-item d-flex align-items-center" href="staff_profile.php">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
             </li>
             <li>
-                <hr class="dropdown-divider">
+              <hr class="dropdown-divider">
             </li>
 
             <li>
@@ -144,33 +148,33 @@ $error = "";
         </a>
       </li><!-- End Idea Nav -->
 
-            <?php
-              echo '<li class="nav-item">';
-              echo '<a href="EditIdea.php?id=' .$user_id.'" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
-              echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
-              echo '</a>';
-              echo '</li>';
-            ?>
+      <?php
+      echo '<li class="nav-item">';
+      echo '<a href="EditIdea.php?id=' . $user_id . '" class="nav-link collapsed" data-bs-target="#statistics-nav;">';
+      echo '<i class="bi bi-pencil"></i>Edit Idea</span>';
+      echo '</a>';
+      echo '</li>';
+      ?>
 
-            <?php
-              if($_SESSION['role'] == "QA Manager"){
-                echo'<li class="nav-heading">Pages</li>';
+      <?php
+      if ($_SESSION['role'] == "QA Manager") {
+        echo '<li class="nav-heading">Pages</li>';
 
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
-                        echo '<i class="bi bi-grid"></i>';
-                        echo '<span>Add a new Category</span>';
-                    echo '</a>';
-                echo '</li><!-- End Category Page Nav -->';
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link collapsed" href="ManageCategory_manager.php">';
+        echo '<i class="bi bi-grid"></i>';
+        echo '<span>Add a new Category</span>';
+        echo '</a>';
+        echo '</li><!-- End Category Page Nav -->';
 
-                echo'<li class="nav-item">';
-                    echo '<a class="nav-link collapsed" href="report_manager.php">';
-                        echo '<i class="bi bi-bar-chart-line"></i>';
-                        echo '<span>Reports</span>';
-                    echo '</a>';
-                echo '</li><!-- End Report Page Nav -->';
-              }
-            ?>
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link collapsed" href="report_manager.php">';
+        echo '<i class="bi bi-bar-chart-line"></i>';
+        echo '<span>Reports</span>';
+        echo '</a>';
+        echo '</li><!-- End Report Page Nav -->';
+      }
+      ?>
 
     </ul>
 
@@ -189,15 +193,15 @@ $error = "";
       </nav>
     </div><!-- End Page Title -->
     <div class="container">
-    <?php
-      if ($error){
+      <?php
+      if ($error) {
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-        '.$error.'
+        ' . $error . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
             </button>
           </div>';
       }
-    ?>
+      ?>
     </div>
     <section class="section dashboard">
       <div class="row">
@@ -212,15 +216,15 @@ $error = "";
 
               <form action="" method="post">
                 <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <label for="">Category Title</label>
-                        <input type="text" name="CategoryTitle" class="form-control" required autofocus>
-                    </div>
-                   
-                    <div class="col-md-12 mb-3">
-                      <button type="submit" class="btn btn-primary" name="submit">Add Category</button>
-                      <a href="ManageCategory_manager.php" class="btn btn-danger">Cancel</a>
-                    </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="">Category Title</label>
+                    <input type="text" name="CategoryTitle" class="form-control" required autofocus>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn btn-primary" name="submit">Add Category</button>
+                    <a href="ManageCategory_manager.php" class="btn btn-danger">Cancel</a>
+                  </div>
                 </div>
               </form>
 
@@ -242,7 +246,7 @@ $error = "";
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-    
+
     </div>
   </footer><!-- End Footer -->
 
