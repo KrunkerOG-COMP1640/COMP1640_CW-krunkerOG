@@ -24,7 +24,7 @@ INNER JOIN category_tbl ON idea_tbl.CategoryId= category_tbl.CategoryId
 WHERE IdeaId=$id";
 $result = mysqli_query($dbconn, $sql);
 
-
+$error = "";
 if (isset($_POST["submit_comment_post"])) {
 
     $user_id = $_SESSION["userid"];
@@ -68,11 +68,10 @@ if (isset($_POST["submit_comment_post"])) {
                 header("Location:CommentSection.php?id=" . $id);
                 exit();
             } else {
-                echo '<script>alert("Error: Don\'t leave your comment empty"); </script>';
+                $error = "Don't leave your comment empty.";
             }
         } catch (Exception) {
-            $errormsg = "⚠️ Something wrong with your input ⚠️";
-            echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+            $error = "⚠️ Something wrong with your input ⚠️";
         }
     }
 }
@@ -289,7 +288,17 @@ $showComment = mysqli_query($dbconn, $show);
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
+        <div class="container">
+            <?php
+            if ($error){
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                '.$error.'
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    </button>
+                </div>';
+            }
+            ?>
+        </div>
         <section class="section dashboard">
             <!-- <div class="container">
                 <div class="row justify-content-md-center">

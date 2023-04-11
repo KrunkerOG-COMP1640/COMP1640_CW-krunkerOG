@@ -14,17 +14,17 @@ else{
   }
 
 }
-
+$error = "";
 if(isset($_POST['submit'])){
 
   $dateclosure= $_POST['DateClosure'];
   $datefinal= $_POST['DateFinal'];
 
   if($datefinal <= $dateclosure){
-    echo '<script>alert("The final closure date must be more than the closure date.");</script>';
+      $error="The final closure date must be more than the closure date.";
   }
   else if( $dateclosure >= $datefinal){
-    echo '<script>alert("The date closure date cannot be more than the final closure date.");</script>';
+    $error="The date closure date cannot be more than the final closure date.";
   }
   else{
 
@@ -208,7 +208,17 @@ if(isset($_POST['submit'])){
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
+    <div class="container">
+        <?php
+        if ($error){
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            '.$error.'
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>';
+        }
+        ?>
+    </div>
     <section class="section dashboard">
       <div class="row">
         <div class="col-md-12">
@@ -223,18 +233,32 @@ if(isset($_POST['submit'])){
 $sql = "SELECT DateClosure, DateFinal FROM user_tbl";
 $result = mysqli_query($dbconn, $sql);  
 $row = mysqli_fetch_assoc($result);
+
+$years = mysqli_query($dbconn, "SELECT DISTINCT YEAR(DatePost) AS Years FROM idea_tbl");
+$year_list='';
+$default_year = date('Y');
+
+foreach ($years as $year){
+  $selected = ($year['Years'] == $default_year) ? 'selected' : ''; 
+  $year_list.='<option value="'.$year['Years'].'"'.$selected.'>'.$year['Years'].'</option>';
+}
 ?>
               <form action="" method="post">
-
+                    <div class="col-md-12 mb-3">
+                      <span>Closure Year</span><br/>
+                      <select name="dropdown" class="closure_year" id="closure_year">
+                      <?php echo $year_list; ?>
+                      </select>
+                    </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Date Closure</label>
                         <br>
-                        <input type="date" class="form-control" name="DateClosure"  min="2023-01-01" max="2030-12-31"  value ="<?php echo $row['DateClosure'] ?>" autofocus >
+                        <input type="date" class="form-control" name="DateClosure"  min="<?php echo $default_year; ?>-01-01" max="<?php echo $default_year; ?>-12-31"  value ="<?php echo $row['DateClosure'] ?>" autofocus >
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Final Closure Date</label>
                         <br>
-                        <input type="date" class="form-control" name="DateFinal"  min="2023-01-01" max="2030-12-31"  value ="<?php echo $row['DateFinal'] ?>" >
+                        <input type="date" class="form-control" name="DateFinal"  min="<?php echo $default_year; ?>-01-01" max="<?php echo $default_year; ?>-12-31"  value ="<?php echo $row['DateFinal'] ?>" >
                     </div>
                    
                     <div class="col-md-12 mb-3">
@@ -277,7 +301,19 @@ $row = mysqli_fetch_assoc($result);
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-
+  <script>
+  closureYearSelect = document.getElementById('closure_year');
+  dateClosureInput = document.getElementsByName('DateClosure')[0];
+  dateFinalInput = document.getElementsByName('DateFinal')[0];
+  
+  closureYearSelect.addEventListener('change', function() {
+    selectedYear = this.value;
+    dateClosureInput.min = selectedYear + '-01-01';
+    dateClosureInput.max = selectedYear + '-12-31';
+    dateFinalInput.min = selectedYear + '-01-01';
+    dateFinalInput.max = selectedYear + '-12-31';
+  });
+</script>
 </body>
 
 </html>

@@ -8,6 +8,7 @@ if (!isset($_SESSION["username"]) && !isset($_SESSION["userid"])) {
 }
 // Connect to MySQL database
 $dbconn = mysqli_connect("localhost", "root", "", "krunkerideadb");
+$error="";
 // Insert new post into database
 if (isset($_POST["submit_post"])) {
 
@@ -46,10 +47,7 @@ if (isset($_POST["submit_post"])) {
           if ($countfiles > $max_image_count) {
             $sqldeleteidea = "DELETE FROM idea_tbl WHERE IdeaId = '$ideaid'";
             mysqli_query($dbconn, $sqldeleteidea);
-
-            $errormessage = "Cannot upload more than 5 images";
-            echo "<script>alert('$errormessage'); window.location.href='index.php';</script>";
-            exit();
+            $error = "Cannot upload more than 5 images";
           } else if ($countfiles < $max_image_count || $countfiles == $max_image_count) {
             $ideaimage = $imagefiles['name'][$key];
             $ideaimage_tmp = $imagefiles['tmp_name'][$key];
@@ -100,8 +98,7 @@ if (isset($_POST["submit_post"])) {
               $sqldeleteidea = "DELETE FROM idea_tbl WHERE IdeaId = '$ideaid'";
               mysqli_query($dbconn, $sqldeleteidea);
 
-              $errormsg = "File type not allowed or file size more than 2gb"; // error message to display
-              echo "<script>alert('$errormsg'); window.location.href='index.php';</script>";
+              $error = "File type not allowed or file size more than 2gb"; // error message to display
               $image_error = true;
 
               break; // stop processing additional files
@@ -137,7 +134,7 @@ if (isset($_POST["submit_post"])) {
     }
   }
   else{
-    echo '<script>alert("Error: Don\'t leave your input empty"); window.location.href = "index.php";</script>';
+    $error = "Don't leave your input empty!";
   }
 }
 $user_id = $_SESSION["userid"];
@@ -244,8 +241,18 @@ $row_User = mysqli_fetch_assoc($result_User);
 </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
-
-
+<main id="main" class="main">
+  <div>
+    <?php
+      if ($error){
+          echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+          '.$error.'
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+          </div>';
+        }
+    ?>
+  </div>
   <div class="card mx-auto" style="max-width: 600px;">
     <div class="card-header">
       Submit Idea
@@ -292,7 +299,7 @@ $row_User = mysqli_fetch_assoc($result_User);
       </form>
     </div>
   </div>
-  
+</main>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

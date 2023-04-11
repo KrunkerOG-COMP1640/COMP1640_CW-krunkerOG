@@ -17,10 +17,6 @@ $sqlD = "SELECT DepartmentId from user_tbl WHERE UserId=$user_id";
 $resultD = mysqli_query($dbconn,$sqlD);
 $strD = $resultD->fetch_array()[0] ?? ''; //get single value n convert to string 
 
-?>
-
-<?php
-  $user_id = $_SESSION["userid"];
   $select_sql = "SELECT * FROM user_tbl WHERE UserId = $user_id";
   $result_User = mysqli_query($dbconn, $select_sql);  
   $row_User = mysqli_fetch_assoc($result_User);
