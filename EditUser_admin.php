@@ -194,7 +194,7 @@ $id = $_GET['id'];
 
 
         try {
-          $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
+          $username = mysqli_real_escape_string($dbconn, $_POST['Username']);
           $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
           $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
           $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));

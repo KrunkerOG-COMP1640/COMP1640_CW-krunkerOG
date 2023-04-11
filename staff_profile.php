@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
   if ($count > 0) {
   } else {
     try {
-      $username = strip_tags(mysqli_real_escape_string($dbconn, $_POST['Username']));
+      $username = mysqli_real_escape_string($dbconn, $_POST['Username']);
       $email = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserEmail']));
       $address = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserAddress']));
       $contact = strip_tags(mysqli_real_escape_string($dbconn, $_POST['UserContactNo']));
