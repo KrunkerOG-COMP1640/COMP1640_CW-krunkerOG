@@ -79,12 +79,12 @@ $id = $_GET['id'];
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $row_User['Username'] ?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo htmlentities($row_User['Username']) ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?php echo $row_User['Username'] ?></h6>
+              <h6><?php echo htmlentities($row_User['Username']) ?></h6>
               <span><?php echo $row_User['UserRoleName'] ?></span>
             </li>
             <li>
@@ -249,7 +249,7 @@ $row = mysqli_fetch_assoc($result);
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="">Username</label>
-                        <input type="text" name="Username" value ="<?php echo $row['Username'] ?>"  class="form-control">
+                        <input type="text" name="Username" value ="<?php echo htmlentities($row['Username']) ?>"  class="form-control">
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Email</label>

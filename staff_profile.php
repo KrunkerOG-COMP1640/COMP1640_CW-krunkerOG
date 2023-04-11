@@ -136,12 +136,12 @@ if (isset($_POST["submit_new_password"])) {
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $row_User['Username'] ?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo htmlentities($row_User['Username']) ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?php echo $row_User['Username'] ?></h6>
+              <h6><?php echo htmlentities($row_User['Username']) ?></h6>
               <span><?php echo $row_User['UserRoleName'] ?></span>
             </li>
             <li>
@@ -283,7 +283,7 @@ if (isset($_POST["submit_new_password"])) {
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2><?php echo $row_User['Username'] ?></h2>
+              <h2><?php echo htmlentities($row_User['Username']) ?></h2>
               <h3><?php echo $row_User['UserRoleName'] ?></h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -325,7 +325,7 @@ if (isset($_POST["submit_new_password"])) {
 
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label ">Username</div>
-                      <div class="col-lg-9 col-md-8" name="Username"><?php echo $row_User['Username'] ?></div>
+                      <div class="col-lg-9 col-md-8" name="Username"><?php echo htmlentities($row_User['Username']) ?></div>
                     </div>
 
                     <div class="row">
@@ -355,7 +355,7 @@ if (isset($_POST["submit_new_password"])) {
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Username</label>
                       <div class="col-md-8 col-lg-9">
-                        <input type="text" name="Username" value ="<?php echo $row_User['Username'] ?>"  class="form-control">
+                        <input type="text" name="Username" value ="<?php echo htmlentities($row_User['Username']) ?>"  class="form-control">
                       </div>
                     </div>
                     
