@@ -13,12 +13,10 @@ if($_SESSION["role"] != "QA Manager") {
   $row_User = mysqli_fetch_assoc($result_User);
 
 //Get total department data
-$departmentquery = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) as Total_Ideas 
-FROM user_tbl U
-RIGHT JOIN department_tbl D
-ON U.DepartmentId = D.DepartmentId
-LEFT JOIN idea_tbl I
-ON I.UserId = U.UserId
+$departmentquery = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) AS 'Number of Ideas'
+FROM department_tbl D
+INNER JOIN user_tbl U ON D.DepartmentId = U.DepartmentId
+INNER JOIN idea_tbl I ON U.UserId = I.UserId
 WHERE D.DepartmentId IN ('1','2','3','4')
 GROUP BY D.DepartmentName"
 );
@@ -26,43 +24,40 @@ $departmentresult = $departmentquery;
 $departmentdata = array();
 
 while($row = $departmentresult ->fetch_assoc()) {
-  $departmentdata[] = array('label' => $row['DepartmentName'], 'value' => $row['Total_Ideas']);
+  $departmentdata[] = array('label' => $row['DepartmentName'], 'value' => $row['Number of Ideas']);
 }
 //echo json_encode($departmentdata);
 
 //Get Contributor data
-$contributorquery = mysqli_query($dbconn, "SELECT C.CategoryTitle, D.DepartmentName, COUNT(DISTINCT I.UserId) AS Total_Contributor
+$contributorquery = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(U.UserId) AS Contributors
 FROM department_tbl D
-LEFT JOIN user_tbl U
-ON U.DepartmentId = D.DepartmentId
-RIGHT JOIN idea_tbl I
-ON I.UserId = U.UserId
-INNER JOIN category_tbl C
-ON I.CategoryId = C.CategoryId
+INNER JOIN user_tbl U ON D.DepartmentId = U.DepartmentId
 WHERE D.DepartmentId IN ('1','2','3','4')
-GROUP BY C.CategoryTitle"
+GROUP BY D.DepartmentName"
 );
 $contributorresult = $contributorquery;
 $contributordata = array();
 
 while($row = $contributorresult ->fetch_assoc()) {
-   $contributordata[] = array('label' => $row['DepartmentName'], 'value' => $row['Total_Contributor']);
+   $contributordata[] = array('label' => $row['DepartmentName'], 'value' => $row['Contributors']);
 }
 //echo json_encode($contributordata);
 
 //Get Percentage for each department ideas
-$percentideas = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) AS Total_Ideas,
-(SELECT COUNT(*) FROM idea_tbl) AS Total_Post
-FROM user_tbl U, department_tbl D, idea_tbl I
-WHERE U.DepartmentId = D.DepartmentId AND I.UserId = U.UserId
-GROUP BY D.DepartmentName"
+$percentideas = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) AS 'Idea Count',
+(COUNT(I.IdeaId) / (SELECT COUNT(*) FROM idea_tbl I)) * 100 AS 'Percentage'
+FROM department_tbl D
+INNER JOIN user_tbl U ON D.DepartmentId = U.DepartmentId
+INNER JOIN idea_tbl I ON U.UserId = I.UserId
+GROUP BY D.DepartmentName
+ORDER BY COUNT(I.IdeaId) DESC"
 );
 $percentideas_department = array();
 $percentideas_data = array();
-
+                
 while ($row = mysqli_fetch_assoc($percentideas)) {
   $percentideas_department[] = $row["DepartmentName"];
-  $percentideas_data[] = round(($row["Total_Ideas"] / $row["Total_Post"]) * 100, 2);
+  $percentideas_data[] = array('label' => $row['Idea Count'], 'value' => $row['Percentage']);
 }
 ?>
 
@@ -106,31 +101,32 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-  
-  function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Department', 'Percentage'],
-      <?php for ($i = 0; $i < count($percentideas_department); $i++) { ?>
-        ['<?php echo $percentideas_department[$i]; ?>', <?php echo $percentideas_data[$i]; ?>],
-      <?php } ?>
-    ]);
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
 
-    var options = {
-      legend: {
-        top: '5%',
-        left: 'left'
-      },
-      height: 300,
-      //chartArea: {width: '90%', height: '70%'},
-      avoidLabelOverlap:false,
-      pieHole: 1
-    };
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Department');
+        data.addColumn('number', 'Percentage');
+        data.addRows([
+          <?php
+            $data = array();
+            foreach($percentideas_department as $key => $value) {
+              $data[] = "['".$value."', ".$percentideas_data[$key]['value']."]";
+            }
+            echo implode(", ", $data);
+            ?>
+        ]);
+
+        var options = {
+          is3D:true,
+          width: 400,
+          height: 400
+        };
         
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
     }
 </script>
 
@@ -378,11 +374,7 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                   </div>
                   <div class="ps-3">
                     <?php
-                    $dash_likeideas_query = "SELECT LD.LikeStatus, COUNT(I.IdeaId) AS Total_Ideas, 
-                    (SELECT COUNT(LikeStatus) FROM like_dislikepost_tbl LD) AS Total_Post
-                    FROM like_dislikepost_tbl LD, user_tbl U, idea_tbl I
-                    WHERE LD.IdeaId = I.IdeaId AND I.UserId = U.UserId
-                    GROUP BY LD.LikeDislikePostId";
+                    $dash_likeideas_query = "SELECT IdeaId, COUNT(LikeStatus) AS TotalLikes FROM like_dislikePost_tbl WHERE LikeStatus = 1 GROUP BY IdeaId";
 
                     $dash_likeideas_query_run = mysqli_query($dbconn, $dash_likeideas_query);
 
@@ -413,7 +405,7 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                   </ul>
                 </div>
                 <div class="card-body pt-0">
-                  <h5 class="card-title">Idea by Departments</h5>
+                  <h5 class="card-title">Number of ideas made by each Department</h5>
                   <!-- Create a canvas element for the chart -->
                   <canvas id="BarChart"></canvas>
                   
@@ -481,7 +473,7 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                     <h5 class="card-title">Percentage of ideas by each Department</h5>
                     
                     <!-- Create a canvas element for the chart -->
-                    <div id="chart_div"></div>
+                    <div id="piechart_3d"></div>
                   </div>
                 </div>
               </div>
@@ -502,7 +494,7 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                   </ul>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">Number of Contributors each Department</h5>
+                  <h5 class="card-title">Number of Contributors within each Department</h5>
                   
                   <!-- Create a canvas element for the chart -->
                   <canvas id="myChart"></canvas>

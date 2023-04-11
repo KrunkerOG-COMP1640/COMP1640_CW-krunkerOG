@@ -1,7 +1,7 @@
 <?php
 require_once 'krunkerideaconn.php';
 
-$likecsv_query = "SELECT LD.LikeStatus, I.IdeaId, I.IdeaTitle, U.Username, U.UserRoleName, D.DepartmentName, COUNT(I.IdeaId) as Total_Likes
+$likecsv_query = "SELECT I.IdeaId, I.IdeaTitle, U.Username, U.UserRoleName, D.DepartmentName, COUNT(LD.LikeStatus) as Total_Likes
 FROM  idea_tbl I 
 LEFT JOIN like_dislikepost_tbl LD
 ON I.IdeaId = LD.IdeaId
@@ -9,8 +9,8 @@ RIGHT JOIN user_tbl U
 ON I.UserId = U.UserId
 RIGHT JOIN department_tbl D
 ON U.DepartmentId = D.DepartmentId
-WHERE LD.LikeDislikePostId
-GROUP BY LD.LikeStatus";
+WHERE LD.LikeStatus = 1
+GROUP BY I.IdeaId";
 
 $likecsv_query_run = mysqli_query($dbconn, $likecsv_query);
 
@@ -25,7 +25,7 @@ function create_csv_file($data) {
     $file = fopen('LikeIdeas.csv', 'w');
     
     // Write headers
-    fputcsv($file, array('Like Status', 'Idea Id', 'Idea Title', 'User Name', 'Role Name ', 'Department Name', 'Total likes'));
+    fputcsv($file, array('Idea Id', 'Idea Title', 'User Name', 'Role Name ', 'Department Name', 'Total likes'));
     
     // Write data
     while ($row = mysqli_fetch_assoc($data)) {

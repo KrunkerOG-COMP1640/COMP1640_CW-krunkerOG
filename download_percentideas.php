@@ -1,26 +1,27 @@
 <?php
 require_once 'krunkerideaconn.php';
 
-$percentideas = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) AS Total_Ideas,
-(SELECT COUNT(*) FROM idea_tbl) AS Total_Post
-FROM user_tbl U, department_tbl D, idea_tbl I
-WHERE U.DepartmentId = D.DepartmentId AND I.UserId = U.UserId
-GROUP BY D.DepartmentName"
+$percentideas = mysqli_query($dbconn, "SELECT D.DepartmentName, COUNT(I.IdeaId) AS 'Idea Count',
+(COUNT(I.IdeaId) / (SELECT COUNT(*) FROM idea_tbl I)) * 100 AS 'Percentage'
+FROM department_tbl D
+INNER JOIN user_tbl U ON D.DepartmentId = U.DepartmentId
+INNER JOIN idea_tbl I ON U.UserId = I.UserId
+GROUP BY D.DepartmentName
+ORDER BY COUNT(I.IdeaId) DESC"
 );
 
 // Open a file handle for writing the CSV file
 $fh = fopen('Ideas by each Department(%).csv', 'w');
 
 // Write the CSV header row
-fputcsv($fh, ['Department', 'Percentage (%)', 'Total Ideas', 'Total Post']);
+fputcsv($fh, ['Department', 'Idea Count', 'Percentage (%)']);
 
 // Loop through the query result and write each row to the CSV file
 while ($row = mysqli_fetch_assoc($percentideas)) {
     $department = $row["DepartmentName"];
-    $total_ideas = $row["Total_Ideas"];
-    $total_post = $row["Total_Post"];
-    $percentage = round(($row["Total_Ideas"] / $row["Total_Post"]) * 100, 2);
-    fputcsv($fh, [$department, $percentage, $total_ideas, $total_post]);
+    $total_ideas = $row["Idea Count"];
+    $percentage = $row["Percentage"];
+    fputcsv($fh, [$department, $total_ideas, $percentage]);
 }
 
 // Close the file handle
