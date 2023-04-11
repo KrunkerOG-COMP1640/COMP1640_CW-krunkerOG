@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
   } else if (mysqli_num_rows($check_email) > 0) {
     $error = "Email address already exist";
   } elseif (empty($email) || !preg_match('/^[a-zA-Z0-9_@.!]+$/', $email)) {
-    $error = "Enter valid an email";
+    $error = "Please insert valid email";
   } else {
     if (!empty($password)) {
       if (strlen($password) < 8) {
