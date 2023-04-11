@@ -200,7 +200,7 @@ if (isset($_POST['submit'])) {
     </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-  <div><?php echo $output; ?></div>
+ 
     <div class="pagetitle">
       <h1>Add User</h1>
       <nav>
