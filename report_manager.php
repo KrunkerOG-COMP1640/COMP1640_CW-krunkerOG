@@ -401,7 +401,7 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
-                    <li><a class="icon" onclick="downloadCSV()"> Download</a></li>
+                    <li><a class="icon" onclick="DepartmentdownloadCSV()"> Download</a></li>
                   </ul>
                 </div>
                 <div class="card-body pt-0">
@@ -439,20 +439,36 @@ while ($row = mysqli_fetch_assoc($percentideas)) {
                     }
                   });
                   // Function to download CSV file
-                  function downloadCSV() {
-                    // Create CSV data from chart data
-                    var csvData = '';
-                    chartData.forEach(function(data) {
-                      csvData += data.label + ',' + data.value + '\n';
-                    });
-                    // Create new CSV file and download it
-                    var link = document.createElement('a');
-                    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData));
-                    link.setAttribute('download', 'Idea_by_Departments.csv');
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                  function downloadCSV(csv, filename) {
+                    var csvFile;
+                    var downloadLink;
+
+                    // CSV file
+                    csvFile = new Blob([csv], {type: "text/csv"});
+
+                    // Download link
+                    downloadLink = document.createElement("a");
+
+                    // File name
+                    downloadLink.download = filename;
+
+                    // We create a link to the file
+                    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+                    // We add the link to the DOM so it becomes clickable
+                    document.body.appendChild(downloadLink);
+
+                    // We trigger the click event to start the download
+                    downloadLink.click();
+                  }
+
+                  function DepartmentdownloadCSV() {
+                      var csv = 'Department,Number of Ideas\n';
+                      <?php foreach($departmentdata as $data): ?>
+                          csv += '<?php echo $data['label'];?>,' + <?php echo $data['value'];?> + '\n';
+                      <?php endforeach; ?>
+
+                      downloadCSV(csv, 'Ideas_by_department.csv');
                   }
                   </script>
                   </div>
