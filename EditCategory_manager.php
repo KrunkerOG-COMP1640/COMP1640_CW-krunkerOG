@@ -15,7 +15,7 @@ $errormsg = "";
 $id = $_GET['id'];
 if (isset($_POST['submit'])) {
 
-  $title = htmlentities(strip_tags(mysqli_escape_string($dbconn, $_POST['CategoryTitle'])));
+  $title = htmlentities(mysqli_escape_string($dbconn, $_POST['CategoryTitle']));
   $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
   $sql = "UPDATE `category_tbl` SET `CategoryTitle`='$title' WHERE CategoryId = $id";
 

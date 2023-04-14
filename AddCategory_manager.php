@@ -14,7 +14,7 @@ if (!isset($_SESSION['role'])) {
 
 $error = "";
 if (isset($_POST['submit'])) {
-  $title = htmlentities(strip_tags(mysqli_escape_string($dbconn, $_POST['CategoryTitle'])));
+  $title = htmlentities(mysqli_escape_string($dbconn, $_POST['CategoryTitle']));
   $checkcat = mysqli_query($dbconn, "SELECT * FROM category_tbl WHERE CategoryTitle = '$title'");
   if (empty($title)) {
     $error = "Input cannot be empty";
