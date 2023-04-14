@@ -21,14 +21,10 @@ if (isset($_POST['submit'])) {
   } elseif (mysqli_num_rows($checkcat) > 0) {
     $error = "Cannot add existed category";
   } else {
-    if (!preg_match('/^[ -~]+$/', $title)) {
-      $error = "Do not use different language character";
-    } else {
-      $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
+    $sql = "INSERT INTO `category_tbl`(`CategoryTitle`) 
                   VALUES ('$title')";
-      $result = mysqli_query($dbconn, $sql);
-      header("Location: ManageCategory_manager.php?msg = New category added");
-    }
+    $result = mysqli_query($dbconn, $sql);
+    header("Location: ManageCategory_manager.php?msg = New category added");
   }
 }
 

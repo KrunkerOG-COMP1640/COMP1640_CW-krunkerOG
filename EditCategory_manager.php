@@ -24,12 +24,8 @@ if (isset($_POST['submit'])) {
   } elseif (mysqli_num_rows($checkcat) > 0) {
     $errormsg = "Category already created";
   } else {
-    if (!preg_match('/^[ -~]+$/', $title)) {
-      $errormsg = "Do not use different language character";
-    } else {
-      mysqli_query($dbconn, $sql);
-      header("Location: ManageCategory_manager.php?msg = Category Updated");
-    }
+    mysqli_query($dbconn, $sql);
+    header("Location: ManageCategory_manager.php?msg = Category Updated");
   }
 }
 
