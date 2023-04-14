@@ -226,7 +226,7 @@ $start= ($page-1)*$rows_per_page;
                       foreach($query_no as $row){
                         ?>
                         <tr>
-                        <td><?php echo htmlentities($row['CategoryTitle'])?></td>
+                        <td><?php echo $row['CategoryTitle']?></td>
                         <td><?php echo $row['DateCreated']?></td>
                         <td><a href="EditCategory_manager.php?id=<?php echo $row['CategoryId'] ?>"  class="btn btn-success">Edit</a></td>
                         <td><a href="DeleteCategory_manager.php?id=<?php echo $row['CategoryId'] ?>" class="btn btn-danger">Delete</a></td>
