@@ -29,7 +29,7 @@ if (isset($_POST["submit_comment_post"])) {
 
     $user_id = $_SESSION["userid"];
     $usercomment = $_POST["CommentDetails"];
-    $comment = $usercomment;
+    $comment = htmlentities($usercomment);
     $anonymous = isset($_POST["anonymous"]);
 
     $getClosure = "SELECT DateFinal from user_tbl WHERE UserId = $user_id";
@@ -39,39 +39,36 @@ if (isset($_POST["submit_comment_post"])) {
     if (date('Y-m-d') >= $finalclosureDate) {
         echo "<script>alert('Sorry, comments are temporarily closed.')</script>";
     } else {
-        try {
-            if (!empty($comment)) {
-                mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
+
+        if (!empty($comment)) {
+            mysqli_query($dbconn, "INSERT INTO comment_tbl (UserId, CommentDetails, CommentAnonymous, IdeaId) 
                               VALUES ('$user_id','$comment','$anonymous', '$id')");
-                              
-                    // find author email
-                    $sqlID =  mysqli_query($dbconn, "SELECT UserId from idea_tbl WHERE IdeaId = $id");
-                    $strID = $sqlID->fetch_array()[0] ?? ''; //get single value n convert to string 
-                    $sqlauthorEmail = mysqli_query($dbconn, "SELECT UserEmail from user_tbl WHERE UserId = $strID");
-                    $strresultEmail = $sqlauthorEmail->fetch_array()[0] ?? ''; //conver email to single value
-                    $sqlUsername = mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
-                    $strUserName = $sqlUsername->fetch_array()[0] ?? '';
 
-                    $to      = $strresultEmail;
-                    $subject = 'New comment on your idea';
-                    $message = "Hello, \r\n\n";
-                    $message .= "You got a new message from Krunker Idea Portal : \r\n\n";
-                    $message .= "$strUserName commented on your idea. \r\n\n\n";
-                    $message .= "Warm regards, \r\n\n";
-                    $message .= "Krunker Idea Portal \r\n";
-                    $headers = 'From:caleb@gmail.com' . "\r\n" .
-                        'Reply-To: krunkerog6@gmail.com' . "\r\n" .
-                        'X-Mailer: PHP/' . phpversion();
+            // find author email
+            $sqlID =  mysqli_query($dbconn, "SELECT UserId from idea_tbl WHERE IdeaId = $id");
+            $strID = $sqlID->fetch_array()[0] ?? ''; //get single value n convert to string 
+            $sqlauthorEmail = mysqli_query($dbconn, "SELECT UserEmail from user_tbl WHERE UserId = $strID");
+            $strresultEmail = $sqlauthorEmail->fetch_array()[0] ?? ''; //conver email to single value
+            $sqlUsername = mysqli_query($dbconn, "SELECT Username from user_tbl WHERE UserId= $user_id");
+            $strUserName = $sqlUsername->fetch_array()[0] ?? '';
 
-                    mail($to, $subject, $message, $headers);
+            $to      = $strresultEmail;
+            $subject = 'New comment on your idea';
+            $message = "Hello, \r\n\n";
+            $message .= "You got a new message from Krunker Idea Portal : \r\n\n";
+            $message .= "$strUserName commented on your idea. \r\n\n\n";
+            $message .= "Warm regards, \r\n\n";
+            $message .= "Krunker Idea Portal \r\n";
+            $headers = 'From:caleb@gmail.com' . "\r\n" .
+                'Reply-To: krunkerog6@gmail.com' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
 
-                header("Location:CommentSection.php?id=" . $id);
-                exit();
-            } else {
-                $error = "Don't leave your comment empty.";
-            }
-        } catch (Exception) {
-            $error = "⚠️ Something wrong with your input ⚠️";
+            mail($to, $subject, $message, $headers);
+
+            header("Location:CommentSection.php?id=" . $id);
+            exit();
+        } else {
+            $error = "Don't leave your comment empty.";
         }
     }
 }
@@ -459,7 +456,7 @@ $showComment = mysqli_query($dbconn, $show);
                                                 <?= '<p class="mb-0">' . $shoCom['DateComment'] . '</p>'; ?>
                                             </div>
                                         </div>
-                                        <?= '<p class="mb-0" style="margin-left:10px;">' . htmlentities($shoCom['CommentDetails']) . '</p>'; ?>
+                                        <?= '<p class="mb-0" style="margin-left:10px;">' . $shoCom['CommentDetails'] . '</p>'; ?>
                                     </div>
                                 </div>
                             </div>
